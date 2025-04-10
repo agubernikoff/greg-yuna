@@ -13,6 +13,7 @@ body {
     sans-serif;
   margin: 0;
   padding: 0;
+  overscroll-behavior: none;
 }
 
 h1,
@@ -73,13 +74,15 @@ pre {
 }
 
 body {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 57px 1fr 1fr 1fr 1fr;
   min-height: 100vh;
 }
 
 body > main {
-  margin: 0 1rem 1rem 1rem;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 2/6;
 }
 
 section {
