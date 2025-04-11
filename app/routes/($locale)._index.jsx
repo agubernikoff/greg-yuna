@@ -1,6 +1,7 @@
 import {Await, useLoaderData, Link} from '@remix-run/react';
 import {Suspense} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
+import ProductGridItem from '~/components/ProductGridItem';
 
 /**
  * @type {MetaFunction}
@@ -105,29 +106,18 @@ function RecommendedProducts({products}) {
           {(response) => (
             <div className="recommended-products-grid">
               {response
-                ? response.products.nodes.map((product) => (
-                    <Link
+                ? response.products.nodes.map((product, index) => (
+                    <ProductGridItem
                       key={product.id}
-                      className="recommended-product"
-                      to={`/products/${product.handle}`}
-                    >
-                      <Image
-                        data={product.images.nodes[0]}
-                        aspectRatio="1/1"
-                        sizes="(min-width: 45em) 20vw, 50vw"
-                      />
-                      <h4>{product.title}</h4>
-                      <small>
-                        <Money data={product.priceRange.minVariantPrice} />
-                      </small>
-                    </Link>
+                      product={product}
+                      loading={index < 8 ? 'eager' : undefined}
+                    />
                   ))
                 : null}
             </div>
           )}
         </Await>
       </Suspense>
-      <br />
     </div>
   );
 }
@@ -166,7 +156,7 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
         currencyCode
       }
     }
-    images(first: 1) {
+    images(first: 2) {
       nodes {
         id
         url
@@ -178,7 +168,7 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    products(first: 4, sortKey: UPDATED_AT, reverse: true) {
+    products(first: 12, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...RecommendedProduct
       }

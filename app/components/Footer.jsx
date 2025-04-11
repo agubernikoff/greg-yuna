@@ -6,21 +6,44 @@ import {Await, NavLink} from '@remix-run/react';
  */
 export function Footer({footer: footerPromise, header, publicStoreDomain}) {
   return (
-    <Suspense>
-      <Await resolve={footerPromise}>
-        {(footer) => (
-          <footer className="footer">
-            {footer?.menu && header.shop.primaryDomain?.url && (
-              <FooterMenu
-                menu={footer.menu}
-                primaryDomainUrl={header.shop.primaryDomain.url}
-                publicStoreDomain={publicStoreDomain}
-              />
-            )}
-          </footer>
-        )}
-      </Await>
-    </Suspense>
+    <footer className="footer">
+      <div className="footer-left">
+        <p>
+          Greg Yuna New York is an American jewelry brand known for intricate
+          craftsmanship that seamlessly blends high-end jewelry with streetwise
+          sophistication. Everything we make is inspired by the city we call
+          home. Worn by the people we call family.
+        </p>
+      </div>
+      <div className="footer-right">
+        <div>
+          <p>NEWSLETTER</p>
+          <div>
+            <input placeholder="Enter Email"></input>
+            <button>Subscribe</button>
+          </div>
+        </div>
+        <div>
+          <Suspense>
+            <Await resolve={footerPromise}>
+              {(footer) =>
+                footer?.menu &&
+                header.shop.primaryDomain?.url && (
+                  <FooterMenu
+                    menu={footer.menu}
+                    primaryDomainUrl={header.shop.primaryDomain.url}
+                    publicStoreDomain={publicStoreDomain}
+                  />
+                )
+              }
+            </Await>
+          </Suspense>
+          <p>
+            © 2025 GREG YUNA, ALL RIGHTS RESERVED / <a>Site Credit</a>
+          </p>
+        </div>
+      </div>
+    </footer>
   );
 }
 
@@ -115,7 +138,7 @@ const FALLBACK_FOOTER_MENU = {
 function activeLinkStyle({isActive, isPending}) {
   return {
     fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'white',
+    // color: isPending ? 'grey' : 'white',
   };
 }
 
