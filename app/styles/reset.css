@@ -85,7 +85,6 @@ body > main {
   display: grid;
   grid-template-columns: subgrid;
   grid-column: 2/6;
-  margin-bottom: -1px;
 }
 
 section {

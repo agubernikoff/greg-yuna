@@ -1,7 +1,8 @@
 import {Await, useLoaderData, Link} from '@remix-run/react';
-import {Suspense} from 'react';
+import {Suspense, useState} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import ProductGridItem from '~/components/ProductGridItem';
+import {motion} from 'motion/react';
 
 /**
  * @type {MetaFunction}
@@ -36,6 +37,7 @@ async function loadCriticalData({context}) {
 
   return {
     featuredCollection: collections.nodes[0],
+    collections,
   };
 }
 
@@ -66,6 +68,7 @@ export default function Homepage() {
     <div className="home">
       <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.recommendedProducts} />
+      <Collections collections={data.collections} />
     </div>
   );
 }
@@ -122,6 +125,31 @@ function RecommendedProducts({products}) {
   );
 }
 
+function Collections({collections}) {
+  console.log(collections);
+  const mapped = collections.nodes.map((node) => (
+    <CollectionGridItem key={node.id} node={node} />
+  ));
+  return <div className="collections-container">{mapped}</div>;
+}
+
+function CollectionGridItem({node}) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <motion.div
+      className={`collection-grid-item ${hovered ? 'hovered' : null}`}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <Link to={`/collections/${node.handle}`}>
+        <Image data={node.image} sizes="25vw" aspectRatio=".8/1" />
+      </Link>
+      <p>{`Shop ${node.title} ->`}</p>
+    </motion.div>
+  );
+}
+
+//add some kind of metafield 'displayOnHomepage' and add to query
 const FEATURED_COLLECTION_QUERY = `#graphql
   fragment FeaturedCollection on Collection {
     id
@@ -137,7 +165,7 @@ const FEATURED_COLLECTION_QUERY = `#graphql
   }
   query FeaturedCollection($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
+    collections(first: 4, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...FeaturedCollection
       }

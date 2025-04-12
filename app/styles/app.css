@@ -400,7 +400,8 @@ button.reset:hover:not(:has(> *)) {
   grid-template-columns: subgrid;
 }
 
-.recommended-products-grid {
+.recommended-products-grid,
+.collections-container {
   grid-column: 1/5;
   display: grid;
   grid-template-columns: subgrid;
@@ -408,6 +409,25 @@ button.reset:hover:not(:has(> *)) {
 
 .recommended-product img {
   height: auto;
+}
+
+.collection-grid-item {
+  padding: 3rem;
+  background: white;
+  position: relative;
+}
+.collection-grid-item img {
+  height: auto;
+  object-fit: cover;
+  transition: scale 300ms ease-in-out;
+}
+.hovered img {
+  scale: 1.1;
+}
+.collection-grid-item p {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
 }
 
 /*
