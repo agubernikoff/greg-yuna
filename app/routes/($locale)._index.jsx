@@ -3,6 +3,9 @@ import {Suspense, useState} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import ProductGridItem from '~/components/ProductGridItem';
 import {motion} from 'motion/react';
+// remove these images and query properly from shopify
+import gy_storefront from '~/assets/gy_storefront.png';
+import gy_storefront_1 from '~/assets/gy_storefront_1.png';
 
 /**
  * @type {MetaFunction}
@@ -69,6 +72,7 @@ export default function Homepage() {
       <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.recommendedProducts} />
       <Collections collections={data.collections} />
+      <Storefront />
     </div>
   );
 }
@@ -91,7 +95,7 @@ function FeaturedCollection({collection}) {
           <Image data={image} sizes="100vw" />
         </div>
       )}
-      <h1>{collection.title}</h1>
+      <h1>{collection.title.toUpperCase()}</h1>
     </Link>
   );
 }
@@ -146,6 +150,23 @@ function CollectionGridItem({node}) {
       </Link>
       <p>{`Shop ${node.title} ->`}</p>
     </motion.div>
+  );
+}
+
+function Storefront({}) {
+  return (
+    <div className="homepage-storefront-container">
+      <img src={gy_storefront} />
+      <div>
+        <p>{'greg yuna nolita flagship'.toUpperCase()}</p>
+        <img src={gy_storefront_1} />
+        <div>
+          <p>215 Mulberry Street</p>
+          <p>New York, New York</p>
+          <p>Monday-Sunday, 12PM-7PM</p>
+        </div>
+      </div>
+    </div>
   );
 }
 
