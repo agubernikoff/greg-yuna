@@ -18,7 +18,7 @@ export function Footer({footer: footerPromise, header, publicStoreDomain}) {
       <div className="footer-right">
         <div>
           <p>NEWSLETTER</p>
-          <div>
+          <div className="email-input-container">
             <input placeholder="Enter Email"></input>
             <button>Subscribe</button>
           </div>

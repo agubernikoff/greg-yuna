@@ -245,9 +245,34 @@ button.reset:hover:not(:has(> *)) {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
-  grid-gap: 1rem;
+  grid-gap: 0.25rem;
   padding: 1rem;
   width: fit-content;
+  padding-left: 0;
+}
+
+.email-input-container {
+  border-bottom: 1px solid black;
+  display: flex;
+  justify-content: space-between;
+  margin-block: 2rem;
+}
+.email-input-container input {
+  border: none;
+  margin: 0;
+  width: 100%;
+  padding-left: 0;
+}
+.email-input-container input:focus-visible {
+  outline: none;
+}
+.email-input-container input::placeholder {
+  color: grey;
+}
+.email-input-container button {
+  padding: 0;
+  background: transparent;
+  border: none;
 }
 
 /*
