@@ -3,8 +3,7 @@ import {Await, NavLink, useAsyncValue} from '@remix-run/react';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
 import {motion} from 'motion/react';
-import {useState} from 'react';
-import {useEffect} from 'react';
+import {useState, useEffect} from 'react';
 
 /**
  * @param {HeaderProps}
@@ -34,19 +33,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
         </NavLink>
       </motion.div>
       {/* <button onClick={toggle}>fuck</button> */}
-      <motion.div
-        style={{
-          position: 'absolute',
-          left: 'calc(57px * .5)',
-          bottom: '1rem',
-          transform: 'translateX(-50%)',
-        }}
-        initial={{opacity: 0}}
-        animate={{opacity: 1}}
-        transition={{delay: 2, duration: 1}}
-      >
-        ☰
-      </motion.div>
+      <MenuToggle />
       {/* <HeaderMenu
         menu={menu}
         viewport="desktop"
@@ -57,7 +44,92 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     </motion.header>
   );
 }
+function MenuToggle({}) {
+  const {open, close, type} = useAside();
+  const [isOpen, setIsOpen] = useState(false);
 
+  useEffect(() => {
+    if (type === 'mobile') setIsOpen(true);
+    else setIsOpen(false);
+  }, [type]);
+
+  function handleClick() {
+    if (!isOpen) open('mobile');
+    else close();
+  }
+  return (
+    <motion.button
+      style={{
+        position: 'absolute',
+        left: 'calc(57px * .5)',
+        bottom: '1rem',
+        transform: 'translateX(-50%)',
+        border: 'none',
+        background: 'transparent',
+        padding: 0,
+      }}
+      initial={{opacity: 0}}
+      animate={{opacity: 1}}
+      transition={{delay: 2, duration: 2}}
+      onClick={handleClick}
+    >
+      <svg
+        width="49"
+        height="34"
+        viewBox="0 0 49 34"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <line
+          className="line"
+          x1="11"
+          y1="10.5"
+          x2="38"
+          y2="10.5"
+          stroke="black"
+          style={{opacity: isOpen ? 0 : 1}}
+        />
+        <line
+          className="line"
+          x1="11"
+          y1="14.5"
+          x2="38"
+          y2="14.5"
+          stroke="black"
+          style={{
+            transformOrigin: 'center',
+            transform: isOpen
+              ? 'rotate(-15deg) translateY(2px)'
+              : 'rotate(0deg) translateY(0px)',
+          }}
+        />
+        <line
+          className="line"
+          x1="11"
+          y1="18.5"
+          x2="38"
+          y2="18.5"
+          stroke="black"
+          style={{
+            transformOrigin: 'center',
+            transform: isOpen
+              ? 'rotate(15deg) translateY(-2px)'
+              : 'rotate(0deg) translateY(0px)',
+          }}
+        />
+        <line
+          className="line"
+          x1="11"
+          y1="22.5"
+          x2="38"
+          y2="22.5"
+          stroke="black"
+          style={{opacity: isOpen ? 0 : 1}}
+        />
+      </svg>
+    </motion.button>
+  );
+}
 function Logo() {
   return (
     <motion.svg
