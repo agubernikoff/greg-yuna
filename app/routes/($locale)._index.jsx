@@ -3,6 +3,8 @@ import {Suspense, useState} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import ProductGridItem from '~/components/ProductGridItem';
 import {motion} from 'motion/react';
+import flag1 from '../assets/flagship.png';
+import flag2 from '../assets/flag2.png';
 
 /**
  * @type {MetaFunction}
@@ -69,6 +71,7 @@ export default function Homepage() {
       <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.recommendedProducts} />
       <Collections collections={data.collections} />
+      <FlagshipHome />
     </div>
   );
 }
@@ -149,6 +152,22 @@ function CollectionGridItem({node}) {
   );
 }
 
+function FlagshipHome() {
+  return (
+    <div className="flagship-container">
+      <div className="flagship-left">
+        <img src={flag1} alt="Greg Yuna Flagship" className="flagship-image" />
+      </div>
+      <div className="flagship-right">
+        <p className="flagship-title">GREG YUNA NOLITA FLAGSHIP</p>
+        <img src={flag2} alt="flagship" className="flagship-subimage" />
+        <p className="flagship-address">215 Mulberry Street</p>
+        <p className="flagship-address">New York, New York</p>
+        <p className="flagship-address">Monday–Sunday, 12PM–7PM</p>
+      </div>
+    </div>
+  );
+}
 //add some kind of metafield 'displayOnHomepage' and add to query
 const FEATURED_COLLECTION_QUERY = `#graphql
   fragment FeaturedCollection on Collection {

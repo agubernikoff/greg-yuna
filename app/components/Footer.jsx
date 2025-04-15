@@ -18,9 +18,9 @@ export function Footer({footer: footerPromise, header, publicStoreDomain}) {
       <div className="footer-right">
         <div>
           <p>NEWSLETTER</p>
-          <div>
-            <input placeholder="Enter Email"></input>
-            <button>Subscribe</button>
+          <div className="newsletter-bar">
+            <input placeholder="Enter Email" />
+            <span className="subscribe-text">Subscribe</span>
           </div>
         </div>
         <div>
@@ -38,7 +38,7 @@ export function Footer({footer: footerPromise, header, publicStoreDomain}) {
               }
             </Await>
           </Suspense>
-          <p>
+          <p className="site-credit">
             © 2025 GREG YUNA, ALL RIGHTS RESERVED / <a>Site Credit</a>
           </p>
         </div>
