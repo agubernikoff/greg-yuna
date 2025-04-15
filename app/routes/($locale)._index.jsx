@@ -94,7 +94,7 @@ function FeaturedCollection({collection}) {
           <Image data={image} sizes="100vw" />
         </div>
       )}
-      <h1>{collection.title}</h1>
+      <h1>{collection.title.toUpperCase()}</h1>
     </Link>
   );
 }
