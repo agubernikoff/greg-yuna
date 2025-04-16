@@ -39,6 +39,19 @@ aside#mobile {
   left: calc(-1 * var(--aside-width));
   border-left: 1px solid #e9e9e9;
 }
+aside#cart {
+  right: 1rem;
+  top: 1rem;
+  height: auto;
+  max-height: 34px;
+  max-width: 70px;
+  min-width: 70px;
+  overflow: hidden;
+  transition:
+    max-height 400ms ease-in-out,
+    min-width 400ms ease-in-out,
+    max-width 400ms ease-in-out;
+}
 
 aside header {
   align-items: center;
@@ -48,9 +61,19 @@ aside header {
   justify-content: space-between;
   padding: 0 20px;
 }
+aside#cart header {
+  height: auto;
+  border-bottom: none;
+  padding: 0 0.5rem;
+}
 
 aside header h3 {
   margin: 0;
+}
+aside#cart header h3 {
+  font-size: medium;
+  padding: 0.5rem 0;
+  font-weight: normal;
 }
 
 aside header .close {
@@ -59,6 +82,10 @@ aside header .close {
   text-decoration: none;
   transition: all 200ms;
   width: 20px;
+}
+aside#cart header .close {
+  opacity: 0;
+  display: none;
 }
 
 aside header .close:hover {
@@ -95,8 +122,8 @@ aside li {
   position: fixed;
   right: 0;
   top: 0;
-  transition: opacity 400ms ease-in-out;
-  transition: opacity 400ms;
+  transition: all 400ms ease-in-out;
+  transition: all 400ms;
   visibility: hidden;
   z-index: 10;
 }
@@ -113,6 +140,10 @@ aside li {
 }
 .overlay:has(aside#mobile) .close-outside {
   left: calc(var(--aside-width) + 57px);
+}
+.overlay:has(aside#cart) .close-outside {
+  inset: 0;
+  width: auto;
 }
 
 .overlay .light {
@@ -137,6 +168,23 @@ aside li {
 }
 .overlay.expanded aside#mobile {
   transform: translateX(calc(var(--aside-width) + 57px));
+}
+.overlay.expanded aside#cart {
+  transform: translateX(0);
+}
+.overlay.expanded aside#cart.taller {
+  max-height: 100vh;
+}
+.overlay.expanded aside#cart.wider {
+  transform: translateX(0);
+  max-width: var(--aside-width);
+  min-width: var(--aside-width);
+}
+.overlay.expanded aside#cart.wider header .close {
+  display: block;
+}
+.overlay.expanded aside#cart.taller header .close {
+  opacity: 1;
 }
 
 button.reset {
@@ -211,6 +259,15 @@ button.reset:hover:not(:has(> *)) {
   display: flex;
   grid-gap: 1rem;
   margin-left: auto;
+}
+
+.cart-badge {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  padding: 0.5rem;
+  background: white;
+  z-index: 10;
 }
 
 /*

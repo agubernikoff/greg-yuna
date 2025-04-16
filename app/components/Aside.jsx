@@ -16,7 +16,12 @@ import {createContext, useContext, useEffect, useState} from 'react';
  * }}
  */
 export function Aside({children, heading, type}) {
-  const {type: activeType, close} = useAside();
+  const {
+    type: activeType,
+    close,
+    growVertically,
+    growHorizontally,
+  } = useAside();
   const expanded = type === activeType;
 
   useEffect(() => {
@@ -43,7 +48,10 @@ export function Aside({children, heading, type}) {
       role="dialog"
     >
       <button className="close-outside" onClick={close} />
-      <aside id={type}>
+      <aside
+        id={type}
+        className={`${growVertically ? 'taller' : ''} ${growHorizontally ? 'wider' : ''}`}
+      >
         <header>
           <h3>{heading}</h3>
           <button className="close reset" onClick={close} aria-label="Close">
@@ -60,13 +68,35 @@ const AsideContext = createContext(null);
 
 Aside.Provider = function AsideProvider({children}) {
   const [type, setType] = useState('closed');
+  const [growVertically, setGrowVertically] = useState(false);
+  const [growHorizontally, setGrowHorizontally] = useState(false);
 
   return (
     <AsideContext.Provider
       value={{
         type,
-        open: setType,
-        close: () => setType('closed'),
+        growVertically,
+        growHorizontally,
+        open: (type) => {
+          setType(type);
+          if (type === 'cart') {
+            setGrowHorizontally(true);
+            setTimeout(() => {
+              setGrowVertically(true);
+            }, 400);
+          }
+        },
+        close: () => {
+          if (type === 'cart') {
+            setGrowVertically(false);
+            setTimeout(() => {
+              setGrowHorizontally(false);
+            }, 400);
+            setTimeout(() => {
+              setType('closed');
+            }, 800);
+          } else setType('closed');
+        },
       }}
     >
       {children}

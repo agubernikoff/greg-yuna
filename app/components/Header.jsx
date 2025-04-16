@@ -15,33 +15,36 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     setTimeout(() => setT(false), 1000);
   }, []);
   return (
-    <motion.header
-      className="header"
-      initial={{width: '100vw'}}
-      animate={{width: 'auto'}}
-      style={{justifyContent: t ? 'center' : 'space-between'}}
-      transition={{width: {delay: 2, duration: 1}}}
-    >
-      <motion.div
-        layout
-        initial={{opacity: 0}}
-        animate={{opacity: 1}}
-        transition={{opacity: {duration: 1}, layout: {duration: 1}}}
+    <>
+      <motion.header
+        className="header"
+        initial={{width: '100vw'}}
+        animate={{width: 'auto'}}
+        style={{justifyContent: t ? 'center' : 'space-between'}}
+        transition={{width: {delay: 2, duration: 1}}}
       >
-        <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-          <Logo />
-        </NavLink>
-      </motion.div>
-      {/* <button onClick={toggle}>fuck</button> */}
-      <MenuToggle />
-      {/* <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-        publicStoreDomain={publicStoreDomain}
-      />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} /> */}
-    </motion.header>
+        <motion.div
+          layout
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          transition={{opacity: {duration: 1}, layout: {duration: 1}}}
+        >
+          <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
+            <Logo />
+          </NavLink>
+        </motion.div>
+        {/* <button onClick={toggle}>fuck</button> */}
+        <MenuToggle />
+        {/* <HeaderMenu
+      menu={menu}
+      viewport="desktop"
+      primaryDomainUrl={header.shop.primaryDomain.url}
+      publicStoreDomain={publicStoreDomain}
+    />
+    <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} /> */}
+      </motion.header>
+      <CartToggle cart={cart} />
+    </>
   );
 }
 function MenuToggle({}) {
@@ -272,7 +275,14 @@ function SearchToggle() {
  * @param {{count: number | null}}
  */
 function CartBadge({count}) {
-  const {open} = useAside();
+  const {open, close, type} = useAside();
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    if (type === 'cart') setIsOpen(true);
+    else setIsOpen(false);
+  }, [type]);
+
   const {publish, shop, cart, prevCart} = useAnalytics();
 
   return (
@@ -288,8 +298,12 @@ function CartBadge({count}) {
           url: window.location.href || '',
         });
       }}
+      style={{
+        display: isOpen ? 'none' : 'inline',
+      }}
+      className="cart-badge"
     >
-      Cart {count === null ? <span>&nbsp;</span> : count}
+      {`Bag [${count === null ? <span>&nbsp;</span> : count}]`}
     </a>
   );
 }
