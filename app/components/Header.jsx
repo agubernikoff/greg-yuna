@@ -67,6 +67,7 @@ function MenuToggle({}) {
         border: 'none',
         background: 'transparent',
         padding: 0,
+        cursor: 'pointer',
       }}
       initial={{opacity: 0}}
       animate={{opacity: 1}}
