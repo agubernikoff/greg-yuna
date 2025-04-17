@@ -8,6 +8,9 @@ import {
 } from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import ProductGridItem from '~/components/ProductGridItem';
+import {useState} from 'react';
+import {AnimatePresence, motion} from 'motion/react';
 
 /**
  * @type {MetaFunction<typeof loader>}
@@ -38,7 +41,7 @@ async function loadCriticalData({context, params, request}) {
   const {handle} = params;
   const {storefront} = context;
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 8,
+    pageBy: 24,
   });
 
   if (!handle) {
@@ -79,14 +82,14 @@ export default function Collection() {
 
   return (
     <div className="collection">
-      <h1>{collection.title}</h1>
-      <p className="collection-description">{collection.description}</p>
+      <div className="filter-placeholder" />
+      <Filter title={collection.title} />
       <PaginatedResourceSection
         connection={collection.products}
         resourcesClassName="products-grid"
       >
         {({node: product, index}) => (
-          <ProductItem
+          <ProductGridItem
             key={product.id}
             product={product}
             loading={index < 8 ? 'eager' : undefined}
@@ -105,35 +108,87 @@ export default function Collection() {
   );
 }
 
-/**
- * @param {{
- *   product: ProductItemFragment;
- *   loading?: 'eager' | 'lazy';
- * }}
- */
-function ProductItem({product, loading}) {
-  const variantUrl = useVariantUrl(product.handle);
+function Filter({title}) {
   return (
-    <Link
-      className="product-item"
-      key={product.id}
-      prefetch="intent"
-      to={variantUrl}
+    <div className="filter-container">
+      <div className="padded-filter-div full-border">
+        <>
+          <a>Home</a>
+          {' -> '}
+          <a>{title}</a>
+        </>
+      </div>
+      <div className="filter-space-between bottom-border">
+        <div style={{display: 'flex'}}>
+          <a className="padded-filter-div inline-border">View All</a>
+          <a className="padded-filter-div inline-border">Rings</a>
+          <a className="padded-filter-div inline-border">Necklaces</a>
+          <a className="padded-filter-div inline-border">Pendants</a>
+          <a className="padded-filter-div inline-border">Earrings</a>
+          <a className="padded-filter-div inline-border">Bracelets</a>
+        </div>
+        <Sort />
+      </div>
+    </div>
+  );
+}
+
+function Sort({}) {
+  const [isOpen, setIsOpen] = useState(false);
+  function toggleIsOpen() {
+    setIsOpen(!isOpen);
+  }
+  return (
+    <button
+      className="filter-space-between inline-border"
+      onClick={toggleIsOpen}
     >
-      {product.featuredImage && (
-        <Image
-          alt={product.featuredImage.altText || product.title}
-          aspectRatio="1/1"
-          data={product.featuredImage}
-          loading={loading}
-          sizes="(min-width: 45em) 400px, 100vw"
+      <span>Sort By</span>
+      <svg
+        width="16"
+        height="12"
+        viewBox="0 0 16 12"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <line y1="3" x2="16" y2="3" stroke="black" />
+        <motion.rect
+          x="3.5"
+          y="1"
+          width="4"
+          height="4"
+          fill="white"
+          stroke="black"
+          initial={{x: 0}}
+          animate={{x: isOpen ? '6px' : 0}}
         />
-      )}
-      <h4>{product.title}</h4>
-      <small>
-        <Money data={product.priceRange.minVariantPrice} />
-      </small>
-    </Link>
+        <line y1="9" x2="16" y2="9" stroke="black" />
+        <motion.rect
+          x="9.5"
+          y="7"
+          width="4"
+          height="4"
+          fill="white"
+          stroke="black"
+          initial={{x: 0}}
+          animate={{x: isOpen ? '-6px' : 0}}
+        />
+      </svg>
+      <AnimatePresence>
+        {isOpen && (
+          <div className="sort-overflow-hidden-container">
+            <motion.div
+              initial={{y: '-100%'}}
+              animate={{y: 0}}
+              exit={{y: '-100%'}}
+              transition={{ease: 'easeInOut'}}
+            >
+              <div className="sort-container">x</div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </button>
   );
 }
 
@@ -152,6 +207,15 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
       url
       width
       height
+    }
+    images(first:2) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
     }
     priceRange {
       minVariantPrice {

@@ -18,7 +18,13 @@ export function PaginatedResourceSection({
         );
 
         return (
-          <div>
+          <div
+            style={{
+              display: 'grid',
+              gridColumn: '1/5',
+              gridTemplateColumns: 'subgrid',
+            }}
+          >
             <PreviousLink>
               {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
             </PreviousLink>
