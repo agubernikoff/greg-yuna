@@ -675,7 +675,7 @@ button.reset:hover:not(:has(> *)) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 250px;
+  width: calc(((100vw - 57px) / 4) - 71px - 1rem);
   position: relative;
 }
 .sort-overflow-hidden-container {
