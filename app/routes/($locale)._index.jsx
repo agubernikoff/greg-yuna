@@ -147,7 +147,7 @@ function CollectionGridItem({node}) {
       <Link to={`/collections/${node.handle}`}>
         <Image data={node.image} sizes="25vw" aspectRatio=".8/1" />
       </Link>
-      <p>{`Shop ${node.title} ->`}</p>
+      <p>{`Shop ${node.title} →`}</p>
     </motion.div>
   );
 }

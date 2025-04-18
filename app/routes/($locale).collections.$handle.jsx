@@ -114,7 +114,7 @@ function Filter({title}) {
       <div className="padded-filter-div full-border">
         <>
           <a>Home</a>
-          {' -> '}
+          {' → '}
           <a>{title}</a>
         </>
       </div>
