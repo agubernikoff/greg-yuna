@@ -734,11 +734,38 @@ button.reset:hover:not(:has(> *)) {
 * --------------------------------------------------
 */
 .product {
+  background-color: white;
+  grid-column: span 4;
   display: grid;
+
   @media (min-width: 45em) {
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 4rem;
+    grid-template-columns: repeat(4, 1fr);
   }
+}
+
+.product-images {
+  grid-column: span 2;
+}
+
+.product-main {
+  grid-column: span 2;
+  margin: 1rem;
+}
+
+.product-breadcrumb-cart {
+  display: flex;
+  justify-content: space-between;
+}
+
+.product-main-details {
+  width: 50%;
+  margin-top: 3rem;
+}
+
+.product-title-price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .product h1 {
@@ -748,12 +775,6 @@ button.reset:hover:not(:has(> *)) {
 .product-image img {
   height: auto;
   width: 100%;
-}
-
-.product-main {
-  align-self: start;
-  position: sticky;
-  top: 6rem;
 }
 
 .product-price-on-sale {

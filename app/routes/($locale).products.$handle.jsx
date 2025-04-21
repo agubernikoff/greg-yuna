@@ -99,46 +99,59 @@ export default function Product() {
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
+  const productImage = product.images.edges.map((edge) => (
+    <ProductImage key={edge.node.id} image={edge.node} />
+  ));
+
   const {title, descriptionHtml} = product;
 
   return (
     <div className="product">
-      <ProductImage image={selectedVariant?.image} />
+      <div className="product-images">{productImage}</div>
       <div className="product-main">
-        <h1>{title}</h1>
-        <ProductPrice
-          price={selectedVariant?.price}
-          compareAtPrice={selectedVariant?.compareAtPrice}
+        <div className="product-breadcrumb-cart">
+          <p>breadcrumbs</p>
+          <p>cart</p>
+        </div>
+        <div className="product-main-details">
+          <div className="product-title-price">
+            <p>{title}</p>
+            <ProductPrice
+              price={selectedVariant?.price}
+              compareAtPrice={selectedVariant?.compareAtPrice}
+            />
+          </div>
+
+          <br />
+          <ProductForm
+            productOptions={productOptions}
+            selectedVariant={selectedVariant}
+          />
+          <br />
+          <br />
+          <p>
+            <strong>Description</strong>
+          </p>
+          <br />
+          <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
+          <br />
+        </div>
+        <Analytics.ProductView
+          data={{
+            products: [
+              {
+                id: product.id,
+                title: product.title,
+                price: selectedVariant?.price.amount || '0',
+                vendor: product.vendor,
+                variantId: selectedVariant?.id || '',
+                variantTitle: selectedVariant?.title || '',
+                quantity: 1,
+              },
+            ],
+          }}
         />
-        <br />
-        <ProductForm
-          productOptions={productOptions}
-          selectedVariant={selectedVariant}
-        />
-        <br />
-        <br />
-        <p>
-          <strong>Description</strong>
-        </p>
-        <br />
-        <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-        <br />
       </div>
-      <Analytics.ProductView
-        data={{
-          products: [
-            {
-              id: product.id,
-              title: product.title,
-              price: selectedVariant?.price.amount || '0',
-              vendor: product.vendor,
-              variantId: selectedVariant?.id || '',
-              variantTitle: selectedVariant?.title || '',
-              quantity: 1,
-            },
-          ],
-        }}
-      />
     </div>
   );
 }
@@ -207,10 +220,27 @@ const PRODUCT_FRAGMENT = `#graphql
         }
       }
     }
-    selectedOrFirstAvailableVariant(selectedOptions: $selectedOptions, ignoreUnknownOptions: true, caseInsensitiveMatch: true) {
+    
+    images(first: 10) {
+      edges {
+        node {
+          id
+          url
+          altText
+          width
+          height
+        }
+      }
+    }
+    
+    selectedOrFirstAvailableVariant(
+      selectedOptions: $selectedOptions
+      ignoreUnknownOptions: true
+      caseInsensitiveMatch: true
+    ) {
       ...ProductVariant
     }
-    adjacentVariants (selectedOptions: $selectedOptions) {
+    adjacentVariants(selectedOptions: $selectedOptions) {
       ...ProductVariant
     }
     seo {
@@ -235,6 +265,60 @@ const PRODUCT_QUERY = `#graphql
   ${PRODUCT_FRAGMENT}
 `;
 
+const PRODUCT_RECOMENDATIONS_QUERY = `#graphql
+query MyQuery(
+$country: CountryCode
+$handle: String!
+$language: LanguageCode
+) @inContext(country: $country, language: $language) {
+  productRecommendations(intent: RELATED, productHandle: $handle) {
+    images(first: 2) {
+      nodes {
+        id
+        url
+        width
+        height
+        altText
+      }
+    }
+    id
+    handle
+    title
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+  }
+}`;
+
+const COMPLEMENTARY_QUERY = `#graphql
+query MyQuery(
+$country: CountryCode
+$handle: String!
+$language: LanguageCode
+) @inContext(country: $country, language: $language) {
+  productRecommendations(intent: COMPLEMENTARY, productHandle: $handle) {
+    images(first: 2) {
+      nodes {
+        url
+        width
+        height
+        altText
+      }
+    }
+    id
+    handle
+    title
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+  }
+}`;
 /** @typedef {import('@shopify/remix-oxygen').LoaderFunctionArgs} LoaderFunctionArgs */
 /** @template T @typedef {import('@remix-run/react').MetaFunction<T>} MetaFunction */
 /** @typedef {import('@shopify/remix-oxygen').SerializeFrom<typeof loader>} LoaderReturnData */
