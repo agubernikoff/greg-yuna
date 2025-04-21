@@ -745,6 +745,16 @@ button.reset:hover:not(:has(> *)) {
 
 .product-images {
   grid-column: span 2;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.product-images::-webkit-scrollbar {
+  display: none;
 }
 
 .product-main {
