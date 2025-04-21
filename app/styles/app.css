@@ -786,7 +786,7 @@ button.reset:hover:not(:has(> *)) {
 .breadcrumb-box,
 .cart-box {
   border-left: 1px solid #e8e8e8;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   display: flex;
   align-items: center;
 }
