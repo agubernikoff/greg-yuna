@@ -1,6 +1,7 @@
-import {Link, useNavigate} from '@remix-run/react';
 import {AddToCartButton} from './AddToCartButton';
 import {useAside} from './Aside';
+import React, {useEffect} from 'react';
+import {Link, useNavigate, useLocation} from '@remix-run/react';
 
 /**
  * @param {{
@@ -9,17 +10,43 @@ import {useAside} from './Aside';
  * }}
  */
 export function ProductForm({productOptions, selectedVariant}) {
+  const location = useLocation();
+
+  useEffect(() => {
+    console.log('🔁 Variant changed! Location is now:', location.search);
+  }, [location.search]);
+
+  useEffect(() => {
+    console.log(
+      'Selected Option Values:',
+      productOptions.map((opt) => opt.optionValues.filter((v) => v.selected)),
+    );
+  }, [productOptions]);
+
   const navigate = useNavigate();
   const {open} = useAside();
+
+  const itemStyle = (selected, available) => {
+    return {
+      border: selected ? '1px solid black' : '1px solid transparent',
+      opacity: available ? 1 : 0.3,
+      borderBottom: selected ? '2px solid black !important' : 'none',
+    };
+  };
+
   return (
     <div className="product-form">
       {productOptions.map((option) => {
-        // If there is only a single value in the option values, don't display the option
         if (option.optionValues.length === 1) return null;
+
+        const isColorOption = option.name.toLowerCase() === 'color';
 
         return (
           <div className="product-options" key={option.name}>
-            <h5>{option.name}</h5>
+            <p>
+              <span style={{color: '#999999'}}>{option.name}:</span>{' '}
+              {option.optionValues.find((v) => v.selected)?.name || ''}
+            </p>
             <div className="product-options-grid">
               {option.optionValues.map((value) => {
                 const {
@@ -31,13 +58,13 @@ export function ProductForm({productOptions, selectedVariant}) {
                   exists,
                   isDifferentProduct,
                   swatch,
+                  variant,
                 } = value;
 
+                const variantImage = isColorOption ? variant?.image?.url : null;
+                const styles = itemStyle(selected, available);
+
                 if (isDifferentProduct) {
-                  // SEO
-                  // When the variant is a combined listing child product
-                  // that leads to a different url, we need to render it
-                  // as an anchor tag
                   return (
                     <Link
                       className="product-options-item"
@@ -46,22 +73,17 @@ export function ProductForm({productOptions, selectedVariant}) {
                       preventScrollReset
                       replace
                       to={`/products/${handle}?${variantUriQuery}`}
-                      style={{
-                        border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
-                        opacity: available ? 1 : 0.3,
-                      }}
+                      style={styles}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
+                      <ProductOptionSwatch
+                        swatch={swatch}
+                        name={name}
+                        isColorOption={isColorOption}
+                        productImage={variantImage}
+                      />
                     </Link>
                   );
                 } else {
-                  // SEO
-                  // When the variant is an update to the search param,
-                  // render it as a button with javascript navigating to
-                  // the variant so that SEO bots do not index these as
-                  // duplicated links
                   return (
                     <button
                       type="button"
@@ -69,12 +91,7 @@ export function ProductForm({productOptions, selectedVariant}) {
                         exists && !selected ? ' link' : ''
                       }`}
                       key={option.name + name}
-                      style={{
-                        border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
-                        opacity: available ? 1 : 0.3,
-                      }}
+                      style={styles}
                       disabled={!exists}
                       onClick={() => {
                         if (!selected) {
@@ -85,7 +102,12 @@ export function ProductForm({productOptions, selectedVariant}) {
                         }
                       }}
                     >
-                      <ProductOptionSwatch swatch={swatch} name={name} />
+                      <ProductOptionSwatch
+                        swatch={swatch}
+                        name={name}
+                        isColorOption={isColorOption}
+                        productImage={variantImage}
+                      />
                     </button>
                   );
                 }
@@ -112,7 +134,7 @@ export function ProductForm({productOptions, selectedVariant}) {
             : []
         }
       >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+        {selectedVariant?.availableForSale ? 'ADD TO CART' : 'SOLD OUT'}
       </AddToCartButton>
     </div>
   );
@@ -122,25 +144,29 @@ export function ProductForm({productOptions, selectedVariant}) {
  * @param {{
  *   swatch?: Maybe<ProductOptionValueSwatch> | undefined;
  *   name: string;
+ *   isColorOption: boolean;
+ *   productImage?: string;
  * }}
  */
-function ProductOptionSwatch({swatch, name}) {
-  const image = swatch?.image?.previewImage?.url;
-  const color = swatch?.color;
+function ProductOptionSwatch({swatch, name, isColorOption, productImage}) {
+  if (isColorOption) {
+    const image = productImage || swatch?.image?.previewImage?.url;
+    return (
+      <div
+        aria-label={name}
+        className="product-option-label-swatch"
+        style={{
+          backgroundColor: image
+            ? 'transparent'
+            : swatch?.color || 'transparent',
+        }}
+      >
+        {image && <img src={image} alt={name} />}
+      </div>
+    );
+  }
 
-  if (!image && !color) return name;
-
-  return (
-    <div
-      aria-label={name}
-      className="product-option-label-swatch"
-      style={{
-        backgroundColor: color || 'transparent',
-      }}
-    >
-      {!!image && <img src={image} alt={name} />}
-    </div>
-  );
+  return <div className="product-option-label-text">{name}</div>;
 }
 
 /** @typedef {import('@shopify/hydrogen').MappedProductOptions} MappedProductOptions */
