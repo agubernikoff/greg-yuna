@@ -816,12 +816,12 @@ button.reset:hover:not(:has(> *)) {
   font-size: 12px;
   font-family: inherit;
   border: 1px solid #e8e8e8 !important;
+  position: relative;
 }
 
 .product-option-label-swatch {
-  width: 1.25rem;
-  height: 1.25rem;
-  margin: 0.25rem 0;
+  width: 4rem;
+  height: 4rem;
 }
 
 .product-option-label-swatch img {

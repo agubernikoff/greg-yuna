@@ -26,13 +26,13 @@ export function ProductForm({productOptions, selectedVariant}) {
   const navigate = useNavigate();
   const {open} = useAside();
 
-  const itemStyle = (selected, available) => {
+  const itemStyle = (selected, available, isColorOption) => {
     return {
-      border: selected ? '1px solid black' : '1px solid transparent',
       opacity: available ? 1 : 0.3,
-      borderBottom: selected ? '2px solid black !important' : 'none',
+      padding: isColorOption ? 0 : null,
     };
   };
+  console.log(productOptions);
 
   return (
     <div className="product-form">
@@ -60,9 +60,8 @@ export function ProductForm({productOptions, selectedVariant}) {
                   swatch,
                   variant,
                 } = value;
-
                 const variantImage = isColorOption ? variant?.image?.url : null;
-                const styles = itemStyle(selected, available);
+                const styles = itemStyle(selected, available, isColorOption);
 
                 if (isDifferentProduct) {
                   return (
@@ -108,12 +107,23 @@ export function ProductForm({productOptions, selectedVariant}) {
                         isColorOption={isColorOption}
                         productImage={variantImage}
                       />
+                      {selected ? (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: '-1px',
+                            right: '-1px',
+                            height: '2px',
+                            background: 'black',
+                          }}
+                        />
+                      ) : null}
                     </button>
                   );
                 }
               })}
             </div>
-            <br />
           </div>
         );
       })}
