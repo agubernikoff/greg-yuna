@@ -109,10 +109,21 @@ export default function Product() {
     <div className="product">
       <div className="product-images">{productImage}</div>
       <div className="product-main">
-        <div className="product-breadcrumb-cart">
-          <p>breadcrumbs</p>
-          <p>cart</p>
+        <div className="product-breadcrumb-wrapper">
+          <div className="breadcrumb-box">
+            <div className="breadcrumbs">
+              <span className="crumb">breadcrumb</span>
+              <span className="arrow">→</span>
+              <span className="crumb">breadcrumb</span>
+              <span className="arrow">→</span>
+              <span className="crumb">{product.title}</span>
+            </div>
+          </div>
+          <div className="cart-box">
+            <div className="cart-link">Bag [0]</div>
+          </div>
         </div>
+
         <div className="product-main-details">
           <div className="product-title-price">
             <p>{title}</p>
