@@ -130,7 +130,7 @@ export default function Product() {
           <br />
           <br />
           <p>
-            <strong>Description</strong>
+            <p style={{color: '#999999'}}>Details:</p>
           </p>
           <br />
           <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
