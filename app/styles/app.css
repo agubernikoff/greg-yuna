@@ -8,6 +8,7 @@
   --color-light: #fff;
   --filter-height: 71px;
   --header-width: 57px;
+  --cart-badge-adjustment: 55px;
 }
 
 @font-face {
@@ -17,8 +18,10 @@
 
 body,
 button,
-p {
+p,
+a {
   font-family: 'regular';
+  font-size: 12px;
 }
 /*
 * --------------------------------------------------
@@ -661,7 +664,7 @@ button.reset:hover:not(:has(> *)) {
   top: 1rem;
   left: calc(1rem + var(--header-width));
   position: fixed;
-  right: calc(1rem + 71px);
+  right: calc(1rem + var(--cart-badge-adjustment));
   z-index: 2;
   height: var(--filter-height);
 }
@@ -694,7 +697,9 @@ button.reset:hover:not(:has(> *)) {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: calc(((100vw - var(--header-width)) / 4) - 71px - 1rem);
+  width: calc(
+    ((100vw - var(--header-width)) / 4) - var(--cart-badge-adjustment) - 1rem
+  );
   position: relative;
 }
 .sort-overflow-hidden-container {
