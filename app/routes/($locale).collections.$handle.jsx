@@ -1,5 +1,5 @@
 import {redirect} from '@shopify/remix-oxygen';
-import {useLoaderData, Link} from '@remix-run/react';
+import {useLoaderData, NavLink} from '@remix-run/react';
 import {
   getPaginationVariables,
   Image,
@@ -113,7 +113,9 @@ function Filter({title}) {
     <div className="filter-container">
       <div className="padded-filter-div full-border">
         <>
-          <a>Home</a>
+          <NavLink className="crumb" to="/">
+            Home
+          </NavLink>
           {' → '}
           <a>{title}</a>
         </>

@@ -1,4 +1,4 @@
-import {useLoaderData} from '@remix-run/react';
+import {useLoaderData, NavLink} from '@remix-run/react';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -109,19 +109,25 @@ export default function Product() {
     <div className="product">
       <div className="product-images">{productImage}</div>
       <div className="product-main">
-        <div className="product-breadcrumb-wrapper">
-          <div className="breadcrumb-box">
-            <div className="breadcrumbs">
-              <span className="crumb">breadcrumb</span>
-              <span className="arrow">→</span>
-              <span className="crumb">breadcrumb</span>
-              <span className="arrow">→</span>
-              <span className="crumb">{product.title}</span>
-            </div>
-          </div>
-          <div className="cart-box">
-            <div className="cart-link">Bag [0]</div>
-          </div>
+        <div className="padded-filter-div full-border breadcrumbs">
+          <>
+            <NavLink className="crumb" to="/">
+              Home
+            </NavLink>
+            {' → '}
+            {product.collections.nodes[0] ? (
+              <>
+                <NavLink
+                  className="crumb"
+                  to={`/collections/${product.collections.nodes[0].handle}`}
+                >
+                  {product.collections.nodes[0].title}
+                </NavLink>
+                {' → '}
+              </>
+            ) : null}
+            <NavLink className="crumb">{title}</NavLink>
+          </>
         </div>
 
         <div className="product-main-details">
@@ -257,6 +263,12 @@ const PRODUCT_FRAGMENT = `#graphql
     seo {
       description
       title
+    }
+    collections(first:1){
+      nodes{
+        handle
+        title
+      }
     }
   }
   ${PRODUCT_VARIANT_FRAGMENT}
