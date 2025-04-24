@@ -116,8 +116,8 @@ function Filter({title}) {
           <NavLink className="crumb" to="/">
             Home
           </NavLink>
-          {' → '}
-          <a>{title}</a>
+          <span className="crumb">{' → '}</span>
+          <span>{title}</span>
         </>
       </div>
       <div className="filter-space-between bottom-border">

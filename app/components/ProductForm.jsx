@@ -2,6 +2,7 @@ import {AddToCartButton} from './AddToCartButton';
 import {useAside} from './Aside';
 import React, {useEffect} from 'react';
 import {Link, useNavigate, useLocation} from '@remix-run/react';
+import {Image} from '@shopify/hydrogen';
 
 /**
  * @param {{
@@ -60,7 +61,8 @@ export function ProductForm({productOptions, selectedVariant}) {
                   swatch,
                   variant,
                 } = value;
-                const variantImage = isColorOption ? variant?.image?.url : null;
+                console.log(value);
+                const variantImage = isColorOption ? variant?.image : null;
                 const styles = itemStyle(selected, available, isColorOption);
 
                 if (isDifferentProduct) {
@@ -159,8 +161,9 @@ export function ProductForm({productOptions, selectedVariant}) {
  * }}
  */
 function ProductOptionSwatch({swatch, name, isColorOption, productImage}) {
+  console.log(productImage);
   if (isColorOption) {
-    const image = productImage || swatch?.image?.previewImage?.url;
+    const image = productImage || swatch?.image?.previewImage;
     return (
       <div
         aria-label={name}
@@ -171,7 +174,7 @@ function ProductOptionSwatch({swatch, name, isColorOption, productImage}) {
             : swatch?.color || 'transparent',
         }}
       >
-        {image && <img src={image} alt={name} />}
+        <Image data={productImage} alt={name} aspectRatio="1/1" width="64px" />
       </div>
     );
   }

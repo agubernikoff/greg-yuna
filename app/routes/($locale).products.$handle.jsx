@@ -1,4 +1,4 @@
-import {useLoaderData, NavLink} from '@remix-run/react';
+import {useLoaderData, NavLink, useLocation} from '@remix-run/react';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -104,6 +104,17 @@ export default function Product() {
   ));
 
   const {title, descriptionHtml} = product;
+  const {state} = useLocation();
+  console.log(state);
+
+  const to = state
+    ? state
+    : `/collections/${product.collections.nodes[0].handle}`;
+
+  function capitalizeFirstLetter(word) {
+    if (!word) return '';
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
 
   return (
     <div className="product">
@@ -115,18 +126,19 @@ export default function Product() {
               Home
             </NavLink>
             {' → '}
-            {product.collections.nodes[0] ? (
+            {product.collections.nodes[0] && state !== '/' ? (
               <>
-                <NavLink
-                  className="crumb"
-                  to={`/collections/${product.collections.nodes[0].handle}`}
-                >
-                  {product.collections.nodes[0].title}
+                <NavLink className="crumb" to={to}>
+                  {state
+                    ? capitalizeFirstLetter(state.split('/collections/')[1])
+                    : product.collections.nodes[0].title}
                 </NavLink>
                 {' → '}
               </>
             ) : null}
-            <NavLink className="crumb">{title}</NavLink>
+            <span className="crumb" sty>
+              {title}
+            </span>
           </>
         </div>
 
@@ -146,9 +158,7 @@ export default function Product() {
           />
           <br />
           <br />
-          <p>
-            <p style={{color: '#999999'}}>Details:</p>
-          </p>
+          <p style={{color: '#999999'}}>Details:</p>
           <br />
           <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
           <br />
