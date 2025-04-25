@@ -19,9 +19,14 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
       <motion.header
         className="header"
         initial={{width: '100vw'}}
-        animate={{width: 'auto'}}
-        style={{justifyContent: t ? 'center' : 'space-between'}}
+        animate={{width: 'var(--header-width)'}}
+        style={{
+          justifyContent: t ? 'center' : 'space-between',
+          position: 'fixed',
+        }}
         transition={{width: {delay: 2, duration: 1}}}
+        layoutRoot
+        layoutScroll
       >
         <motion.div
           layout

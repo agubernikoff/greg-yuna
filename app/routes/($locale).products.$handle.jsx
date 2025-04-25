@@ -1,4 +1,4 @@
-import {useLoaderData} from '@remix-run/react';
+import {useLoaderData, NavLink, useLocation} from '@remix-run/react';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -104,24 +104,41 @@ export default function Product() {
   ));
 
   const {title, descriptionHtml} = product;
+  const {state} = useLocation();
+
+  const to = state
+    ? state
+    : `/collections/${product.collections.nodes[0].handle}`;
+
+  function capitalizeFirstLetter(word) {
+    if (!word) return '';
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
 
   return (
     <div className="product">
       <div className="product-images">{productImage}</div>
       <div className="product-main">
-        <div className="product-breadcrumb-wrapper">
-          <div className="breadcrumb-box">
-            <div className="breadcrumbs">
-              <span className="crumb">breadcrumb</span>
-              <span className="arrow">→</span>
-              <span className="crumb">breadcrumb</span>
-              <span className="arrow">→</span>
-              <span className="crumb">{product.title}</span>
-            </div>
-          </div>
-          <div className="cart-box">
-            <div className="cart-link">Bag [0]</div>
-          </div>
+        <div className="padded-filter-div full-border breadcrumbs">
+          <>
+            <NavLink className="crumb" to="/">
+              Home
+            </NavLink>
+            {' → '}
+            {product.collections.nodes[0] && state !== '/' ? (
+              <>
+                <NavLink className="crumb" to={to}>
+                  {state
+                    ? capitalizeFirstLetter(state.split('/collections/')[1])
+                    : product.collections.nodes[0].title}
+                </NavLink>
+                {' → '}
+              </>
+            ) : null}
+            <span className="crumb" sty>
+              {title}
+            </span>
+          </>
         </div>
 
         <div className="product-main-details">
@@ -140,9 +157,7 @@ export default function Product() {
           />
           <br />
           <br />
-          <p>
-            <p style={{color: '#999999'}}>Details:</p>
-          </p>
+          <p style={{color: '#999999'}}>Details:</p>
           <br />
           <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
           <br />
@@ -257,6 +272,12 @@ const PRODUCT_FRAGMENT = `#graphql
     seo {
       description
       title
+    }
+    collections(first:1){
+      nodes{
+        handle
+        title
+      }
     }
   }
   ${PRODUCT_VARIANT_FRAGMENT}

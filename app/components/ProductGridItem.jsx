@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {useVariantUrl} from '~/lib/variants';
-import {Link} from '@remix-run/react';
+import {Link, useLocation} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {motion, AnimatePresence} from 'motion/react';
 
@@ -8,6 +8,7 @@ function ProductGridItem({product, loading}) {
   const [image, setImage] = useState(product?.images?.nodes[0]);
   const [hovered, setHovered] = useState(false);
   const variantUrl = useVariantUrl(product.handle);
+  const {pathname} = useLocation();
 
   return (
     <Link
@@ -23,6 +24,7 @@ function ProductGridItem({product, loading}) {
         setHovered(false);
         setImage(product.images.nodes[0]);
       }}
+      state={pathname}
     >
       <AnimatePresence mode="popLayout">
         <motion.div
@@ -30,7 +32,6 @@ function ProductGridItem({product, loading}) {
           initial={{opacity: 1}}
           animate={{opacity: 1}}
           exit={{opacity: 0}}
-          transition={{duration: 1}}
         >
           <Image
             alt={image.altText || product.title}
