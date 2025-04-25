@@ -1,4 +1,5 @@
 import {Money} from '@shopify/hydrogen';
+import {AnimatePresence, motion} from 'motion/react';
 
 /**
  * @param {{
@@ -17,7 +18,16 @@ export function ProductPrice({price, compareAtPrice}) {
           </s>
         </div>
       ) : price ? (
-        <Money data={price} />
+        <AnimatePresence mode="popLayout">
+          <motion.div
+            key={`${price.amount}`}
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+          >
+            <Money data={price} />
+          </motion.div>
+        </AnimatePresence>
       ) : (
         <span>&nbsp;</span>
       )}

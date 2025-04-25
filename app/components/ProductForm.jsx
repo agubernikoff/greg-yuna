@@ -3,6 +3,7 @@ import {useAside} from './Aside';
 import React, {useEffect} from 'react';
 import {Link, useNavigate, useLocation} from '@remix-run/react';
 import {Image} from '@shopify/hydrogen';
+import {AnimatePresence, motion} from 'motion/react';
 
 /**
  * @param {{
@@ -13,16 +14,16 @@ import {Image} from '@shopify/hydrogen';
 export function ProductForm({productOptions, selectedVariant}) {
   const location = useLocation();
 
-  useEffect(() => {
-    console.log('🔁 Variant changed! Location is now:', location.search);
-  }, [location.search]);
+  // useEffect(() => {
+  //   console.log('🔁 Variant changed! Location is now:', location.search);
+  // }, [location.search]);
 
-  useEffect(() => {
-    console.log(
-      'Selected Option Values:',
-      productOptions.map((opt) => opt.optionValues.filter((v) => v.selected)),
-    );
-  }, [productOptions]);
+  // useEffect(() => {
+  //   console.log(
+  //     'Selected Option Values:',
+  //     productOptions.map((opt) => opt.optionValues.filter((v) => v.selected)),
+  //   );
+  // }, [productOptions]);
 
   const navigate = useNavigate();
   const {open} = useAside();
@@ -33,7 +34,6 @@ export function ProductForm({productOptions, selectedVariant}) {
       padding: isColorOption ? 0 : null,
     };
   };
-  console.log(productOptions);
 
   return (
     <div className="product-form">
@@ -46,7 +46,17 @@ export function ProductForm({productOptions, selectedVariant}) {
           <div className="product-options" key={option.name}>
             <p>
               <span style={{color: '#999999'}}>{option.name}:</span>{' '}
-              {option.optionValues.find((v) => v.selected)?.name || ''}
+              <AnimatePresence mode="popLayout">
+                <motion.span
+                  key={`${option.optionValues.find((v) => v.selected)?.name}`}
+                  initial={{opacity: 0}}
+                  animate={{opacity: 1}}
+                  exit={{opacity: 0}}
+                  style={{display: 'inline-block', width: '10rem'}}
+                >
+                  {option.optionValues.find((v) => v.selected)?.name || ''}
+                </motion.span>
+              </AnimatePresence>
             </p>
             <div className="product-options-grid">
               {option.optionValues.map((value) => {
@@ -61,7 +71,6 @@ export function ProductForm({productOptions, selectedVariant}) {
                   swatch,
                   variant,
                 } = value;
-                console.log(value);
                 const variantImage = isColorOption ? variant?.image : null;
                 const styles = itemStyle(selected, available, isColorOption);
 
@@ -75,6 +84,7 @@ export function ProductForm({productOptions, selectedVariant}) {
                       replace
                       to={`/products/${handle}?${variantUriQuery}`}
                       style={styles}
+                      state={location.state}
                     >
                       <ProductOptionSwatch
                         swatch={swatch}
@@ -99,6 +109,7 @@ export function ProductForm({productOptions, selectedVariant}) {
                           navigate(`?${variantUriQuery}`, {
                             replace: true,
                             preventScrollReset: true,
+                            state: location.state,
                           });
                         }
                       }}
@@ -161,7 +172,6 @@ export function ProductForm({productOptions, selectedVariant}) {
  * }}
  */
 function ProductOptionSwatch({swatch, name, isColorOption, productImage}) {
-  console.log(productImage);
   if (isColorOption) {
     const image = productImage || swatch?.image?.previewImage;
     return (
@@ -174,7 +184,7 @@ function ProductOptionSwatch({swatch, name, isColorOption, productImage}) {
             : swatch?.color || 'transparent',
         }}
       >
-        <Image data={productImage} alt={name} aspectRatio="1/1" width="64px" />
+        <Image data={productImage} alt={name} aspectRatio="1/1" width="75px" />
       </div>
     );
   }

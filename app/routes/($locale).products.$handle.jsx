@@ -105,7 +105,6 @@ export default function Product() {
 
   const {title, descriptionHtml} = product;
   const {state} = useLocation();
-  console.log(state);
 
   const to = state
     ? state

@@ -805,7 +805,7 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .product-main-details {
-  width: 50%;
+  max-width: 387px;
   margin-top: 3rem;
 }
 
@@ -816,7 +816,8 @@ button.reset:hover:not(:has(> *)) {
   margin-bottom: 1rem;
 }
 
-.product-title-price p {
+.product-title-price p,
+.product-price {
   font-size: 16px;
 }
 
@@ -853,8 +854,8 @@ button.reset:hover:not(:has(> *)) {
 }
 
 .product-option-label-swatch {
-  width: 4rem;
-  height: 4rem;
+  width: 75px;
+  height: 75px;
 }
 
 .product-option-label-swatch img {

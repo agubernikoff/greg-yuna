@@ -9,7 +9,6 @@ function ProductGridItem({product, loading}) {
   const [hovered, setHovered] = useState(false);
   const variantUrl = useVariantUrl(product.handle);
   const {pathname} = useLocation();
-  console.log(pathname);
 
   return (
     <Link
