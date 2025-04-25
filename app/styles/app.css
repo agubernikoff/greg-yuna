@@ -771,6 +771,11 @@ button.reset:hover:not(:has(> *)) {
   display: none;
 }
 
+.product-image {
+  display: flex;
+  flex-direction: column;
+}
+
 .product-main {
   grid-column: span 2;
   margin: 1rem;
