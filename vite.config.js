@@ -46,6 +46,7 @@ export default defineConfig({
   server: {
     allowedHosts: [
       'engaged-orca-warm.ngrok-free.app', // Add your ngrok domain here
+      'kitten-composed-notably.ngrok-free.app',
       'localhost', // Keep localhost as an allowed host
     ],
   },
