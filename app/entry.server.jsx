@@ -3,10 +3,6 @@ import {isbot} from 'isbot';
 import {renderToReadableStream} from 'react-dom/server';
 import {createContentSecurityPolicy} from '@shopify/hydrogen';
 
-createContentSecurityPolicy({
-  connectSrc: ['https://engaged-orca-warm.ngrok-free.app'],
-});
-
 /**
  * @param {Request} request
  * @param {number} responseStatusCode
@@ -26,6 +22,7 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
+    connectSrc: ['https://engaged-orca-warm.ngrok-free.app'],
   });
 
   const body = await renderToReadableStream(
