@@ -39,13 +39,13 @@ export default function AccountLayout() {
     : 'Account Details';
 
   return (
-    <div className="account">
-      <h1>{heading}</h1>
-      <br />
-      <AccountMenu />
-      <br />
-      <br />
-      <Outlet context={{customer}} />
+    <div className="account-container">
+      <div className="account">
+        <h1>ACCOUNT</h1>
+        <AccountMenu />
+        <div className="divider" />
+        <Outlet context={{customer}} />
+      </div>
     </div>
   );
 }

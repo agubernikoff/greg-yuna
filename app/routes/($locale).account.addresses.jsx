@@ -107,6 +107,7 @@ export async function action({request, context}) {
             defaultAddress,
           };
         } catch (error) {
+          console.log(error);
           if (error instanceof Error) {
             return data(
               {error: {[addressId]: error.message}},
@@ -361,7 +362,7 @@ export function AddressForm({addressId, address, defaultAddress, children}) {
   const error = action?.error?.[addressId];
   const isDefaultAddress = defaultAddress?.id === addressId;
   return (
-    <Form id={addressId}>
+    <Form id={addressId} action="/account/addresses" navigate={false}>
       <fieldset>
         <input type="hidden" name="addressId" defaultValue={addressId} />
         <label htmlFor="firstName">First name*</label>

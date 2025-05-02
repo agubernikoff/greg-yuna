@@ -24,6 +24,8 @@ export const CUSTOMER_FRAGMENT = `#graphql
     territoryCode
     zoneCode
     city
+    province
+    country
     zip
     phoneNumber
   }
