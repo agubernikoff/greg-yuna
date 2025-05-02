@@ -2,6 +2,11 @@ import {RemixServer} from '@remix-run/react';
 import {isbot} from 'isbot';
 import {renderToReadableStream} from 'react-dom/server';
 import {createContentSecurityPolicy} from '@shopify/hydrogen';
+import {createContentSecurityPolicy} from '@shopify/hydrogen';
+
+createContentSecurityPolicy({
+  connectSrc: ['https://engaged-orca-warm.ngrok-free.app'],
+});
 
 /**
  * @param {Request} request
