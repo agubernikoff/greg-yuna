@@ -12,6 +12,8 @@ import {
 import {CUSTOMER_ORDERS_QUERY} from '~/graphql/customer-account/CustomerOrdersQuery';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {useState} from 'react';
+import {Logout} from './($locale).account';
+import {useEffect} from 'react';
 /**
  * @type {MetaFunction}
  */
@@ -49,9 +51,10 @@ export default function Orders() {
   const {orders} = customer;
   return (
     <div className="orders">
+      <h2>ORDER HISTORY</h2>
       {orders.nodes.length ? <OrdersTable orders={orders} /> : <EmptyOrders />}
-      <div className="divider" />
       <Addresses />
+      <Logout />
     </div>
   );
 }
@@ -121,23 +124,87 @@ function Addresses() {
   const [addressId, setAddressId] = useState();
   const [defaultAddy, setDefaultAddy] = useState();
 
+  function openEditForm(address, defaultAddress) {
+    setDisplayAddressForm(true);
+    setAddress(address);
+    setAddressId(address.id);
+    setDefaultAddy(defaultAddress);
+  }
+
+  function openNewForm() {
+    const newAddress = {
+      address1: '',
+      address2: '',
+      city: '',
+      company: '',
+      territoryCode: '',
+      firstName: '',
+      id: 'new',
+      lastName: '',
+      phoneNumber: '',
+      zoneCode: '',
+      zip: '',
+    };
+    setDisplayAddressForm(true);
+    setAddress(newAddress);
+    setAddressId('NEW_ADDRESS_ID');
+    setDefaultAddy(null);
+  }
+
+  function closeForm() {
+    setDisplayAddressForm(false);
+  }
+
   return (
     <div className="account-addresses">
-      <h2>ADDRESSES</h2>
-      <br />
+      <h2>{displayAddressForm ? 'ADD A NEW ADDRESS' : 'ADDRESSES'}</h2>
       {!addresses.nodes.length ? (
         <p>You have no addresses saved.</p>
       ) : (
-        <div>
+        <>
           {displayAddressForm ? (
-            <div>x</div>
+            <AddressForm
+              addressId={addressId}
+              address={address}
+              defaultAddress={defaultAddy}
+              closeForm={closeForm}
+            >
+              {({stateForMethod}) => (
+                <div>
+                  {addressId === 'NEW_ADDRESS_ID' ? (
+                    <button
+                      disabled={stateForMethod('POST') !== 'idle'}
+                      formMethod="POST"
+                      type="submit"
+                    >
+                      {stateForMethod('POST') !== 'idle'
+                        ? 'Saving'
+                        : 'Save Address'}
+                    </button>
+                  ) : (
+                    <button
+                      disabled={stateForMethod('PUT') !== 'idle'}
+                      formMethod="PUT"
+                      type="submit"
+                    >
+                      {stateForMethod('PUT') !== 'idle'
+                        ? 'Saving Address'
+                        : 'Save Address'}
+                    </button>
+                  )}
+                  <button onClick={closeForm}>Cancel</button>
+                </div>
+              )}
+            </AddressForm>
           ) : (
             <ExistingAddresses
               addresses={addresses}
               defaultAddress={defaultAddress}
+              openEditForm={openEditForm}
+              openNewForm={openNewForm}
             />
           )}
-        </div>
+        </>
       )}
     </div>
   );
@@ -182,22 +249,30 @@ function NewAddressForm() {
 /**
  * @param {Pick<CustomerFragment, 'addresses' | 'defaultAddress'>}
  */
-function ExistingAddresses({addresses, defaultAddress}) {
+function ExistingAddresses({
+  addresses,
+  defaultAddress,
+  openEditForm,
+  openNewForm,
+}) {
   return (
-    <div>
+    <div className="existing-addresses">
       {addresses.nodes.map((address) => (
         <ExistingAddress
           key={address.id}
           address={address}
           defaultAddress={defaultAddress}
+          openEditForm={openEditForm}
         />
       ))}
+      <div className="add-address-btn-container">
+        <button onClick={openNewForm}>+ Add Address</button>
+      </div>
     </div>
   );
 }
 
-function ExistingAddress({address, defaultAddress}) {
-  // console.log(address, defaultAddress);
+function ExistingAddress({address, defaultAddress, openEditForm}) {
   function formatPhoneNumber(e164Number) {
     const match = e164Number.match(/^\+1(\d{3})(\d{3})(\d{4})$/);
     if (!match) return e164Number; // return as-is if it doesn't match expected US format
@@ -221,7 +296,9 @@ function ExistingAddress({address, defaultAddress}) {
             defaultAddressId={defaultAddress.id}
           />
           <div className="edit-delete-button-container">
-            <button>Edit</button>
+            <button onClick={() => openEditForm(address, defaultAddress)}>
+              Edit
+            </button>
             <button
               onClick={() => {
                 fetcher.submit(
@@ -236,7 +313,7 @@ function ExistingAddress({address, defaultAddress}) {
           </div>
         </div>
       </div>
-      <AddressForm
+      {/* <AddressForm
         key={address.id}
         addressId={address.id}
         address={address}
@@ -260,7 +337,7 @@ function ExistingAddress({address, defaultAddress}) {
             </button>
           </div>
         )}
-      </AddressForm>
+      </AddressForm> */}
     </>
   );
 }
@@ -301,15 +378,31 @@ function MakeDefaultButton({addressId, defaultAddressId}) {
  *   }) => React.ReactNode;
  * }}
  */
-export function AddressForm({addressId, address, defaultAddress, children}) {
+export function AddressForm({
+  addressId,
+  address,
+  defaultAddress,
+  children,
+  closeForm,
+}) {
   const fetcher = useFetcher();
   /** @type {ActionReturnData} */
   const error = fetcher.data?.error?.[addressId];
   const isDefaultAddress = defaultAddress?.id === addressId;
+
+  useEffect(() => {
+    if (fetcher?.data?.createdAddress) closeForm();
+  }, [fetcher.data]);
   return (
-    <fetcher.Form id={addressId} action="/account/addresses" navigate={false}>
-      <fieldset>
-        <input type="hidden" name="addressId" defaultValue={addressId} />
+    <fetcher.Form
+      id={addressId}
+      action="/account/addresses"
+      navigate={false}
+      className="addy-form"
+    >
+      {/* <fieldset> */}
+      <input type="hidden" name="addressId" defaultValue={addressId} />
+      <div>
         <label htmlFor="firstName">First name*</label>
         <input
           aria-label="First name"
@@ -321,6 +414,8 @@ export function AddressForm({addressId, address, defaultAddress, children}) {
           required
           type="text"
         />
+      </div>
+      <div>
         <label htmlFor="lastName">Last name*</label>
         <input
           aria-label="Last name"
@@ -332,6 +427,8 @@ export function AddressForm({addressId, address, defaultAddress, children}) {
           required
           type="text"
         />
+      </div>
+      <div>
         <label htmlFor="company">Company</label>
         <input
           aria-label="Company"
@@ -342,6 +439,8 @@ export function AddressForm({addressId, address, defaultAddress, children}) {
           placeholder="Company"
           type="text"
         />
+      </div>
+      <div>
         <label htmlFor="address1">Address line*</label>
         <input
           aria-label="Address line 1"
@@ -353,6 +452,8 @@ export function AddressForm({addressId, address, defaultAddress, children}) {
           required
           type="text"
         />
+      </div>
+      <div>
         <label htmlFor="address2">Address line 2</label>
         <input
           aria-label="Address line 2"
@@ -363,6 +464,8 @@ export function AddressForm({addressId, address, defaultAddress, children}) {
           placeholder="Address line 2"
           type="text"
         />
+      </div>
+      <div>
         <label htmlFor="city">City*</label>
         <input
           aria-label="City"
@@ -374,6 +477,8 @@ export function AddressForm({addressId, address, defaultAddress, children}) {
           required
           type="text"
         />
+      </div>
+      <div>
         <label htmlFor="zoneCode">State / Province*</label>
         <input
           aria-label="State/Province"
@@ -385,6 +490,8 @@ export function AddressForm({addressId, address, defaultAddress, children}) {
           required
           type="text"
         />
+      </div>
+      <div>
         <label htmlFor="zip">Zip / Postal Code*</label>
         <input
           aria-label="Zip"
@@ -396,6 +503,8 @@ export function AddressForm({addressId, address, defaultAddress, children}) {
           required
           type="text"
         />
+      </div>
+      <div>
         <label htmlFor="territoryCode">Country Code*</label>
         <input
           aria-label="territoryCode"
@@ -408,6 +517,8 @@ export function AddressForm({addressId, address, defaultAddress, children}) {
           type="text"
           maxLength={2}
         />
+      </div>
+      <div>
         <label htmlFor="phoneNumber">Phone</label>
         <input
           aria-label="Phone Number"
@@ -419,29 +530,30 @@ export function AddressForm({addressId, address, defaultAddress, children}) {
           pattern="^\+?[1-9]\d{3,14}$"
           type="tel"
         />
-        <div>
-          <input
-            defaultChecked={isDefaultAddress}
-            id="defaultAddress"
-            name="defaultAddress"
-            type="checkbox"
-          />
-          <label htmlFor="defaultAddress">Set as default address</label>
-        </div>
-        {error ? (
-          <p>
-            <mark>
-              <small>{error}</small>
-            </mark>
-          </p>
-        ) : (
-          <br />
-        )}
-        {children({
-          stateForMethod: (method) =>
-            fetcher.formMethod === method ? fetcher.state : 'idle',
-        })}
-      </fieldset>
+      </div>
+      <div>
+        <input
+          defaultChecked={isDefaultAddress}
+          id="defaultAddress"
+          name="defaultAddress"
+          type="checkbox"
+        />
+        <label htmlFor="defaultAddress">Set as default address</label>
+      </div>
+      {error ? (
+        <p>
+          <mark>
+            <small>{error}</small>
+          </mark>
+        </p>
+      ) : (
+        <br />
+      )}
+      {children({
+        stateForMethod: (method) =>
+          fetcher.formMethod === method ? fetcher.state : 'idle',
+      })}
+      {/* </fieldset> */}
     </fetcher.Form>
   );
 }

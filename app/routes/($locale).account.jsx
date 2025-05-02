@@ -1,6 +1,8 @@
 import {data as remixData} from '@shopify/remix-oxygen';
 import {Form, NavLink, Outlet, useLoaderData} from '@remix-run/react';
 import {CUSTOMER_DETAILS_QUERY} from '~/graphql/customer-account/CustomerDetailsQuery';
+import {useState} from 'react';
+import {motion} from 'motion/react';
 
 export function shouldRevalidate() {
   return true;
@@ -43,7 +45,6 @@ export default function AccountLayout() {
       <div className="account">
         <h1>ACCOUNT</h1>
         <AccountMenu />
-        <div className="divider" />
         <Outlet context={{customer}} />
       </div>
     </div>
@@ -77,11 +78,24 @@ function AccountMenu() {
   );
 }
 
-function Logout() {
+export function Logout() {
+  const [hover, setHover] = useState(false);
   return (
-    <Form className="account-logout" method="POST" action="/account/logout">
-      &nbsp;<button type="submit">Sign out</button>
-    </Form>
+    <motion.Form
+      className="account-logout"
+      method="POST"
+      action="/account/logout"
+      layout
+    >
+      <button
+        type="submit"
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        style={hover ? {background: 'black', color: 'white'} : null}
+      >
+        LOG OUT
+      </button>
+    </motion.Form>
   );
 }
 

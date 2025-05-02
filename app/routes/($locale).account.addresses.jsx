@@ -249,7 +249,6 @@ export default function Addresses() {
   return (
     <div className="account-addresses">
       <h2>Addresses</h2>
-      <br />
       {!addresses.nodes.length ? (
         <p>You have no addresses saved.</p>
       ) : (
@@ -258,9 +257,6 @@ export default function Addresses() {
             <legend>Create address</legend>
             <NewAddressForm />
           </div>
-          <br />
-          <hr />
-          <br />
           <ExistingAddresses
             addresses={addresses}
             defaultAddress={defaultAddress}

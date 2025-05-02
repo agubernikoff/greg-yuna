@@ -23,12 +23,6 @@ a {
   font-family: 'regular';
   font-size: 12px;
 }
-.divider {
-  margin-block: 1.4rem;
-  height: 1px;
-  width: 100%;
-  background: #e9e9e9;
-}
 /*
 * --------------------------------------------------
 * Non anchor links
@@ -932,11 +926,74 @@ button.reset:hover:not(:has(> *)) {
   grid-column: 1/5;
   min-height: 100vh;
 }
+.account-logout {
+}
+.account-logout > button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  grid-column: 1/3;
+  height: 44px;
+  margin: auto;
+  width: 100%;
+  background: #e9e9e9;
+  transition:
+    color 400ms ease-in-out,
+    background 400ms ease-in-out;
+}
 .account {
   grid-column: 2/4;
+  display: grid;
+  grid-template-columns: subgrid;
 }
+.orders,
+.orders > div,
+.existing-addresses,
+.add-address-btn-container,
+.addy-form,
+.addy-form > fieldset,
 .account-logout {
-  display: inline-block;
+  grid-column: 1/3;
+  display: grid;
+  grid-template-columns: subgrid;
+}
+.account h2 {
+  grid-column: 1/3;
+}
+.existing-addresses,
+.addy-form {
+  gap: 1rem;
+}
+.addy-form > div > input {
+  width: 100%;
+  box-sizing: border-box;
+}
+.addy-form > div > input[type='checkbox'] {
+  width: fit-content;
+  margin-block: 1rem;
+}
+.addy-form > div:has(input[type='checkbox']) {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+.existing-address-container {
+  width: 100%;
+  border: 1px solid #e9e9e9;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.existing-address-form-buttons-container,
+.edit-delete-button-container {
+  display: flex;
+  justify-content: space-between;
+}
+.edit-delete-button-container {
+  gap: 1rem;
 }
 .default,
 .make-default {
@@ -947,4 +1004,8 @@ button.reset:hover:not(:has(> *)) {
 }
 .make-default {
   background: transparent;
+}
+
+.add-address-btn-container > button {
+  width: fit-content;
 }
