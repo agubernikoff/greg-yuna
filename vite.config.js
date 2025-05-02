@@ -25,7 +25,7 @@ export default defineConfig({
   ],
   build: {
     // Allow a strict Content-Security-Policy
-    // withtout inlining assets as base64:
+    // without inlining assets as base64:
     assetsInlineLimit: 0,
   },
   ssr: {
@@ -42,5 +42,11 @@ export default defineConfig({
        */
       include: [],
     },
+  },
+  server: {
+    allowedHosts: [
+      'engaged-orca-warm.ngrok-free.app', // Add your ngrok domain here
+      'localhost', // Keep localhost as an allowed host
+    ],
   },
 });

@@ -22,7 +22,7 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
-    connectSrc: ['https://engaged-orca-warm.ngrok-free.app'],
+    connectSrc: ['engaged-orca-warm.ngrok-free.app'],
   });
 
   const body = await renderToReadableStream(
