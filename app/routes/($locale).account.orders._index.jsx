@@ -51,7 +51,7 @@ export default function Orders() {
   const {orders} = customer;
   return (
     <div className="orders">
-      <h2>ORDER HISTORY</h2>
+      <p className="orders-header">ORDER HISTORY</p>
       {orders.nodes.length ? <OrdersTable orders={orders} /> : <EmptyOrders />}
       <Addresses />
       <Logout />
@@ -64,7 +64,11 @@ export default function Orders() {
  */
 function OrdersTable({orders}) {
   return (
-    <div className="acccount-orders">
+    <div className="account-orders">
+      <p>ORDER #</p>
+      <p>PLACED ON</p>
+      <p>STATUS</p>
+      <p>TOTAL</p>
       {orders?.nodes.length ? (
         <PaginatedResourceSection connection={orders}>
           {({node: order}) => <OrderItem key={order.id} order={order} />}
@@ -93,19 +97,30 @@ function EmptyOrders() {
  */
 function OrderItem({order}) {
   const fulfillmentStatus = flattenConnection(order.fulfillments)[0]?.status;
+  console.log(order.processedAt);
   return (
     <>
-      <fieldset>
-        <Link to={`/account/orders/${btoa(order.id)}`}>
-          <strong>#{order.number}</strong>
-        </Link>
-        <p>{new Date(order.processedAt).toDateString()}</p>
-        <p>{order.financialStatus}</p>
-        {fulfillmentStatus && <p>{fulfillmentStatus}</p>}
-        <Money data={order.totalPrice} />
-        <Link to={`/account/orders/${btoa(order.id)}`}>View Order →</Link>
-      </fieldset>
-      <br />
+      <Link to={`/account/orders/${btoa(order.id)}`}>
+        <strong className="order-number-link">#{order.number}</strong>
+      </Link>
+      <p>
+        {new Date(order.processedAt).toLocaleDateString('en-US', {
+          month: 'long',
+          day: 'numeric',
+          year: 'numeric',
+        })}
+      </p>
+      <p>
+        {order.financialStatus === 'UNFULFILLED'
+          ? 'Processing'
+          : order.financialStatus === 'PAID'
+            ? 'Fulfilled'
+            : order.financialStatus === 'PARTIALLY_FULFILLED'
+              ? 'Partially Fulfilled'
+              : order.financialStatus}
+      </p>
+      {fulfillmentStatus && <p>{fulfillmentStatus}</p>}
+      <Money className="order-item-money" data={order.totalPrice} />
     </>
   );
 }
@@ -157,7 +172,7 @@ function Addresses() {
 
   return (
     <div className="account-addresses">
-      <h2>{displayAddressForm ? 'ADD A NEW ADDRESS' : 'ADDRESSES'}</h2>
+      <p>{displayAddressForm ? 'ADD A NEW ADDRESS' : 'ADDRESSES'}</p>
       {!addresses.nodes.length ? (
         <p>You have no addresses saved.</p>
       ) : (
@@ -170,7 +185,7 @@ function Addresses() {
               closeForm={closeForm}
             >
               {({stateForMethod}) => (
-                <div>
+                <div className="form-button-container">
                   {addressId === 'NEW_ADDRESS_ID' ? (
                     <button
                       disabled={stateForMethod('POST') !== 'idle'}
@@ -274,6 +289,7 @@ function ExistingAddresses({
 
 function ExistingAddress({address, defaultAddress, openEditForm}) {
   function formatPhoneNumber(e164Number) {
+    if (!e164Number) return null;
     const match = e164Number.match(/^\+1(\d{3})(\d{3})(\d{4})$/);
     if (!match) return e164Number; // return as-is if it doesn't match expected US format
     const [, areaCode, centralOffice, lineNumber] = match;

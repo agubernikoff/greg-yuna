@@ -19,6 +19,7 @@ export function PaginatedResourceSection({
 
         return (
           <div
+            className="account-orders-grid"
             style={{
               display: 'grid',
               gridColumn: '1/5',

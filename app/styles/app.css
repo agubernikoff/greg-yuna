@@ -21,7 +21,7 @@ button,
 p,
 a {
   font-family: 'regular';
-  font-size: 12px;
+  font-size: 13px;
 }
 /*
 * --------------------------------------------------
@@ -925,6 +925,7 @@ button.reset:hover:not(:has(> *)) {
   background: white;
   grid-column: 1/5;
   min-height: 100vh;
+  padding-bottom: 8rem;
 }
 .account-logout {
 }
@@ -945,6 +946,20 @@ button.reset:hover:not(:has(> *)) {
   grid-column: 2/4;
   display: grid;
   grid-template-columns: subgrid;
+  margin-top: 8rem;
+}
+.account > p {
+  font-size: 17px;
+  font-family: 'regular';
+  margin-bottom: 40px;
+}
+.orders {
+  row-gap: 40px;
+  border-top: 1px solid #e9e9e9;
+}
+.orders-header,
+.account-addresses > p {
+  margin-top: 5px;
 }
 .orders,
 .orders > div,
@@ -957,12 +972,56 @@ button.reset:hover:not(:has(> *)) {
   display: grid;
   grid-template-columns: subgrid;
 }
+.account-addresses {
+  border-top: 1px solid #e9e9e9;
+  gap: 20px;
+}
+.paginated-resource-div {
+  display: grid;
+}
+.account-orders {
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: 1px;
+  background-color: #e9e9e9;
+}
+.account-orders-grid {
+  row-gap: 1px;
+  border: 1px solid #e9e9e9;
+}
+.account-orders > p {
+  width: 100%;
+  background-color: #999999;
+  color: white;
+  padding: 0.4rem;
+  box-sizing: border-box;
+}
+.account-orders > p:last-of-type,
+.order-item-money {
+  text-align: right;
+}
+.account-orders > .paginated-resource-div {
+  grid-template-columns: repeat(4, 1fr);
+  grid-column: 1/5;
+}
+.account-orders-grid > a,
+.account-orders-grid > p,
+.order-item-money {
+  padding: 0.4rem;
+
+  background-color: white;
+}
+.order-item-money {
+  padding-right: 0rem;
+}
+.order-number-link {
+  text-decoration: underline;
+}
 .account h2 {
   grid-column: 1/3;
 }
 .existing-addresses,
 .addy-form {
-  gap: 1rem;
+  gap: 20px;
 }
 .addy-form > div > input {
   width: 100%;
@@ -993,7 +1052,29 @@ button.reset:hover:not(:has(> *)) {
   justify-content: space-between;
 }
 .edit-delete-button-container {
-  gap: 1rem;
+  gap: 10px;
+}
+.edit-delete-button-container > button {
+  background: none;
+  border: none;
+  color: #999999;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+.add-address-btn-container > button,
+.form-button-container > button {
+  background: none;
+  border: none;
+  color: black;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+.form-button-container {
+  grid-column: 1 / 3;
+  display: flex;
+  justify-content: space-between;
 }
 .default,
 .make-default {

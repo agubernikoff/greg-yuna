@@ -43,40 +43,40 @@ export default function AccountLayout() {
   return (
     <div className="account-container">
       <div className="account">
-        <h1>ACCOUNT</h1>
-        <AccountMenu />
+        <p>ACCOUNT</p>
+        {/* <AccountMenu /> */}
         <Outlet context={{customer}} />
       </div>
     </div>
   );
 }
 
-function AccountMenu() {
-  function isActiveStyle({isActive, isPending}) {
-    return {
-      fontWeight: isActive ? 'bold' : undefined,
-      color: isPending ? 'grey' : 'black',
-    };
-  }
+// function AccountMenu() {
+//   function isActiveStyle({isActive, isPending}) {
+//     return {
+//       fontWeight: isActive ? 'bold' : undefined,
+//       color: isPending ? 'grey' : 'black',
+//     };
+//   }
 
-  return (
-    <nav role="navigation">
-      <NavLink to="/account/orders" style={isActiveStyle}>
-        Orders &nbsp;
-      </NavLink>
-      &nbsp;|&nbsp;
-      <NavLink to="/account/profile" style={isActiveStyle}>
-        &nbsp; Profile &nbsp;
-      </NavLink>
-      &nbsp;|&nbsp;
-      <NavLink to="/account/addresses" style={isActiveStyle}>
-        &nbsp; Addresses &nbsp;
-      </NavLink>
-      &nbsp;|&nbsp;
-      <Logout />
-    </nav>
-  );
-}
+//   return (
+//     <nav role="navigation">
+//       <NavLink to="/account/orders" style={isActiveStyle}>
+//         Orders &nbsp;
+//       </NavLink>
+//       &nbsp;|&nbsp;
+//       <NavLink to="/account/profile" style={isActiveStyle}>
+//         &nbsp; Profile &nbsp;
+//       </NavLink>
+//       &nbsp;|&nbsp;
+//       <NavLink to="/account/addresses" style={isActiveStyle}>
+//         &nbsp; Addresses &nbsp;
+//       </NavLink>
+//       &nbsp;|&nbsp;
+//       <Logout />
+//     </nav>
+//   );
+// }
 
 export function Logout() {
   const [hover, setHover] = useState(false);
