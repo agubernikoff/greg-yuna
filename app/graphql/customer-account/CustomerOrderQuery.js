@@ -41,6 +41,14 @@ export const CUSTOMER_ORDER_QUERY = `#graphql
       width
     }
     variantTitle
+    variantOptions{
+      name
+      value
+    }
+    customAttributes{
+      key
+      value
+    }
   }
   fragment Order on Order {
     id
@@ -61,10 +69,17 @@ export const CUSTOMER_ORDER_QUERY = `#graphql
     subtotal {
       ...OrderMoney
     }
+    totalShipping{
+      ...OrderMoney
+    }
     shippingAddress {
       name
-      formatted(withName: true)
-      formattedArea
+      address1
+      address2
+      city
+      country
+      province
+      zip
     }
     discountApplications(first: 100) {
       nodes {

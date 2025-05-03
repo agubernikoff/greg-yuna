@@ -3,6 +3,7 @@ import {
   useLoaderData,
   useOutletContext,
   useFetcher,
+  Form,
 } from '@remix-run/react';
 import {
   Money,
@@ -97,7 +98,7 @@ function EmptyOrders() {
  */
 function OrderItem({order}) {
   const fulfillmentStatus = flattenConnection(order.fulfillments)[0]?.status;
-  console.log(order.processedAt);
+  console.log(order);
   return (
     <>
       <Link to={`/account/orders/${btoa(order.id)}`}>

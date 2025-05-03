@@ -1,5 +1,5 @@
 import {redirect} from '@shopify/remix-oxygen';
-import {useLoaderData} from '@remix-run/react';
+import {useLoaderData, NavLink} from '@remix-run/react';
 import {Money, Image, flattenConnection} from '@shopify/hydrogen';
 import {CUSTOMER_ORDER_QUERY} from '~/graphql/customer-account/CustomerOrderQuery';
 
@@ -65,29 +65,40 @@ export default function OrderRoute() {
     discountPercentage,
     fulfillmentStatus,
   } = useLoaderData();
+  console.log(order);
   return (
     <div className="account-order">
-      <h2>Order {order.name}</h2>
-      <p>Placed on {new Date(order.processedAt).toDateString()}</p>
-      <br />
-      <div>
-        <table>
-          <thead>
-            <tr>
-              <th scope="col">Product</th>
-              <th scope="col">Price</th>
-              <th scope="col">Quantity</th>
-              <th scope="col">Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            {lineItems.map((lineItem, lineItemIndex) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <OrderLineRow key={lineItemIndex} lineItem={lineItem} />
-            ))}
-          </tbody>
-          <tfoot>
-            {((discountValue && discountValue.amount) ||
+      <div style={{paddingTop: '.25rem'}}>
+        <p style={{marginBottom: '1rem'}}>
+          ORDER {order.name.replace('#', '')}
+        </p>
+        <p className="track-order">
+          <a target="_blank" href={order.statusPageUrl} rel="noreferrer">
+            TRACK ORDER
+          </a>
+        </p>
+      </div>
+      <div style={{borderTop: '1px solid #e9e9e9', paddingTop: '.25rem'}}>
+        <p>SHIPPING ADDRESS</p>
+        <br />
+        {order?.shippingAddress ? (
+          <>
+            <p>{order.shippingAddress.name}</p>
+            <p>{`${order.shippingAddress.address1}${order.shippingAddress.address2 ? ', Apt ' + order.shippingAddress.address2 : ''}`}</p>
+            <p>{`${order.shippingAddress.city}, ${order.shippingAddress.province}`}</p>
+            <p>{`${order.shippingAddress.country}, ${order.shippingAddress.zip}`}</p>
+          </>
+        ) : (
+          <p>No shipping address defined</p>
+        )}
+      </div>
+      <div style={{borderTop: '1px solid #e9e9e9', paddingTop: '.25rem'}}>
+        <p>ITEMS</p>
+        {lineItems.map((lineItem, lineItemIndex) => (
+          // eslint-disable-next-line react/no-array-index-key
+          <OrderLineRow key={lineItemIndex} lineItem={lineItem} />
+        ))}
+        {/* {((discountValue && discountValue.amount) ||
               discountPercentage) && (
               <tr>
                 <th scope="row" colSpan={3}>
@@ -104,73 +115,30 @@ export default function OrderRoute() {
                   )}
                 </td>
               </tr>
-            )}
-            <tr>
-              <th scope="row" colSpan={3}>
-                <p>Subtotal</p>
-              </th>
-              <th scope="row">
-                <p>Subtotal</p>
-              </th>
-              <td>
-                <Money data={order.subtotal} />
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" colSpan={3}>
-                Tax
-              </th>
-              <th scope="row">
-                <p>Tax</p>
-              </th>
-              <td>
-                <Money data={order.totalTax} />
-              </td>
-            </tr>
-            <tr>
-              <th scope="row" colSpan={3}>
-                Total
-              </th>
-              <th scope="row">
-                <p>Total</p>
-              </th>
-              <td>
-                <Money data={order.totalPrice} />
-              </td>
-            </tr>
-          </tfoot>
-        </table>
-        <div>
-          <h3>Shipping Address</h3>
-          {order?.shippingAddress ? (
-            <address>
-              <p>{order.shippingAddress.name}</p>
-              {order.shippingAddress.formatted ? (
-                <p>{order.shippingAddress.formatted}</p>
-              ) : (
-                ''
-              )}
-              {order.shippingAddress.formattedArea ? (
-                <p>{order.shippingAddress.formattedArea}</p>
-              ) : (
-                ''
-              )}
-            </address>
-          ) : (
-            <p>No shipping address defined</p>
-          )}
-          <h3>Status</h3>
-          <div>
-            <p>{fulfillmentStatus}</p>
-          </div>
+            )} */}
+      </div>
+      <div style={{borderTop: '1px solid #e9e9e9', paddingTop: '.25rem'}}>
+        <div className="total-container">
+          <p>Subtotal</p>
+          <Money data={order.subtotal} />
+        </div>
+        <div className="total-container">
+          <p>Shipping</p>
+          <Money data={order.totalShipping} />
+        </div>
+        <div className="total-container">
+          <p>Tax</p>
+          <Money data={order.totalTax} />
         </div>
       </div>
-      <br />
-      <p>
-        <a target="_blank" href={order.statusPageUrl} rel="noreferrer">
-          View Order Status →
-        </a>
-      </p>
+      <div
+        className="total-container"
+        style={{borderTop: '1px solid #e9e9e9', paddingTop: '.25rem'}}
+      >
+        <p>Total</p>
+        <Money data={order.totalPrice} />
+      </div>
+      <NavLink to="/account/orders">← Back to Orders</NavLink>
     </div>
   );
 }
@@ -180,28 +148,32 @@ export default function OrderRoute() {
  */
 function OrderLineRow({lineItem}) {
   return (
-    <tr key={lineItem.id}>
-      <td>
+    <div className="line-item-container">
+      {lineItem?.image && (
+        <div style={{border: '1px solid #e9e9e9', width: 'fit-content'}}>
+          <Image data={lineItem.image} width={194} height={194} />
+        </div>
+      )}
+      <div className="line-item-inside-container">
         <div>
-          {lineItem?.image && (
-            <div>
-              <Image data={lineItem.image} width={96} height={96} />
-            </div>
-          )}
+          <p style={{marginBottom: '1rem'}}>{lineItem.title}</p>
           <div>
-            <p>{lineItem.title}</p>
-            <small>{lineItem.variantTitle}</small>
+            {lineItem?.variantOptions.map((opt) => (
+              <p>
+                <span>{`${opt.name}: `}</span>
+                {opt.value}
+              </p>
+            ))}
+            <p>
+              <span>QTY: </span>
+              {lineItem.quantity}
+            </p>
           </div>
         </div>
-      </td>
-      <td>
         <Money data={lineItem.price} />
-      </td>
-      <td>{lineItem.quantity}</td>
-      <td>
-        <Money data={lineItem.totalDiscount} />
-      </td>
-    </tr>
+        {/* <Money data={lineItem.totalDiscount} /> */}
+      </div>
+    </div>
   );
 }
 
