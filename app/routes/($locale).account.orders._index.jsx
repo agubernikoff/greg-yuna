@@ -15,6 +15,7 @@ import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {useState} from 'react';
 import {Logout} from './($locale).account';
 import {useEffect} from 'react';
+import {motion, AnimatePresence} from 'motion/react';
 /**
  * @type {MetaFunction}
  */
@@ -55,7 +56,6 @@ export default function Orders() {
       <p className="orders-header">ORDER HISTORY</p>
       {orders.nodes.length ? <OrdersTable orders={orders} /> : <EmptyOrders />}
       <Addresses />
-      <Logout />
     </div>
   );
 }
@@ -172,57 +172,86 @@ function Addresses() {
   }
 
   return (
-    <div className="account-addresses">
-      <p>{displayAddressForm ? 'ADD A NEW ADDRESS' : 'ADDRESSES'}</p>
+    <motion.div className="account-addresses" layout="size">
+      <AnimatePresence mode="popLayout">
+        <motion.p
+          layout="position"
+          key={`${displayAddressForm}keyp`}
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          exit={{opacity: 0}}
+        >
+          {displayAddressForm ? 'ADD A NEW ADDRESS' : 'ADDRESSES'}
+        </motion.p>
+      </AnimatePresence>
       {!addresses.nodes.length ? (
         <p>You have no addresses saved.</p>
       ) : (
-        <>
-          {displayAddressForm ? (
-            <AddressForm
-              addressId={addressId}
-              address={address}
-              defaultAddress={defaultAddy}
-              closeForm={closeForm}
+        <AnimatePresence mode="popLayout">
+          {displayAddressForm && (
+            <motion.div
+              className="motion-address-container"
+              key={`${displayAddressForm}key`}
+              initial={{opacity: 0}}
+              animate={{opacity: displayAddressForm ? 1 : 0}}
+              exit={{opacity: 0}}
+              layout="position"
             >
-              {({stateForMethod}) => (
-                <div className="form-button-container">
-                  {addressId === 'NEW_ADDRESS_ID' ? (
-                    <button
-                      disabled={stateForMethod('POST') !== 'idle'}
-                      formMethod="POST"
-                      type="submit"
-                    >
-                      {stateForMethod('POST') !== 'idle'
-                        ? 'Saving'
-                        : 'Save Address'}
-                    </button>
-                  ) : (
-                    <button
-                      disabled={stateForMethod('PUT') !== 'idle'}
-                      formMethod="PUT"
-                      type="submit"
-                    >
-                      {stateForMethod('PUT') !== 'idle'
-                        ? 'Saving Address'
-                        : 'Save Address'}
-                    </button>
-                  )}
-                  <button onClick={closeForm}>Cancel</button>
-                </div>
-              )}
-            </AddressForm>
-          ) : (
-            <ExistingAddresses
-              addresses={addresses}
-              defaultAddress={defaultAddress}
-              openEditForm={openEditForm}
-              openNewForm={openNewForm}
-            />
+              <AddressForm
+                addressId={addressId}
+                address={address}
+                defaultAddress={defaultAddy}
+                closeForm={closeForm}
+              >
+                {({stateForMethod}) => (
+                  <div className="form-button-container">
+                    {addressId === 'NEW_ADDRESS_ID' ? (
+                      <button
+                        disabled={stateForMethod('POST') !== 'idle'}
+                        formMethod="POST"
+                        type="submit"
+                      >
+                        {stateForMethod('POST') !== 'idle'
+                          ? 'Saving'
+                          : 'Save Address'}
+                      </button>
+                    ) : (
+                      <button
+                        disabled={stateForMethod('PUT') !== 'idle'}
+                        formMethod="PUT"
+                        type="submit"
+                      >
+                        {stateForMethod('PUT') !== 'idle'
+                          ? 'Saving Address'
+                          : 'Save Address'}
+                      </button>
+                    )}
+                    <button onClick={closeForm}>Cancel</button>
+                  </div>
+                )}
+              </AddressForm>
+            </motion.div>
           )}
-        </>
+          {!displayAddressForm && (
+            <motion.div
+              className="motion-address-container"
+              key={`${displayAddressForm}key2`}
+              initial={{opacity: 0}}
+              animate={{opacity: !displayAddressForm ? 1 : 0}}
+              exit={{opacity: 0}}
+            >
+              <ExistingAddresses
+                addresses={addresses}
+                defaultAddress={defaultAddress}
+                openEditForm={openEditForm}
+                openNewForm={openNewForm}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       )}
-    </div>
+      <Logout />
+    </motion.div>
   );
 }
 
@@ -281,9 +310,9 @@ function ExistingAddresses({
           openEditForm={openEditForm}
         />
       ))}
-      <div className="add-address-btn-container">
+      <motion.div className="add-address-btn-container" layout="position">
         <button onClick={openNewForm}>+ Add Address</button>
-      </div>
+      </motion.div>
     </div>
   );
 }
@@ -299,7 +328,7 @@ function ExistingAddress({address, defaultAddress, openEditForm}) {
   const fetcher = useFetcher();
   return (
     <>
-      <div className="existing-address-container">
+      <motion.div className="existing-address-container" layout>
         <div>
           <p>{`${address.firstName} ${address.lastName}`}</p>
           <p>{`${address.address1}${address.address2 ? ', Apt ' + address.address2 : ''}`}</p>
@@ -329,7 +358,7 @@ function ExistingAddress({address, defaultAddress, openEditForm}) {
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
       {/* <AddressForm
         key={address.id}
         addressId={address.id}
@@ -428,7 +457,7 @@ export function AddressForm({
           id="firstName"
           name="firstName"
           placeholder="First name"
-          required
+          // required
           type="text"
         />
       </div>
@@ -441,7 +470,7 @@ export function AddressForm({
           id="lastName"
           name="lastName"
           placeholder="Last name"
-          required
+          // required
           type="text"
         />
       </div>
@@ -466,7 +495,7 @@ export function AddressForm({
           id="address1"
           name="address1"
           placeholder="Address line 1*"
-          required
+          // required
           type="text"
         />
       </div>
@@ -491,7 +520,7 @@ export function AddressForm({
           id="city"
           name="city"
           placeholder="City"
-          required
+          // required
           type="text"
         />
       </div>
@@ -504,7 +533,7 @@ export function AddressForm({
           id="zoneCode"
           name="zoneCode"
           placeholder="State / Province"
-          required
+          // required
           type="text"
         />
       </div>
@@ -517,7 +546,7 @@ export function AddressForm({
           id="zip"
           name="zip"
           placeholder="Zip / Postal Code"
-          required
+          // required
           type="text"
         />
       </div>
@@ -530,7 +559,7 @@ export function AddressForm({
           id="territoryCode"
           name="territoryCode"
           placeholder="Country"
-          required
+          // required
           type="text"
           maxLength={2}
         />

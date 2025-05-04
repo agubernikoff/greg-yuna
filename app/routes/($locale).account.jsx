@@ -87,14 +87,15 @@ export function Logout() {
       action="/account/logout"
       layout
     >
-      <button
+      <motion.button
         type="submit"
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
         style={hover ? {background: 'black', color: 'white'} : null}
+        layout
       >
         LOG OUT
-      </button>
+      </motion.button>
     </motion.Form>
   );
 }

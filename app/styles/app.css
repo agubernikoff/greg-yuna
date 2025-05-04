@@ -967,6 +967,7 @@ button.reset:hover:not(:has(> *)) {
 }
 .orders,
 .orders > div,
+.motion-address-container,
 .existing-addresses,
 .add-address-btn-container,
 .addy-form,
@@ -983,6 +984,8 @@ button.reset:hover:not(:has(> *)) {
 .account-addresses {
   border-top: 1px solid #e9e9e9;
   gap: 20px;
+  overflow: hidden;
+  position: relative;
 }
 .paginated-resource-div {
   display: grid;
