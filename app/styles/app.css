@@ -976,6 +976,9 @@ button.reset:hover:not(:has(> *)) {
   grid-template-columns: subgrid;
   grid-template-rows: min-content;
 }
+.orders > div {
+  height: fit-content;
+}
 .account-addresses {
   border-top: 1px solid #e9e9e9;
   gap: 20px;
@@ -1012,7 +1015,7 @@ button.reset:hover:not(:has(> *)) {
 .order-item-money {
   padding: 0.4rem;
   line-height: 1.4;
-  height: fit-content;
+  /* height: fit-content; */
   background-color: white;
 }
 .order-item-money {
