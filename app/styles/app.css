@@ -1156,7 +1156,8 @@ MEDIA QUIERIES
 @media (min-width: 500px) {
 }
 @media (max-width: 499px) {
-  html {
+  html,
+  main {
     background-color: white;
   }
   .header {
