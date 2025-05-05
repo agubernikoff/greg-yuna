@@ -1417,9 +1417,6 @@ MEDIA QUIERIES
   .header-menu-container {
     height: calc(100vh - var(--header-height) - 4rem);
   }
-  .header-menu-mobile {
-    margin-top: -5rem;
-  }
   .predictive-search-form > input {
     width: 100%;
     background-color: white;
