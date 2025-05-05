@@ -506,6 +506,14 @@ button.reset:hover:not(:has(> *)) {
 .predictive-search-form > input {
   border: none;
   padding: 0;
+  width: 100%;
+}
+.predictive-search-form > input:focus-visible {
+  outline: none;
+}
+
+input[type='search' i]::-webkit-search-cancel-button {
+  appearance: none;
 }
 
 .predictive-search-form > .mobile-menu-btn {
