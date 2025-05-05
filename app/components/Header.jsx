@@ -1,9 +1,10 @@
-import React, {Suspense} from 'react';
+import React, {Suspense, useId} from 'react';
 import {Await, NavLink, useAsyncValue} from '@remix-run/react';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
 import {motion} from 'motion/react';
 import {useState, useEffect} from 'react';
+import {SearchFormPredictive} from './SearchFormPredictive';
 
 /**
  * @param {HeaderProps}
@@ -193,10 +194,29 @@ export function HeaderMenu({
 }) {
   const className = `header-menu-${viewport}`;
   const {close} = useAside();
+  const queriesDatalistId = useId();
 
   return (
-    <nav className={className} role="navigation">
-      {/* {viewport === 'mobile' && (
+    <div className="header-menu-container">
+      <SearchFormPredictive>
+        {({fetchResults, goToSearch, inputRef}) => (
+          <>
+            <input
+              name="q"
+              onChange={fetchResults}
+              onFocus={fetchResults}
+              placeholder="Search"
+              ref={inputRef}
+              type="search"
+              list={queriesDatalistId}
+            />
+            &nbsp;
+            <button onClick={goToSearch}>→</button>
+          </>
+        )}
+      </SearchFormPredictive>
+      <nav className={className} role="navigation">
+        {/* {viewport === 'mobile' && (
         <NavLink
           end
           onClick={close}
@@ -207,73 +227,107 @@ export function HeaderMenu({
           Home
         </NavLink>
       )} */}
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
-        if (!item.url) return null;
+        {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
+          if (!item.url) return null;
 
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        console.log(item.id);
-        return item.items && item.items.length > 0 ? (
-          <React.Fragment key={item.id}>
+          // if the url is internal, we strip the domain
+          const url =
+            item.url.includes('myshopify.com') ||
+            item.url.includes(publicStoreDomain) ||
+            item.url.includes(primaryDomainUrl)
+              ? new URL(item.url).pathname
+              : item.url;
+          console.log(item.id);
+          return item.items && item.items.length > 0 ? (
+            <React.Fragment key={item.id}>
+              <NavLink
+                className="header-menu-item-blank"
+                end
+                key={item.id}
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
+                prefetch="intent"
+                style={{cursor: 'auto'}}
+                to={url}
+              >
+                {''}
+              </NavLink>
+
+              {item.items.map((item) => {
+                if (!item.url) return null;
+
+                // if the url is internal, we strip the domain
+                const url =
+                  item.url.includes('myshopify.com') ||
+                  item.url.includes(publicStoreDomain) ||
+                  item.url.includes(primaryDomainUrl)
+                    ? new URL(item.url).pathname
+                    : item.url;
+
+                return (
+                  <NavLink
+                    className="header-menu-item"
+                    end
+                    key={`${item.id}${item.resourceId}`}
+                    onClick={close}
+                    prefetch="intent"
+                    style={activeLinkStyle}
+                    to={url}
+                  >
+                    {item.title}
+                  </NavLink>
+                );
+              })}
+            </React.Fragment>
+          ) : (
             <NavLink
               className="header-menu-item"
               end
               key={item.id}
-              onClick={(e) => {
-                e.preventDefault();
-              }}
+              onClick={close}
               prefetch="intent"
-              style={{cursor: 'auto'}}
+              style={activeLinkStyle}
               to={url}
             >
-              {''}
+              {item.title}
             </NavLink>
-            {item.items.map((item) => {
-              if (!item.url) return null;
-
-              // if the url is internal, we strip the domain
-              const url =
-                item.url.includes('myshopify.com') ||
-                item.url.includes(publicStoreDomain) ||
-                item.url.includes(primaryDomainUrl)
-                  ? new URL(item.url).pathname
-                  : item.url;
-
-              return (
-                <NavLink
-                  className="header-menu-item"
-                  end
-                  key={`${item.id}${item.resourceId}`}
-                  onClick={close}
-                  prefetch="intent"
-                  style={activeLinkStyle}
-                  to={url}
-                >
-                  {item.title}
-                </NavLink>
-              );
-            })}
-          </React.Fragment>
-        ) : (
-          <NavLink
-            className="header-menu-item"
-            end
-            key={item.id}
-            onClick={close}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-        );
-      })}
-    </nav>
+          );
+        })}
+      </nav>
+      <nav className="header-menu-bottom-container">
+        <NavLink
+          className="header-menu-item-aux"
+          end
+          onClick={close}
+          prefetch="intent"
+          style={activeLinkStyle}
+          to="/account"
+        >
+          Account
+        </NavLink>
+        <NavLink
+          className="header-menu-item-aux"
+          end
+          onClick={close}
+          prefetch="intent"
+          style={activeLinkStyle}
+          to="/"
+        >
+          EN/USD
+        </NavLink>
+        <NavLink
+          className="header-menu-item-aux"
+          end
+          onClick={close}
+          prefetch="intent"
+          style={activeLinkStyle}
+          to="/contact"
+        >
+          Contact
+        </NavLink>
+      </nav>
+    </div>
   );
 }
 
