@@ -1353,6 +1353,13 @@ MEDIA QUIERIES
     background-color: #e9e9e9;
     gap: 1px;
     border-bottom: 1px solid #e9e9e9;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .collections-container::-webkit-scrollbar {
+    display: none; /* WebKit */
   }
 
   .collection-grid-item {
@@ -1407,6 +1414,6 @@ MEDIA QUIERIES
     height: calc(100vh - var(--header-height) - 4rem);
   }
   .header-menu-mobile {
-    margin-top: -12rem;
+    margin-top: -6rem;
   }
 }
