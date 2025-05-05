@@ -1203,7 +1203,8 @@ MEDIA QUIERIES
   .recommended-products {
     display: block;
   }
-  .recommended-products-grid {
+  .recommended-products-grid,
+  .products-grid {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
