@@ -210,7 +210,7 @@ export function HeaderMenu({
               type="search"
               list={queriesDatalistId}
             />
-            &nbsp;
+
             <button onClick={goToSearch}>→</button>
           </>
         )}
