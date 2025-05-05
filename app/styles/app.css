@@ -1207,9 +1207,10 @@ MEDIA QUIERIES
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    gap: 1px;
   }
   .product-item {
-    width: 50%;
+    width: calc(50% - 0.5px);
   }
   .collections-container {
     display: flex;
