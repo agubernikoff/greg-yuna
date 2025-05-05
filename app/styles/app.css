@@ -1156,6 +1156,9 @@ MEDIA QUIERIES
 @media (min-width: 500px) {
 }
 @media (max-width: 499px) {
+  html {
+    background-color: white;
+  }
   .header {
     position: fixed;
     height: auto;
@@ -1240,5 +1243,31 @@ MEDIA QUIERIES
   }
   .flagship-subimage {
     width: 50%;
+  }
+  .account-container {
+    display: block;
+    padding: 1rem;
+  }
+  .account-addresses {
+    display: block;
+  }
+  .existing-addresses {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .add-address-btn-container {
+    margin: 1rem 0;
+    width: 100%;
+  }
+  .account-logout {
+    margin-top: 2rem;
+    margin-bottom: 8rem;
+  }
+  .motion-address-container > form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 }
