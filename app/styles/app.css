@@ -1310,6 +1310,12 @@ MEDIA QUIERIES
   .home {
     display: block;
   }
+  .featured-collection-image {
+    width: 100%;
+  }
+  .featured-collection-image img {
+    max-width: 100%;
+  }
   .recommended-products {
     display: block;
   }
@@ -1322,6 +1328,16 @@ MEDIA QUIERIES
   }
   .product-item {
     width: calc(50% - 0.5px);
+    aspect-ratio: unset;
+    background: white;
+  }
+  .product-item-details {
+    opacity: 1 !important;
+    position: static;
+    padding: 1rem 1rem 2rem;
+  }
+  .product-item-details > div {
+    padding-top: 0.5rem;
   }
   .collections-container {
     display: flex;
@@ -1330,22 +1346,25 @@ MEDIA QUIERIES
     width: 100%;
     overflow-x: auto;
     display: flex;
-    padding: 1rem 0;
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    background-color: white;
+    background-color: #e9e9e9;
+    gap: 1px;
+    border-bottom: 1px solid #e9e9e9;
   }
 
   .collection-grid-item {
     flex: 0 0 85%;
     scroll-snap-align: start;
     box-sizing: border-box;
-    padding: 1rem;
     transition: transform 0.3s ease;
   }
 
   .collection-grid-item.hovered {
     transform: scale(1.02);
+  }
+  .flagship-container {
+    border-bottom: 1px solid #e9e9e9;
   }
   .flagship-left {
     display: none;
