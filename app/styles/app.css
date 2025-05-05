@@ -1228,7 +1228,8 @@ MEDIA QUIERIES
 }
 @media (max-width: 499px) {
   html,
-  main {
+  main,
+  body {
     background-color: white;
   }
   .overlay.expanded aside#mobile {
