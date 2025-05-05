@@ -1195,6 +1195,10 @@ MEDIA QUIERIES
   .footer-right p {
     margin-top: 3rem;
   }
+  .footer-menu > a {
+    font-family: 'regular';
+    font-weight: normal;
+  }
   .newsletter-bar {
     margin-top: 0.5rem;
   }
