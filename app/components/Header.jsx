@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import React, {Suspense} from 'react';
 import {Await, NavLink, useAsyncValue} from '@remix-run/react';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
@@ -28,6 +28,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
         layoutRoot
         layoutScroll
       >
+        <CartToggle cart={cart} />
         <motion.div
           layout
           initial={{opacity: 0}}
@@ -48,7 +49,6 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     />
     <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} /> */}
       </motion.header>
-      <CartToggle cart={cart} />
     </>
   );
 }
@@ -196,7 +196,7 @@ export function HeaderMenu({
 
   return (
     <nav className={className} role="navigation">
-      {viewport === 'mobile' && (
+      {/* {viewport === 'mobile' && (
         <NavLink
           end
           onClick={close}
@@ -206,7 +206,7 @@ export function HeaderMenu({
         >
           Home
         </NavLink>
-      )}
+      )} */}
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
 
@@ -217,7 +217,49 @@ export function HeaderMenu({
           item.url.includes(primaryDomainUrl)
             ? new URL(item.url).pathname
             : item.url;
-        return (
+        console.log(item.id);
+        return item.items && item.items.length > 0 ? (
+          <React.Fragment key={item.id}>
+            <NavLink
+              className="header-menu-item"
+              end
+              key={item.id}
+              onClick={(e) => {
+                e.preventDefault();
+              }}
+              prefetch="intent"
+              style={{cursor: 'auto'}}
+              to={url}
+            >
+              {''}
+            </NavLink>
+            {item.items.map((item) => {
+              if (!item.url) return null;
+
+              // if the url is internal, we strip the domain
+              const url =
+                item.url.includes('myshopify.com') ||
+                item.url.includes(publicStoreDomain) ||
+                item.url.includes(primaryDomainUrl)
+                  ? new URL(item.url).pathname
+                  : item.url;
+
+              return (
+                <NavLink
+                  className="header-menu-item"
+                  end
+                  key={`${item.id}${item.resourceId}`}
+                  onClick={close}
+                  prefetch="intent"
+                  style={activeLinkStyle}
+                  to={url}
+                >
+                  {item.title}
+                </NavLink>
+              );
+            })}
+          </React.Fragment>
+        ) : (
           <NavLink
             className="header-menu-item"
             end
@@ -295,7 +337,8 @@ function CartBadge({count}) {
       href="/cart"
       onClick={(e) => {
         e.preventDefault();
-        open('cart');
+        if (isOpen) close();
+        else open('cart');
         publish('cart_viewed', {
           cart,
           prevCart,

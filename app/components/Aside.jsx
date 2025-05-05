@@ -70,6 +70,13 @@ Aside.Provider = function AsideProvider({children}) {
   const [type, setType] = useState('closed');
   const [growVertically, setGrowVertically] = useState(false);
   const [growHorizontally, setGrowHorizontally] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    window
+      .matchMedia('(max-width:500px)')
+      .addEventListener('change', (e) => setIsMobile(e.matches));
+    if (window.matchMedia('(max-width:500px)').matches) setIsMobile(true);
+  }, []);
 
   return (
     <AsideContext.Provider
@@ -87,7 +94,7 @@ Aside.Provider = function AsideProvider({children}) {
           }
         },
         close: () => {
-          if (type === 'cart') {
+          if (type === 'cart' && !isMobile) {
             setGrowVertically(false);
             setTimeout(() => {
               setGrowHorizontally(false);

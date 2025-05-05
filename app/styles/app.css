@@ -3,7 +3,7 @@
   --cart-aside-summary-height-with-discount: 300px;
   --cart-aside-summary-height: 250px;
   --grid-item-width: 355px;
-  --header-height: 64px;
+  --header-height: 66px;
   --color-dark: #000;
   --color-light: #fff;
   --filter-height: 67px;
@@ -56,6 +56,7 @@ aside#mobile {
   right: auto;
   left: calc(-1 * var(--aside-width));
   border-left: 1px solid #e9e9e9;
+  padding: 2rem 1rem;
 }
 aside#cart {
   border: 1px solid #e9e9e9;
@@ -63,8 +64,8 @@ aside#cart {
   top: 1rem;
   height: auto;
   max-height: 34px;
-  max-width: 70px;
-  min-width: 70px;
+  max-width: 58px;
+  min-width: 58px;
   overflow: hidden;
   transition:
     max-height 400ms ease-in-out,
@@ -85,12 +86,15 @@ aside#cart header {
   border-bottom: 1px solid #e9e9e9;
   padding: 0 0.5rem;
 }
+aside#mobile header {
+  display: none;
+}
 
 aside header h3 {
   margin: 0;
 }
 aside#cart header h3 {
-  font-size: medium;
+  font-size: 13px;
   padding: 0.5rem 0;
   font-weight: normal;
 }
@@ -118,6 +122,9 @@ aside header h2 {
 
 aside main {
   margin: 1rem;
+}
+aside#mobile main {
+  margin: 0;
 }
 
 aside p {
@@ -241,7 +248,7 @@ button.reset:hover:not(:has(> *)) {
   height: 100vh;
   justify-content: space-between;
   align-items: center;
-  padding-block: 1rem;
+  padding-block: 2rem;
   box-sizing: border-box;
   width: var(--header-width);
 }
@@ -1163,9 +1170,31 @@ MEDIA QUIERIES
   main {
     background-color: white;
   }
+  .overlay.expanded aside#mobile {
+    transform: translateX(var(--aside-width));
+  }
+  .overlay.expanded aside#cart {
+    transform: translateX(-100vw) !important;
+  }
+  aside#mobile,
+  aside#cart {
+    top: var(--header-height);
+    max-width: 100vw !important;
+    min-width: 100vw !important;
+    border-top: 1px solid #e9e9e9;
+  }
+  aside#cart {
+    right: -100vw;
+    max-height: calc(100vh - var(--header-height));
+    min-height: calc(100vh - var(--header-height));
+    transition: all 400ms ease-in-out;
+  }
+  aside#cart header {
+    padding: 1rem;
+  }
   .header {
     position: fixed;
-    height: auto;
+    height: var(--header-height);
     width: 100vw !important;
     flex-direction: row;
     align-items: center;
@@ -1173,11 +1202,24 @@ MEDIA QUIERIES
     z-index: 1000;
     flex-direction: row-reverse !important;
   }
+  .header a > svg {
+    width: 32.74px !important;
+    height: 33.76px !important;
+  }
   .header > button {
     position: relative !important;
+    left: auto !important;
+    bottom: auto !important;
+    transform: none !important;
+    display: flex;
+    align-items: center;
   }
   .header > div {
     margin: auto;
+  }
+  .cart-badge {
+    position: static;
+    display: inline !important;
   }
 
   body,
