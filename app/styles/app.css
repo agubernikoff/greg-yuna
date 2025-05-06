@@ -680,7 +680,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   grid-column: 1 / 5;
   border-top: 1px solid #e9e9e9;
   border-bottom: 1px solid #e9e9e9;
-  padding: 1rem;
+  padding: 0.5rem;
 }
 
 .collection-grid-item {
