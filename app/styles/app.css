@@ -1408,7 +1408,7 @@ MEDIA QUIERIES
   }
   .header > button {
     position: relative !important;
-    left: auto !important;
+    left: -10px !important;
     bottom: auto !important;
     transform: none !important;
     display: flex;
