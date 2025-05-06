@@ -237,7 +237,7 @@ export function HeaderMenu({
             item.url.includes(primaryDomainUrl)
               ? new URL(item.url).pathname
               : item.url;
-          console.log(item.id);
+
           return item.items && item.items.length > 0 ? (
             <React.Fragment key={item.id}>
               <NavLink

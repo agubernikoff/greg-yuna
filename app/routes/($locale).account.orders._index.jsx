@@ -98,7 +98,6 @@ function EmptyOrders() {
  */
 function OrderItem({order}) {
   const fulfillmentStatus = flattenConnection(order.fulfillments)[0]?.status;
-  console.log(order);
   return (
     <>
       <Link to={`/account/orders/${btoa(order.id)}`}>

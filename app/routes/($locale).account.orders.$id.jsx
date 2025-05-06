@@ -65,7 +65,6 @@ export default function OrderRoute() {
     discountPercentage,
     fulfillmentStatus,
   } = useLoaderData();
-  console.log(order);
   return (
     <div className="account-order">
       <div style={{paddingTop: '.25rem'}}>

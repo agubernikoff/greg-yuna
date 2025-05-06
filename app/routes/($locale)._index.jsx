@@ -129,7 +129,7 @@ function RecommendedProducts({products}) {
 }
 
 function Collections({collections}) {
-  console.log(collections);
+  // console.log(collections);
   const mapped = collections.nodes.map((node) => (
     <CollectionGridItem key={node.id} node={node} />
   ));
