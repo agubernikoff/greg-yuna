@@ -19,10 +19,13 @@
 body,
 button,
 p,
-a,
-a:active {
+a {
   font-family: 'regular';
   font-size: 13px;
+  font-weight: normal !important;
+}
+
+a:active {
   font-weight: normal !important;
 }
 
