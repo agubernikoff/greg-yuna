@@ -1511,4 +1511,24 @@ MEDIA QUIERIES
     width: 100%;
     background-color: white;
   }
+  .product {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--header-height);
+  }
+  .product-images {
+    position: relative;
+    display: flex;
+    height: auto;
+    margin-right: 0;
+  }
+  .product-title-price {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    align-items: flex-start;
+  }
+  .product-main-details {
+    margin-top: 0;
+  }
 }
