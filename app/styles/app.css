@@ -673,9 +673,10 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .you-may-also-like-container {
   display: contents;
 }
-
+.you-may-also-like-container > div > div > a {
+  margin-bottom: 0;
+}
 .recs-title {
-  width: 100%;
   background: white;
   grid-column: 1 / 5;
   border-top: 1px solid #e9e9e9;
