@@ -32,13 +32,14 @@ export async function loader(args) {
  * @param {LoaderFunctionArgs}
  */
 async function loadCriticalData({context}) {
-  const [{collections}] = await Promise.all([
+  const [newArrivals, {collections}] = await Promise.all([
+    context.storefront.query(NEW_ARRIVALS_QUERY),
     context.storefront.query(FEATURED_COLLECTION_QUERY),
     // Add other queries here, so that they are loaded in parallel
   ]);
-
+  console.log(newArrivals);
   return {
-    featuredCollection: collections.nodes[0],
+    featuredCollection: newArrivals.collection,
     collections,
   };
 }
@@ -223,6 +224,85 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
   }
 `;
 
+const PRODUCT_ITEM_FRAGMENT = `#graphql
+  fragment ProductItem on Product {
+    id
+    title
+    handle
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    featuredImage {
+      id
+      altText
+      url
+      width
+      height
+    }
+    images(first: 2) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
+    }
+  }
+`;
+
+const NEW_ARRIVALS_QUERY = `#graphql
+  ${PRODUCT_ITEM_FRAGMENT}
+  query Collection(
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    collection(handle: "new-arrivals") {
+      id
+      handle
+      title
+      description
+      image {
+        id
+        url
+        altText
+        width
+        height
+      }
+      products(
+        first: 6
+      ) {
+        filters{
+          id
+          label
+          presentation
+          type
+          values{
+            count
+            id
+            input
+            label
+            swatch{
+              color
+            }
+          }
+        }
+        nodes {
+          ...ProductItem
+        }
+        pageInfo {
+          hasPreviousPage
+          hasNextPage
+          endCursor
+          startCursor
+        }
+      }
+    }
+  }
+`;
 /** @typedef {import('@shopify/remix-oxygen').LoaderFunctionArgs} LoaderFunctionArgs */
 /** @template T @typedef {import('@remix-run/react').MetaFunction<T>} MetaFunction */
 /** @typedef {import('storefrontapi.generated').FeaturedCollectionFragment} FeaturedCollectionFragment */
