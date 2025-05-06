@@ -1,4 +1,5 @@
 import {useLoaderData, NavLink, useLocation} from '@remix-run/react';
+import {useState, useEffect, Suspense} from 'react';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -10,6 +11,7 @@ import {
 import {ProductPrice} from '~/components/ProductPrice';
 import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
+import ProductGridItem from '~/components/ProductGridItem';
 
 /**
  * @type {MetaFunction<typeof loader>}
@@ -73,15 +75,24 @@ async function loadCriticalData({context, params, request}) {
  * @param {LoaderFunctionArgs}
  */
 function loadDeferredData({context, params}) {
+  const {handle} = params;
+  const {storefront} = context;
+
   // Put any API calls that is not critical to be available on first page render
   // For example: product reviews, product recommendations, social feeds.
+  const recs = storefront.query(PRODUCT_RECOMENDATIONS_QUERY, {
+    variables: {handle},
+  });
+  const compliments = storefront.query(COMPLEMENTARY_QUERY, {
+    variables: {handle},
+  });
 
-  return {};
+  return {recs, compliments};
 }
 
 export default function Product() {
   /** @type {LoaderReturnData} */
-  const {product} = useLoaderData();
+  const {product, compliments, recs} = useLoaderData();
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -116,67 +127,115 @@ export default function Product() {
   }
 
   return (
-    <div className="product">
-      <div className="product-images">{productImage}</div>
-      <div className="product-main">
-        <div className="padded-filter-div full-border breadcrumbs">
-          <>
-            <NavLink className="crumb" to="/">
-              Home
-            </NavLink>
-            {' → '}
-            {product.collections.nodes[0] && state !== '/' ? (
-              <>
-                <NavLink className="crumb" to={to}>
-                  {state
-                    ? capitalizeFirstLetter(state.split('/collections/')[1])
-                    : product.collections.nodes[0].title}
-                </NavLink>
-                {' → '}
-              </>
-            ) : null}
-            <span className="crumb" sty>
-              {title}
-            </span>
-          </>
-        </div>
-
-        <div className="product-main-details">
-          <div className="product-title-price">
-            <p>{title}</p>
-            <ProductPrice
-              price={selectedVariant?.price}
-              compareAtPrice={selectedVariant?.compareAtPrice}
-            />
+    <>
+      <div className="product">
+        <div className="product-images">{productImage}</div>
+        <div className="product-main">
+          <div className="padded-filter-div full-border breadcrumbs">
+            <>
+              <NavLink className="crumb" to="/">
+                Home
+              </NavLink>
+              {' → '}
+              {product.collections.nodes[0] && state !== '/' ? (
+                <>
+                  <NavLink className="crumb" to={to}>
+                    {state
+                      ? capitalizeFirstLetter(state.split('/collections/')[1])
+                      : product.collections.nodes[0].title}
+                  </NavLink>
+                  {' → '}
+                </>
+              ) : null}
+              <span className="crumb" sty>
+                {title}
+              </span>
+            </>
           </div>
 
-          <br />
-          <ProductForm
-            productOptions={productOptions}
-            selectedVariant={selectedVariant}
+          <div className="product-main-details">
+            <div className="product-title-price">
+              <p>{title}</p>
+              <ProductPrice
+                price={selectedVariant?.price}
+                compareAtPrice={selectedVariant?.compareAtPrice}
+              />
+            </div>
+
+            <br />
+            <ProductForm
+              productOptions={productOptions}
+              selectedVariant={selectedVariant}
+            />
+            <br />
+            <br />
+            <p style={{color: '#999999'}}>Details:</p>
+            <br />
+            <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
+            <br />
+          </div>
+          <Analytics.ProductView
+            data={{
+              products: [
+                {
+                  id: product.id,
+                  title: product.title,
+                  price: selectedVariant?.price.amount || '0',
+                  vendor: product.vendor,
+                  variantId: selectedVariant?.id || '',
+                  variantTitle: selectedVariant?.title || '',
+                  quantity: 1,
+                },
+              ],
+            }}
           />
-          <br />
-          <br />
-          <p style={{color: '#999999'}}>Details:</p>
-          <br />
-          <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
-          <br />
         </div>
-        <Analytics.ProductView
-          data={{
-            products: [
-              {
-                id: product.id,
-                title: product.title,
-                price: selectedVariant?.price.amount || '0',
-                vendor: product.vendor,
-                variantId: selectedVariant?.id || '',
-                variantTitle: selectedVariant?.title || '',
-                quantity: 1,
-              },
-            ],
-          }}
-        />
+      </div>
+      <YouMayAlsoLike recs={recs} compliments={compliments} />
+    </>
+  );
+}
+
+function YouMayAlsoLike({compliments, recs}) {
+  const [resolvedCompliments, setResolvedCompliments] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    Promise.all([compliments, recs])
+      .then(([complimentsRes, recsRes]) => {
+        const complimentsData = complimentsRes?.productRecommendations || [];
+        const recsData = recsRes?.productRecommendations || [];
+
+        const uniqueProducts = [
+          ...new Map(
+            [...complimentsData, ...recsData]
+              .filter((p) => p?.id)
+              .map((p) => [p.id, p]),
+          ).values(),
+        ].slice(0, 4);
+
+        setResolvedCompliments(uniqueProducts);
+      })
+      .finally(() => setLoading(false));
+  }, [compliments, recs]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  return (
+    <div className="you-may-also-like-container">
+      <p className="recs-title">Recommended Products</p>
+      <div className="recommended-products">
+        <div className="products-grid">
+          {resolvedCompliments.map((product, index) => (
+            <ProductGridItem
+              key={product.id}
+              product={product}
+              loading={index < 8 ? 'eager' : undefined}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
