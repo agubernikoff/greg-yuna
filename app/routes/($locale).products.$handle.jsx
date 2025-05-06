@@ -129,9 +129,10 @@ export default function Product() {
   return (
     <>
       <div className="product">
-        <div className="breadcrumbs-container">
-          <div className="breadcrumbs-inner">
-            <div className="padded-filter-div full-border breadcrumbs">
+        <div className="product-images">{productImage}</div>
+        <div className="product-main">
+          <div className="padded-filter-div full-border breadcrumbs">
+            <>
               <NavLink className="crumb" to="/">
                 Home
               </NavLink>
@@ -146,13 +147,12 @@ export default function Product() {
                   {' → '}
                 </>
               ) : null}
-              <span className="crumb">{title}</span>
-            </div>
+              <span className="crumb" sty>
+                {title}
+              </span>
+            </>
           </div>
-        </div>
 
-        <div className="product-images">{productImage}</div>
-        <div className="product-main">
           <div className="product-main-details">
             <div className="product-title-price">
               <p>{title}</p>
