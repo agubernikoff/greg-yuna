@@ -873,7 +873,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 * --------------------------------------------------
 */
 .product {
-  background-color: white;
+  background-color: transparent;
   grid-column: span 4;
   display: grid;
 
@@ -894,6 +894,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  margin-right: 0.5px;
 }
 
 .product-images::-webkit-scrollbar {
@@ -903,11 +904,17 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .product-image {
   display: flex;
   flex-direction: column;
+  margin-bottom: 1px;
+}
+.product-image:last-of-type {
+  margin-bottom: 0;
 }
 
 .product-main {
   grid-column: span 2;
-  margin: 1rem;
+  padding: 1rem;
+  margin-left: 0.5px;
+  background-color: white;
 }
 
 .breadcrumbs,
