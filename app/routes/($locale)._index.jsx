@@ -185,7 +185,7 @@ const FEATURED_COLLECTION_QUERY = `#graphql
   }
   query FeaturedCollection($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    collections(first: 4, sortKey: UPDATED_AT, reverse: true) {
+    collections(first: 4, sortKey: UPDATED_AT, reverse: true, query:"NOT title:'New Arrivals'") {
       nodes {
         ...FeaturedCollection
       }
