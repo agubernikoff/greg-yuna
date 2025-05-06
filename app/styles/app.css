@@ -1441,6 +1441,8 @@ MEDIA QUIERIES
   }
   .recommended-products {
     display: block;
+    background-color: #e9e9e9;
+    border-bottom: 1px solid #e9e9e9;
   }
   .recommended-products-grid,
   .products-grid {
@@ -1448,6 +1450,7 @@ MEDIA QUIERIES
     flex-direction: row;
     flex-wrap: wrap;
     column-gap: 1px;
+    row-gap: 1px;
   }
   .product-item {
     width: calc(50% - 0.5px);
