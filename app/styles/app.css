@@ -266,6 +266,13 @@ button.reset:hover:not(:has(> *)) {
   flex-direction: column;
   grid-gap: 0.4rem;
 }
+.header-menu-mobile:hover > .header-menu-item {
+  color: #999999;
+}
+.header-menu-item:hover {
+  color: black !important;
+  text-decoration: none;
+}
 
 .header-menu-desktop {
   display: none;
@@ -281,6 +288,7 @@ button.reset:hover:not(:has(> *)) {
   cursor: pointer;
   font-size: 25px;
   font-family: 'regular';
+  transition: color 400ms ease-in-out;
 }
 
 .header-menu-item-blank {
@@ -301,7 +309,12 @@ button.reset:hover:not(:has(> *)) {
 }
 .header-menu-item-aux {
   font-size: 12px;
-  color: #999999 !important;
+  color: #999999;
+  transition: color 400ms ease-in-out;
+}
+.header-menu-item-aux:hover {
+  color: black;
+  text-decoration: none;
 }
 .header-ctas {
   align-items: center;
@@ -523,6 +536,7 @@ aside#mobile .predictive-search-form {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px solid #999999;
+  transition: border-color 400ms ease-in-out;
 }
 aside#mobile .predictive-search-form > div {
   width: 100%;
@@ -546,6 +560,13 @@ aside#mobile .predictive-search-form > button {
   background: none;
   border: none;
   color: #999999;
+  transition: color 400ms ease-in-out;
+}
+aside#mobile .predictive-search-form:has(input:focus-visible) {
+  border-color: black;
+}
+aside#mobile .predictive-search-form:has(input:focus-visible) > button {
+  color: black;
 }
 
 .predictive-search-result {

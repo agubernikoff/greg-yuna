@@ -478,10 +478,11 @@ const FALLBACK_HEADER_MENU = {
  * }}
  */
 function activeLinkStyle({isActive, isPending}) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'black',
-  };
+  return null;
+  // {
+  //   fontWeight: isActive ? 'bold' : undefined,
+  //   color: isPending ? 'grey' : 'black',
+  // };
 }
 
 /** @typedef {'desktop' | 'mobile'} Viewport */
