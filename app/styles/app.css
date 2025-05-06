@@ -1580,4 +1580,7 @@ MEDIA QUIERIES
   .product-main-details {
     margin-top: 0;
   }
+  .pp-page {
+    width: calc(100% - 2rem);
+  }
 }
