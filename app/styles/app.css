@@ -1554,6 +1554,7 @@ MEDIA QUIERIES
     justify-content: space-between;
     margin-bottom: 1rem;
     align-items: flex-start;
+    flex-direction: column;
   }
   .product-main-details {
     margin-top: 0;
