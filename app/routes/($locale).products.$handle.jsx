@@ -129,30 +129,29 @@ export default function Product() {
   return (
     <>
       <div className="product">
+        <div className="padded-filter-div full-border breadcrumbs">
+          <>
+            <NavLink className="crumb" to="/">
+              Home
+            </NavLink>
+            {' → '}
+            {product.collections.nodes[0] && state !== '/' ? (
+              <>
+                <NavLink className="crumb" to={to}>
+                  {state
+                    ? capitalizeFirstLetter(state.split('/collections/')[1])
+                    : product.collections.nodes[0].title}
+                </NavLink>
+                {' → '}
+              </>
+            ) : null}
+            <span className="crumb" sty>
+              {title}
+            </span>
+          </>
+        </div>
         <div className="product-images">{productImage}</div>
         <div className="product-main">
-          <div className="padded-filter-div full-border breadcrumbs">
-            <>
-              <NavLink className="crumb" to="/">
-                Home
-              </NavLink>
-              {' → '}
-              {product.collections.nodes[0] && state !== '/' ? (
-                <>
-                  <NavLink className="crumb" to={to}>
-                    {state
-                      ? capitalizeFirstLetter(state.split('/collections/')[1])
-                      : product.collections.nodes[0].title}
-                  </NavLink>
-                  {' → '}
-                </>
-              ) : null}
-              <span className="crumb" sty>
-                {title}
-              </span>
-            </>
-          </div>
-
           <div className="product-main-details">
             <div className="product-title-price">
               <p>{title}</p>

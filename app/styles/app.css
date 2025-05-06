@@ -1315,6 +1315,14 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 MEDIA QUIERIES
 */
 @media (min-width: 500px) {
+  .product > .padded-filter-div.full-border.breadcrumbs {
+    position: fixed;
+    top: 1rem;
+    z-index: 1;
+    right: calc(1rem + var(--cart-badge-adjustment));
+    left: calc(50vw + var(--header-width) - 1rem);
+    background-color: white;
+  }
 }
 
 @media (max-width: 499px) {
