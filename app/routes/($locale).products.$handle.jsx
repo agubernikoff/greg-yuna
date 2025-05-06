@@ -126,21 +126,12 @@ export default function Product() {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 500);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    return () => window.removeEventListener('resize', checkMobile);
-  }, []);
-
   return (
     <>
       <div className="product">
-        {isMobile ? (
-          <div className="padded-filter-div full-border breadcrumbs">
-            <>
+        <div className="breadcrumbs-container">
+          <div className="breadcrumbs-inner">
+            <div className="padded-filter-div full-border breadcrumbs">
               <NavLink className="crumb" to="/">
                 Home
               </NavLink>
@@ -155,38 +146,13 @@ export default function Product() {
                   {' → '}
                 </>
               ) : null}
-              <span className="crumb" sty>
-                {title}
-              </span>
-            </>
+              <span className="crumb">{title}</span>
+            </div>
           </div>
-        ) : null}
+        </div>
+
         <div className="product-images">{productImage}</div>
         <div className="product-main">
-          {isMobile ? null : (
-            <div className="padded-filter-div full-border breadcrumbs">
-              <>
-                <NavLink className="crumb" to="/">
-                  Home
-                </NavLink>
-                {' → '}
-                {product.collections.nodes[0] && state !== '/' ? (
-                  <>
-                    <NavLink className="crumb" to={to}>
-                      {state
-                        ? capitalizeFirstLetter(state.split('/collections/')[1])
-                        : product.collections.nodes[0].title}
-                    </NavLink>
-                    {' → '}
-                  </>
-                ) : null}
-                <span className="crumb" sty>
-                  {title}
-                </span>
-              </>
-            </div>
-          )}
-
           <div className="product-main-details">
             <div className="product-title-price">
               <p>{title}</p>

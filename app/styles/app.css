@@ -919,7 +919,15 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   margin-left: 0.5px;
   background-color: white;
 }
+.breadcrumbs-container {
+  grid-column: span 4;
+  order: -1;
+}
 
+.breadcrumbs-inner {
+  background-color: white;
+  padding: 1rem;
+}
 .breadcrumbs,
 .crumb {
   color: #999999;
@@ -941,7 +949,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .product-title-price {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 1rem;
 }
 
@@ -1315,7 +1323,26 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 MEDIA QUIERIES
 */
 @media (min-width: 500px) {
+  .product {
+    grid-template-areas:
+      'images breadcrumbs'
+      'images main';
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .product-images {
+    grid-area: images;
+  }
+
+  .product-main {
+    grid-area: main;
+  }
+
+  .breadcrumbs-container {
+    grid-area: breadcrumbs;
+  }
 }
+
 @media (max-width: 499px) {
   html,
   main,
@@ -1530,5 +1557,8 @@ MEDIA QUIERIES
   }
   .product-main-details {
     margin-top: 0;
+  }
+  .breadcrumbs-inner {
+    padding: 0;
   }
 }
