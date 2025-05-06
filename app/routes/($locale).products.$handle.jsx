@@ -126,6 +126,9 @@ export default function Product() {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
+  const notNewArrivalsCollection = product.collections.nodes.find(
+    (col) => col.title !== 'New Arrivals',
+  );
   return (
     <>
       <div className="product">
@@ -135,12 +138,13 @@ export default function Product() {
               Home
             </NavLink>
             {' → '}
-            {product.collections.nodes[0] && state !== '/' ? (
+            {(notNewArrivalsCollection && state?.includes('collections')) ||
+            state?.includes('products') ? (
               <>
                 <NavLink className="crumb" to={to}>
-                  {state
+                  {state?.includes('collections')
                     ? capitalizeFirstLetter(state.split('/collections/')[1])
-                    : product.collections.nodes[0].title}
+                    : notNewArrivalsCollection.title}
                 </NavLink>
                 {' → '}
               </>
@@ -331,7 +335,7 @@ const PRODUCT_FRAGMENT = `#graphql
       description
       title
     }
-    collections(first:1){
+    collections(first:2){
       nodes{
         handle
         title
