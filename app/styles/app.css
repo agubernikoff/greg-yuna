@@ -1332,6 +1332,8 @@ MEDIA QUIERIES
 
   .product-images {
     grid-area: images;
+    background-color: white;
+    height: 100vh;
   }
 
   .product-main {
@@ -1340,6 +1342,7 @@ MEDIA QUIERIES
 
   .breadcrumbs-container {
     grid-area: breadcrumbs;
+    background-color: white;
   }
 }
 

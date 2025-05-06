@@ -135,7 +135,7 @@ export default function Product() {
               <NavLink className="crumb" to="/">
                 Home
               </NavLink>
-
+              {' → '}
               {product.collections.nodes[0] && state !== '/' ? (
                 <>
                   <NavLink className="crumb" to={to}>
