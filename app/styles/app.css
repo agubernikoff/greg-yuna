@@ -1327,6 +1327,14 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   margin: auto;
   background: white;
 }
+.page-contact {
+  padding: 10rem 0 !important;
+  width: 100%;
+  display: grid;
+  grid-column: 1 / -1;
+  margin: auto;
+  background: white;
+}
 
 .pp-page {
   width: 50%;
@@ -1350,6 +1358,9 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 
 .header-aux-page {
   font-size: 17px;
+}
+.page-contact > main > div > .section-header-aux {
+  margin-bottom: 1rem;
 }
 
 /* 
