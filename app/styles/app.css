@@ -1311,6 +1311,42 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 }
 
 /* 
+/aux pages
+*/
+.page {
+  padding: 10rem 0 !important;
+  width: 100%;
+  display: grid;
+  grid-column: 1 / -1;
+  margin: auto;
+  background: white;
+}
+
+.pp-page {
+  width: 50%;
+  margin: auto;
+}
+
+.pp-page > p > strong {
+  font-family: 'regular';
+  font-weight: bold !important;
+}
+
+.pp-page a {
+  text-decoration: underline !important;
+}
+
+.section-header-aux {
+  border-top: 1px solid #e9e9e9;
+  margin-top: 4rem;
+  padding-top: 0.5rem;
+}
+
+.header-aux-page {
+  font-size: 17px;
+}
+
+/* 
 MEDIA QUIERIES
 */
 @media (min-width: 500px) {
@@ -1371,7 +1407,7 @@ MEDIA QUIERIES
   }
   .header > button {
     position: relative !important;
-    left: auto !important;
+    left: -10px !important;
     bottom: auto !important;
     transform: none !important;
     display: flex;
@@ -1542,5 +1578,8 @@ MEDIA QUIERIES
   }
   .product-main-details {
     margin-top: 0;
+  }
+  .pp-page {
+    width: calc(100% - 2rem);
   }
 }
