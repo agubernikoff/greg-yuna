@@ -880,9 +880,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   grid-column: span 4;
   display: grid;
 
-  @media (min-width: 45em) {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  grid-template-columns: repeat(4, 1fr);
 }
 
 .product p {
@@ -898,6 +896,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   scrollbar-width: none;
   -ms-overflow-style: none;
   margin-right: 0.5px;
+  background: white;
 }
 
 .product-images::-webkit-scrollbar {
