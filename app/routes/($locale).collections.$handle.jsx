@@ -1,5 +1,5 @@
 import {redirect} from '@shopify/remix-oxygen';
-import {useLoaderData, NavLink} from '@remix-run/react';
+import {useLoaderData, NavLink, useSearchParams} from '@remix-run/react';
 import {
   getPaginationVariables,
   Image,
@@ -9,7 +9,7 @@ import {
 import {useVariantUrl} from '~/lib/variants';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import ProductGridItem from '~/components/ProductGridItem';
-import {useState} from 'react';
+import {useState, useRef, useEffect} from 'react';
 import {AnimatePresence, motion} from 'motion/react';
 
 /**
@@ -40,17 +40,29 @@ export async function loader(args) {
 async function loadCriticalData({context, params, request}) {
   const {handle} = params;
   const {storefront} = context;
+  const url = new URL(request.url);
+  const searchParams = new URLSearchParams(url.search);
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 24,
   });
+  const filters = [];
+  let reverse = false;
+  let sortKey = null;
 
   if (!handle) {
     throw redirect('/collections');
   }
 
+  if (searchParams.has('filter')) {
+    filters.push(...searchParams.getAll('filter').map((x) => JSON.parse(x)));
+  }
+  if (searchParams.has('sortKey')) sortKey = searchParams.get('sortKey');
+  if (searchParams.has('reverse'))
+    reverse = searchParams.get('reverse') === 'true';
+
   const [{collection}] = await Promise.all([
     storefront.query(COLLECTION_QUERY, {
-      variables: {handle, ...paginationVariables},
+      variables: {handle, filters, reverse, sortKey, ...paginationVariables},
       // Add other queries here, so that they are loaded in parallel
     }),
   ]);
@@ -63,6 +75,7 @@ async function loadCriticalData({context, params, request}) {
 
   return {
     collection,
+    handle,
   };
 }
 
@@ -83,7 +96,7 @@ export default function Collection() {
   return (
     <div className="collection">
       <div className="filter-placeholder" />
-      <Filter title={collection.title} />
+      <Filter title={collection.title} filters={collection.products.filters} />
       <PaginatedResourceSection
         connection={collection.products}
         resourcesClassName="products-grid"
@@ -108,7 +121,84 @@ export default function Collection() {
   );
 }
 
-function Filter({title}) {
+function Filter({title, filters}) {
+  // console.log(filters);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  function addFilter(input) {
+    setSearchParams(
+      (prev) => {
+        prev.set('filter', input);
+        return prev;
+      },
+      {preventScrollReset: true},
+    );
+  }
+
+  function removeFilter(input) {
+    setSearchParams(
+      (prev) => {
+        const newParams = new URLSearchParams(prev); // Clone to avoid mutation
+        const filters = newParams.getAll('filter'); // Get all filter values
+        newParams.delete('filter'); // Remove all instances
+
+        // Re-add only the filters that are NOT being removed
+        filters
+          .filter((f) => f !== input)
+          .forEach((f) => newParams.append('filter', f));
+
+        return newParams;
+      },
+      {preventScrollReset: true},
+    );
+  }
+
+  function isChecked(input) {
+    if (input === 'viewAll') return !searchParams.get('filter');
+    return searchParams.getAll('filter').includes(input);
+  }
+
+  function clearFilter() {
+    setSearchParams(
+      (prev) => {
+        const newParams = new URLSearchParams(prev);
+        newParams.delete('filter'); // Remove all `filter` parameters
+        return newParams;
+      },
+      {preventScrollReset: true},
+    );
+  }
+
+  function addSort(input) {
+    const parsed = JSON.parse(input);
+    setSearchParams(
+      (prev) => {
+        prev.set('reverse', Boolean(parsed.reverse));
+        prev.set('sortKey', parsed.sortKey);
+        return prev;
+      },
+      {preventScrollReset: true},
+    );
+  }
+
+  function removeSort() {
+    setSearchParams(
+      (prev) => {
+        prev.delete('reverse');
+        prev.delete('sortKey');
+        return prev;
+      },
+      {preventScrollReset: true},
+    );
+  }
+
+  function isSortChecked(input) {
+    const parsed = JSON.parse(input);
+    return (
+      searchParams.get('reverse') === parsed.reverse.toString() &&
+      searchParams.get('sortKey') === parsed.sortKey
+    );
+  }
   return (
     <div className="filter-container">
       <div className="padded-filter-div full-border">
@@ -121,14 +211,15 @@ function Filter({title}) {
         </>
       </div>
       <div className="filter-space-between bottom-border">
-        <div style={{display: 'flex'}}>
-          <a className="padded-filter-div inline-border">View All</a>
-          <a className="padded-filter-div inline-border">Rings</a>
-          <a className="padded-filter-div inline-border">Necklaces</a>
-          <a className="padded-filter-div inline-border">Pendants</a>
-          <a className="padded-filter-div inline-border">Earrings</a>
-          <a className="padded-filter-div inline-border">Bracelets</a>
-        </div>
+        <Filt
+          filter={filters
+            .find((f) => f.id === 'filter.p.tag')
+            .values.filter((v) => v.id !== 'filter.p.tag.new-arrivals')}
+          addFilter={addFilter}
+          removeFilter={removeFilter}
+          isChecked={isChecked}
+          clearFilter={clearFilter}
+        />
         <Sort />
       </div>
     </div>
@@ -142,7 +233,7 @@ function Sort({}) {
   }
   return (
     <button
-      className="filter-space-between inline-border"
+      className="filter-space-between inline-border sort-by-button"
       onClick={toggleIsOpen}
     >
       <span>Sort By</span>
@@ -194,6 +285,101 @@ function Sort({}) {
   );
 }
 
+function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
+  const filterOrderRef = useRef(new Map()); // Persist across renders
+
+  function storeInitialOrder(filters) {
+    if (filterOrderRef.current.size === 0) {
+      filters.forEach((filter, index) => {
+        filterOrderRef.current.set(filter.label, index);
+      });
+    }
+  }
+
+  function sortByStoredOrder(filters) {
+    return filters.slice().sort((a, b) => {
+      return (
+        (filterOrderRef.current.get(a.label) ?? Infinity) -
+        (filterOrderRef.current.get(b.label) ?? Infinity)
+      );
+    });
+  }
+
+  useEffect(() => {
+    storeInitialOrder(filter);
+  }, []);
+
+  return (
+    <div style={{display: 'flex'}}>
+      <FilterInput
+        label={'View All'}
+        value={'viewAll'}
+        addFilter={clearFilter}
+        isChecked={isChecked}
+        removeFilter={clearFilter}
+      />
+      {sortByStoredOrder(filter).map((v) => (
+        <FilterInput
+          key={v.id}
+          label={v.label}
+          value={v.input}
+          addFilter={addFilter}
+          isChecked={isChecked}
+          removeFilter={removeFilter}
+        />
+      ))}
+    </div>
+  );
+}
+
+function FilterInput({label, value, addFilter, isChecked, removeFilter}) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <>
+      <button
+        className="padded-filter-div inline-border filter-input"
+        onClick={() => {
+          if (!isChecked(value)) addFilter(value);
+          else removeFilter(value);
+        }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        {label}
+
+        {hovered && (
+          <motion.div
+            layoutId="hover-indicator"
+            id="hover-indicator"
+            style={{
+              right: 0,
+              left: 0,
+              height: '3px',
+              position: 'absolute',
+              bottom: 0,
+              background: '#999999',
+            }}
+          />
+        )}
+        {isChecked(value) && (
+          <motion.div
+            layoutId="filter-indicator"
+            id="filter-indicator"
+            style={{
+              right: 0,
+              left: 0,
+              height: '3px',
+              position: 'absolute',
+              bottom: 0,
+              background: 'black',
+            }}
+          />
+        )}
+      </button>
+    </>
+  );
+}
+
 const PRODUCT_ITEM_FRAGMENT = `#graphql
   fragment MoneyProductItem on MoneyV2 {
     amount
@@ -241,18 +427,46 @@ const COLLECTION_QUERY = `#graphql
     $last: Int
     $startCursor: String
     $endCursor: String
+    $filters: [ProductFilter!]
+    $reverse: Boolean
+    $sortKey: ProductCollectionSortKeys
   ) @inContext(country: $country, language: $language) {
     collection(handle: $handle) {
       id
       handle
       title
       description
+      image {
+        id
+        url
+        altText
+        width
+        height
+      }
       products(
         first: $first,
         last: $last,
         before: $startCursor,
-        after: $endCursor
+        after: $endCursor,
+        filters: $filters,
+        reverse: $reverse,
+        sortKey: $sortKey
       ) {
+        filters{
+          id
+          label
+          presentation
+          type
+          values{
+            count
+            id
+            input
+            label
+            swatch{
+              color
+            }
+          }
+        }
         nodes {
           ...ProductItem
         }

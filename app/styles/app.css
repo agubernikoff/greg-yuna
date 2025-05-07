@@ -791,6 +791,12 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   z-index: 2;
   height: var(--filter-height);
 }
+.filter-input {
+  background: inherit;
+  border-block: none;
+  cursor: pointer;
+  position: relative;
+}
 .padded-filter-div {
   padding: 0.5rem;
 }
@@ -813,7 +819,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .inline-border:nth-of-type(2) {
   border-left: none;
 }
-.filter-container button {
+.sort-by-button {
   background: transparent;
   border-block: none;
   cursor: pointer;
