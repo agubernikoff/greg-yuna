@@ -38,9 +38,9 @@ export function ProductForm({productOptions, selectedVariant}) {
   return (
     <div className="product-form">
       {productOptions.map((option) => {
-        if (option.optionValues.length === 1) return null;
+        if (option.optionValues.length === 0) return null;
 
-        const isColorOption = option.name.toLowerCase() === 'color';
+        const isColorOption = option.name.toLowerCase() === 'material';
 
         return (
           <div className="product-options" key={option.name}>
