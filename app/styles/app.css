@@ -1717,6 +1717,9 @@ MEDIA QUIERIES
     aspect-ratio: auto !important;
     height: auto !important;
   }
+  .product-image:only-child img {
+    min-height: auto;
+  }
   .mapped-indicators {
     display: flex;
     flex-direction: row;
