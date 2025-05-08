@@ -254,6 +254,7 @@ function Sort({}) {
           stroke="black"
           initial={{x: 0}}
           animate={{x: isOpen ? '6px' : 0}}
+          transition={{ease: 'easeInOut', duration: 0.15}}
         />
         <line y1="9" x2="16" y2="9" stroke="black" />
         <motion.rect
@@ -265,6 +266,7 @@ function Sort({}) {
           stroke="black"
           initial={{x: 0}}
           animate={{x: isOpen ? '-6px' : 0}}
+          transition={{ease: 'easeInOut', duration: 0.15}}
         />
       </svg>
       <AnimatePresence>
@@ -274,7 +276,7 @@ function Sort({}) {
               initial={{y: '-100%'}}
               animate={{y: 0}}
               exit={{y: '-100%'}}
-              transition={{ease: 'easeInOut'}}
+              transition={{ease: 'easeInOut', duration: 0.15}}
             >
               <div className="sort-container">x</div>
             </motion.div>
@@ -359,6 +361,7 @@ function FilterInput({label, value, addFilter, isChecked, removeFilter}) {
               bottom: 0,
               background: '#999999',
             }}
+            transition={{ease: 'easeInOut', duration: 0.15}}
           />
         )}
         {isChecked(value) && (
@@ -373,6 +376,7 @@ function FilterInput({label, value, addFilter, isChecked, removeFilter}) {
               bottom: 0,
               background: 'black',
             }}
+            transition={{ease: 'easeInOut', duration: 0.15}}
           />
         )}
       </button>
