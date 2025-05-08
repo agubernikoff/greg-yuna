@@ -1,5 +1,6 @@
 import {useLoaderData, NavLink} from '@remix-run/react';
 import {Image} from '@shopify/hydrogen';
+import {useEffect, useState} from 'react';
 
 export const meta = ({data}) => {
   return [
@@ -35,7 +36,9 @@ async function loadCriticalData({context, request}) {
   ]);
 
   return {
-    bespokeImage: bespoke?.metaobjects?.nodes[0]?.fields[0]?.reference?.image,
+    bespokeImages: bespoke?.metaobjects?.nodes
+      .map((node) => node.fields?.[0]?.reference?.image)
+      .filter(Boolean),
   };
 }
 
@@ -53,8 +56,19 @@ function loadDeferredData({context, params}) {
 }
 
 export default function Bespoke() {
-  const {bespokeImage} = useLoaderData();
-  console.log(bespokeImage);
+  const {bespokeImages} = useLoaderData();
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (!bespokeImages || bespokeImages.length < 2) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % bespokeImages.length);
+    }, 4000); // 4 seconds per image
+
+    return () => clearInterval(interval);
+  }, [bespokeImages]);
+
   return (
     <div className="bespoke-container">
       <div className="bespoke-breadcrumbs">
@@ -64,22 +78,25 @@ export default function Bespoke() {
               Home
             </NavLink>
             {' → '}
-            <span className="crumb" sty>
-              Bespoke
-            </span>
+            <span className="crumb">Bespoke</span>
           </>
         </div>
       </div>
       <div className="bespoke-form-container">*insert form here*</div>
       <div className="bespoke-image-container">
-        <Image
-          alt={bespokeImage.altText}
-          //   aspectRatio={`${bespokeImage.width}/${bespokeImage.height}`}
-          src={bespokeImage.url}
-          loading={'eager'}
-          sizes="(min-width: 500px) 50vw, 100vw"
-          loaderOptions={{scale: 1}}
-        />
+        {bespokeImages.map((img, index) => (
+          <Image
+            key={index}
+            alt={img.altText || `Bespoke image ${index + 1}`}
+            src={img.url}
+            loading="eager"
+            sizes="(min-width: 500px) 50vw, 100vw"
+            className={`fade-image ${
+              index === currentIndex ? 'active' : 'inactive'
+            }`}
+            loaderOptions={{scale: 1}}
+          />
+        ))}
       </div>
     </div>
   );
@@ -91,7 +108,7 @@ const BESPOKE_QUERY = `#graphiql
         $country: CountryCode
         $language: LanguageCode
       ) @inContext(country: $country, language: $language) {
-    metaobjects(type: "bespoke_page_image", first: 1, sortKey: "updated_at") {
+    metaobjects(type: "bespoke_page_image", first: 10, sortKey: "updated_at") {
       nodes {
         id
         fields {
