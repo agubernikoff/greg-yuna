@@ -88,6 +88,9 @@ aside#cart header {
   height: auto;
   border-bottom: 1px solid #e9e9e9;
   padding: 0 0.5rem;
+  position: relative;
+  z-index: 2;
+  background: white;
 }
 aside#mobile header {
   display: none;
@@ -459,6 +462,13 @@ button.reset:hover:not(:has(> *)) {
   overflow-y: auto;
   width: auto;
 }
+.cart-main {
+  scrollbar-width: none !important;
+}
+
+.cart-main::-webkit-scrollbar {
+  display: none !important;
+}
 
 .cart-main.with-discount {
   max-height: calc(100vh - var(--cart-aside-summary-height-with-discount));
@@ -498,10 +508,19 @@ button.reset:hover:not(:has(> *)) {
 .cart-summary-aside {
   background: white;
   border-top: 1px solid #e9e9e9;
-  bottom: 0;
+  bottom: 1rem;
   padding-top: 0.75rem;
-  position: relative;
-  width: calc(var(--aside-width) - 40px);
+  position: absolute;
+  width: calc(var(--aside-width) - 2rem);
+  height: 10rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: bottom 400ms ease-in-out;
+}
+
+.cart-lines {
+  padding-bottom: 10rem;
 }
 
 .cart-line-quantity {
@@ -567,6 +586,7 @@ button.reset:hover:not(:has(> *)) {
   border-radius: 0;
   text-decoration: none;
   font-weight: bold;
+  box-sizing: border-box;
 }
 
 .cart-checkout a p {
@@ -1856,27 +1876,15 @@ MEDIA QUIERIES
 
   .cart-summary-aside {
     height: 20vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
     margin-bottom: 1.5rem;
     position: absolute;
+    bottom: 0;
     width: calc(100% - 2rem) !important;
   }
   .cart-lines {
     padding-bottom: 6rem;
   }
-  .cart-checkout {
-    width: calc(100% - 2rem) !important;
-  }
   .cart-line-quantity > form > button {
     color: black;
-  }
-  .cart-main {
-    scrollbar-width: none !important;
-  }
-
-  .cart-main::-webkit-scrollbar {
-    display: none !important;
   }
 }
