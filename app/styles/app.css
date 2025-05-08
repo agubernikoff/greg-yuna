@@ -1879,4 +1879,7 @@ MEDIA QUIERIES
   .cart-main::-webkit-scrollbar {
     display: none !important;
   }
+  .cart-line:last-of-type {
+    padding-bottom: 0.75rem;
+  }
 }
