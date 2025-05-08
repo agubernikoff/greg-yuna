@@ -476,6 +476,7 @@ button.reset:hover:not(:has(> *)) {
   width: 50%;
   border: 1px solid #e9e9e9;
 }
+
 .cart-product-details {
   display: flex;
   flex-direction: column;
@@ -1847,5 +1848,34 @@ MEDIA QUIERIES
 
   .bespoke-breadcrumbs > .padded-filter-div.full-border.breadcrumbs {
     margin-top: var(--header-height);
+  }
+
+  .cart-summary-aside {
+    height: 20vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    position: absolute;
+    width: calc(100% - 2rem) !important;
+  }
+  .cart-lines {
+    padding-bottom: 6rem;
+  }
+  .cart-checkout {
+    width: calc(100% - 2rem) !important;
+  }
+  .cart-line-quantity > form > button {
+    color: black;
+  }
+  .cart-details,
+  .cart-lines {
+    overflow: hidden !important;
+    scrollbar-width: none !important;
+  }
+
+  .cart-details::-webkit-scrollbar,
+  .cart-lines::-webkit-scrollbar {
+    display: none !important;
   }
 }

@@ -10,19 +10,20 @@ export function CartSummary({cart, layout}) {
 
   return (
     <div aria-labelledby="cart-summary" className={className}>
-      <dl className="cart-subtotal">
-        <dt>Subtotal</dt>
-        <dd>
-          {cart.cost?.subtotalAmount?.amount ? (
-            <Money data={cart.cost?.subtotalAmount} />
-          ) : (
-            '-'
-          )}
-        </dd>
-      </dl>
-      {/* <CartDiscounts discountCodes={cart.discountCodes} />
-      <CartGiftCard giftCardCodes={cart.appliedGiftCards} /> */}
       <div className="cart-sub-text">
+        <dl className="cart-subtotal">
+          <dt>Subtotal</dt>
+          <dd>
+            {cart.cost?.subtotalAmount?.amount ? (
+              <Money data={cart.cost?.subtotalAmount} />
+            ) : (
+              '-'
+            )}
+          </dd>
+        </dl>
+        {/* <CartDiscounts discountCodes={cart.discountCodes} />
+      <CartGiftCard giftCardCodes={cart.appliedGiftCards} /> */}
+
         <p>Taxes and shipping calcuated at checkout.</p>
         <a>Submit an order note</a>
       </div>
