@@ -78,29 +78,37 @@ export function CartLineItem({layout, line}) {
  */
 function CartLineQuantity({line}) {
   if (!line || typeof line?.quantity === 'undefined') return null;
-  const {id: lineId, quantity, isOptimistic} = line;
-  const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
-  const nextQuantity = Number((quantity + 1).toFixed(0));
+
+  const {id: lineId, quantity, isOptimistic, merchandise} = line;
+  const availableQty = merchandise?.quantityAvailable ?? Infinity; // fallback just in case
+
+  const prevQuantity = Math.max(0, quantity - 1);
+  const nextQuantity = quantity + 1;
+
+  const disableDecrease = quantity <= 1 || !!isOptimistic;
+  const disableIncrease = !!isOptimistic || quantity >= availableQty;
 
   return (
     <div className="cart-line-quantity">
       <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
         <button
           aria-label="Decrease quantity"
-          disabled={quantity <= 1 || !!isOptimistic}
+          disabled={disableDecrease}
           name="decrease-quantity"
           value={prevQuantity}
         >
-          <span>&#8722; </span>
+          <span>&#8722;</span>
         </button>
       </CartLineUpdateButton>
+
       <p>{quantity}</p>
+
       <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
         <button
           aria-label="Increase quantity"
+          disabled={disableIncrease}
           name="increase-quantity"
           value={nextQuantity}
-          disabled={!!isOptimistic}
         >
           <span>&#43;</span>
         </button>
