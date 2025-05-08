@@ -405,7 +405,20 @@ function CartBadge({count}) {
       }}
       className="cart-badge"
     >
-      {`Bag [${count === null ? <span>&nbsp;</span> : count}]`}
+      <span>{`Bag [${count === null ? <span>&nbsp;</span> : count}]`}</span>
+      <svg
+        width="25"
+        height="21"
+        viewBox="0 0 25 21"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M21.3287 5H3.96032L1 20H24L21.3287 5Z" stroke="black" />
+        <path
+          d="M8 8.5V3C8 1.89543 8.89543 1 10 1H15.5C16.6046 1 17.5 1.89543 17.5 3V8.5"
+          stroke="black"
+        />
+      </svg>
     </a>
   );
 }
