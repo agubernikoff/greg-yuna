@@ -18,6 +18,11 @@ export function CartLineItem({layout, line}) {
   const lineItemUrl = useVariantUrl(product.handle, selectedOptions);
   const {close} = useAside();
 
+  if (!line || typeof line?.quantity === 'undefined') return null;
+  const {id: lineId, quantity, isOptimistic} = line;
+  const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
+  const nextQuantity = Number((quantity + 1).toFixed(0));
+
   return (
     <li key={id} className="cart-line">
       {image && (
@@ -31,31 +36,35 @@ export function CartLineItem({layout, line}) {
         />
       )}
 
-      <div>
-        <Link
-          prefetch="intent"
-          to={lineItemUrl}
-          onClick={() => {
-            if (layout === 'aside') {
-              close();
-            }
-          }}
-        >
-          <p>
-            <strong>{product.title}</strong>
-          </p>
-        </Link>
-        <ProductPrice price={line?.cost?.totalAmount} />
-        <ul>
-          {selectedOptions.map((option) => (
-            <li key={option.name}>
-              <small>
-                {option.name}: {option.value}
-              </small>
-            </li>
-          ))}
-        </ul>
+      <div className="cart-product-details">
+        <div className="cart-title-price">
+          <Link
+            prefetch="intent"
+            to={lineItemUrl}
+            style={{textDecoration: 'none'}}
+            onClick={() => {
+              if (layout === 'aside') {
+                close();
+              }
+            }}
+          >
+            <p>{product.title}</p>
+          </Link>
+          <ProductPrice price={line?.cost?.totalAmount} />
+        </div>
+        <div className="cart-variant-info">
+          <ul>
+            {selectedOptions.map((option) => (
+              <li key={option.name}>
+                <span style={{color: '#999999'}}>{option.name}:</span>{' '}
+                {option.value}
+              </li>
+            ))}
+          </ul>
+        </div>
+
         <CartLineQuantity line={line} />
+        <CartLineRemoveButton lineIds={[lineId]} disabled={!!isOptimistic} />
       </div>
     </li>
   );
@@ -75,7 +84,6 @@ function CartLineQuantity({line}) {
 
   return (
     <div className="cart-line-quantity">
-      <small>Quantity: {quantity} &nbsp;&nbsp;</small>
       <CartLineUpdateButton lines={[{id: lineId, quantity: prevQuantity}]}>
         <button
           aria-label="Decrease quantity"
@@ -86,7 +94,7 @@ function CartLineQuantity({line}) {
           <span>&#8722; </span>
         </button>
       </CartLineUpdateButton>
-      &nbsp;
+      <p>{quantity}</p>
       <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
         <button
           aria-label="Increase quantity"
@@ -97,8 +105,6 @@ function CartLineQuantity({line}) {
           <span>&#43;</span>
         </button>
       </CartLineUpdateButton>
-      &nbsp;
-      <CartLineRemoveButton lineIds={[lineId]} disabled={!!isOptimistic} />
     </div>
   );
 }
