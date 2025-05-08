@@ -210,7 +210,7 @@ export function Filter({title, filters, shopAll}) {
           <span>{title}</span>
         </>
       </div>
-      <div className="filter-space-between bottom-border">
+      <div className="filter-space-between bottom-border filter-second-row">
         <Filt
           filter={filters
             .find((f) => f.id === 'filter.p.tag')
@@ -238,13 +238,13 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
   }
   return (
     <button
-      className="filter-space-between inline-border sort-by-button"
+      className={`filter-space-between sort-by-button ${isOpen ? 'isOpen-btn' : ''}`}
       onClick={toggleIsOpen}
     >
       <AnimatePresence mode="popLayout">
         <motion.span
           key={`sort-by-${isOpen}`}
-          initial={{opacity: 0}}
+          initial={{opacity: 1}}
           animate={{opacity: 1}}
           exit={{opacity: 0}}
           style={{display: 'inline-block', width: '100%', textAlign: 'left'}}
@@ -397,25 +397,100 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
   }, []);
 
   return (
-    <div style={{display: 'flex'}}>
-      <FilterInput
-        label={'View All'}
-        value={'viewAll'}
-        addFilter={clearFilter}
-        isChecked={isChecked}
-        removeFilter={clearFilter}
-      />
-      {sortByStoredOrder(filter).map((v) => (
+    <>
+      <div style={{display: 'flex'}} className="desktop-filter">
         <FilterInput
-          key={v.id}
-          label={v.label}
-          value={v.input}
-          addFilter={addFilter}
+          label={'View All'}
+          value={'viewAll'}
+          addFilter={clearFilter}
           isChecked={isChecked}
-          removeFilter={removeFilter}
+          removeFilter={clearFilter}
         />
-      ))}
-    </div>
+        {sortByStoredOrder(filter).map((v) => (
+          <FilterInput
+            key={v.id}
+            label={v.label}
+            value={v.input}
+            addFilter={addFilter}
+            isChecked={isChecked}
+            removeFilter={removeFilter}
+          />
+        ))}
+      </div>
+      <MobileFilt>
+        <FilterInput
+          label={'View All'}
+          value={'viewAll'}
+          addFilter={clearFilter}
+          isChecked={isChecked}
+          removeFilter={clearFilter}
+          isSort={true}
+        />
+        {sortByStoredOrder(filter).map((v) => (
+          <FilterInput
+            key={v.id}
+            label={v.label}
+            value={v.input}
+            addFilter={addFilter}
+            isChecked={isChecked}
+            removeFilter={removeFilter}
+            isSort={true}
+          />
+        ))}
+      </MobileFilt>
+    </>
+  );
+}
+function MobileFilt({children}) {
+  const [isOpen, setIsOpen] = useState(false);
+  function toggleIsOpen() {
+    setIsOpen(!isOpen);
+  }
+  return (
+    <button
+      className={`filter-space-between inline-border sort-by-button mobile-filter ${isOpen ? 'isOpen-btn' : ''}`}
+      onClick={toggleIsOpen}
+    >
+      <AnimatePresence mode="popLayout">
+        <motion.span
+          key={`filt-by-${isOpen}`}
+          initial={{opacity: 1}}
+          animate={{opacity: 1}}
+          exit={{opacity: 0}}
+          style={{display: 'inline-block', width: '100%', textAlign: 'left'}}
+        >
+          {!isOpen ? 'Filter' : 'Close'}
+        </motion.span>
+      </AnimatePresence>
+      <motion.svg
+        width="11"
+        height="12"
+        viewBox="0 0 11 12"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        initial={{rotate: 0}}
+        animate={{rotate: isOpen ? '45deg' : 0}}
+        transition={{ease: 'easeInOut', duration: 0.15}}
+      >
+        <line x1="5.5" y1="0.5" x2="5.5" y2="11.5" stroke="black" />
+        <line x1="4.37113e-08" y1="6" x2="11" y2="6" stroke="black" />
+      </motion.svg>
+
+      <AnimatePresence>
+        {isOpen && (
+          <div className="sort-overflow-hidden-container">
+            <motion.div
+              initial={{y: '-100%'}}
+              animate={{y: '1px'}}
+              exit={{y: '-100%'}}
+              transition={{ease: 'easeInOut', duration: 0.15}}
+            >
+              <div className="sort-container">{children}</div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+    </button>
   );
 }
 
