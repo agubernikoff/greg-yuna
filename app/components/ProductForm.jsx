@@ -49,7 +49,7 @@ export function ProductForm({productOptions, selectedVariant}) {
               <AnimatePresence mode="popLayout">
                 <motion.span
                   key={`${option.optionValues.find((v) => v.selected)?.name}`}
-                  initial={{opacity: 0}}
+                  initial={{opacity: 1}}
                   animate={{opacity: 1}}
                   exit={{opacity: 0}}
                   style={{display: 'inline-block', width: '10rem'}}

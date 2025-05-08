@@ -21,7 +21,7 @@ export function ProductPrice({price, compareAtPrice}) {
         <AnimatePresence mode="popLayout">
           <motion.div
             key={`${price.amount}`}
-            initial={{opacity: 0}}
+            initial={{opacity: 1}}
             animate={{opacity: 1}}
             exit={{opacity: 0}}
             transition={{ease: 'easeInOut', duration: 0.15}}
