@@ -1887,4 +1887,8 @@ MEDIA QUIERIES
   .cart-line-quantity > form > button {
     color: black;
   }
+
+  .cart-line:last-of-type {
+    padding-bottom: 0.75rem;
+  }
 }
