@@ -53,6 +53,7 @@ export function ProductForm({productOptions, selectedVariant}) {
                   animate={{opacity: 1}}
                   exit={{opacity: 0}}
                   style={{display: 'inline-block', width: '10rem'}}
+                  transition={{ease: 'easeInOut', duration: 0.15}}
                 >
                   {option.optionValues.find((v) => v.selected)?.name || ''}
                 </motion.span>

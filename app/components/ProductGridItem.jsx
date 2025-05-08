@@ -32,6 +32,7 @@ function ProductGridItem({product, loading}) {
           initial={{opacity: 1}}
           animate={{opacity: 1}}
           exit={{opacity: 0}}
+          transition={{ease: 'easeInOut', duration: 0.15}}
         >
           <Image
             alt={image.altText || product.title}

@@ -695,7 +695,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .collection-grid-item img {
   height: auto;
   object-fit: cover;
-  transition: scale 300ms ease-in-out;
+  transition: scale 150ms ease-in-out;
 }
 .hovered img {
   scale: 1.1;
