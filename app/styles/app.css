@@ -1542,6 +1542,14 @@ MEDIA QUIERIES
   body {
     background-color: white;
   }
+  .overlay:has(aside#cart) {
+    z-index: 11;
+    opacity: 1;
+    background-color: rgba(0, 0, 0, 0);
+  }
+  .overlay.expanded:has(aside#cart) {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
   .overlay.expanded aside#mobile {
     transform: translateX(var(--aside-width));
   }
@@ -1574,7 +1582,7 @@ MEDIA QUIERIES
     flex-direction: row;
     align-items: center;
     padding: 1rem;
-    z-index: 1000;
+    /* z-index: 1000; */
     flex-direction: row-reverse !important;
   }
   .header a > svg {
