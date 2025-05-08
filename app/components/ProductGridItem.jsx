@@ -18,7 +18,6 @@ function ProductGridItem({product, loading}) {
     const rounded = parseFloat((scrollLeft / widthOfAnImage).toFixed(0));
     if (Math.abs(dividend - rounded) < 0.2) setImageIndex(rounded);
   }
-  console.log(product);
 
   const mappedIndicators =
     product.images.nodes.length > 1
