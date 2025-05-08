@@ -910,7 +910,9 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .product p {
   font-size: 12px;
 }
-
+.mapped-indicators {
+  display: none;
+}
 .product-images {
   grid-column: span 2;
   position: sticky;
@@ -1657,6 +1659,38 @@ MEDIA QUIERIES
     display: flex;
     height: auto;
     margin-right: 0;
+    width: 100%;
+    /* height: 69vh; */
+    position: relative;
+    flex-direction: row;
+    overflow: scroll;
+    scroll-snap-type: x mandatory;
+    align-items: flex-end;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .product-images::-webkit-scrollbar {
+    display: none;
+  }
+  .product-image {
+    height: auto;
+    scroll-snap-align: start;
+  }
+  .product-image img {
+    width: 100vw !important;
+    max-width: calc(999px * 0.5 + 2rem);
+    aspect-ratio: auto !important;
+    height: auto !important;
+  }
+  .mapped-indicators {
+    display: flex;
+    flex-direction: row;
+    width: fit-content;
+    margin: auto;
+    bottom: 1rem;
+    left: 1rem;
+    position: absolute;
+    background: #e9e9e9;
   }
   .product-title-price {
     display: flex;

@@ -12,6 +12,7 @@ import {ProductPrice} from '~/components/ProductPrice';
 import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
 import ProductGridItem from '~/components/ProductGridItem';
+import {motion} from 'motion/react';
 
 /**
  * @type {MetaFunction<typeof loader>}
@@ -114,6 +115,55 @@ export default function Product() {
     <ProductImage key={edge.node.id} image={edge.node} />
   ));
 
+  const [imageIndex, setImageIndex] = useState(0);
+
+  function handleScroll(scrollWidth, scrollLeft) {
+    const widthOfAnImage = scrollWidth / product?.images?.edges.length;
+    const dividend = scrollLeft / widthOfAnImage;
+    const rounded = parseFloat((scrollLeft / widthOfAnImage).toFixed(0));
+    console.log(
+      'sw: ',
+      scrollWidth,
+      'sL; ',
+      scrollLeft,
+      'woi: ',
+      widthOfAnImage,
+      'dividend: ',
+      dividend,
+      'rounded: ',
+      rounded,
+    );
+    if (Math.abs(dividend - rounded) < 0.2) setImageIndex(rounded);
+  }
+
+  const mappedIndicators =
+    product?.images?.edges.length > 1
+      ? product?.images?.edges.map((e, i) => (
+          <div
+            key={e.node.id}
+            className="circle"
+            style={{
+              height: '3px',
+              width: '22px',
+              position: 'relative',
+            }}
+          >
+            {i === imageIndex ? (
+              <motion.div
+                layoutId="mapped-indicator"
+                key="mapped-indicator"
+                style={{
+                  background: '#999999',
+                  inset: 0,
+                  position: 'absolute',
+                }}
+                transition={{ease: 'easeInOut', duration: 0.15}}
+              />
+            ) : null}
+          </div>
+        ))
+      : null;
+
   const {title, descriptionHtml} = product;
   const {state} = useLocation();
 
@@ -154,7 +204,22 @@ export default function Product() {
             </span>
           </>
         </div>
-        <div className="product-images">{productImage}</div>
+        <div
+          style={{
+            position: 'relative',
+            gridColumnStart: 'span 2',
+          }}
+        >
+          <div
+            className="product-images"
+            onScroll={(e) =>
+              handleScroll(e.target.scrollWidth, e.target.scrollLeft)
+            }
+          >
+            {productImage}
+          </div>
+          <div className="mapped-indicators">{mappedIndicators}</div>
+        </div>
         <div className="product-main">
           <div className="product-main-details">
             <div className="product-title-price">
