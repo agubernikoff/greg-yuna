@@ -1301,8 +1301,9 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   grid-column: 1/5;
   display: grid;
   grid-template-columns: subgrid;
-  grid-template-rows: min-content;
+  grid-template-rows: auto auto;
 }
+
 .bespoke-breadcrumbs {
   background: white;
   z-index: 3;
@@ -1634,5 +1635,39 @@ MEDIA QUIERIES
   }
   .pp-page {
     width: calc(100% - 2rem);
+  }
+  .bespoke-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto;
+  }
+
+  .bespoke-breadcrumbs {
+    grid-row: 1;
+    grid-column: 1;
+    position: relative;
+    z-index: 2;
+    background: white;
+    display: contents !important;
+  }
+
+  .bespoke-image-container {
+    grid-row: 2;
+    grid-column: 1;
+    height: 60vh;
+    display: block;
+  }
+
+  .bespoke-image-container > img {
+    height: 100%;
+  }
+
+  .bespoke-form-container {
+    grid-row: 3;
+    grid-column: 1;
+  }
+
+  .bespoke-breadcrumbs > .padded-filter-div.full-border.breadcrumbs {
+    margin-top: var(--header-height);
   }
 }
