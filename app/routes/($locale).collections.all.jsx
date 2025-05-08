@@ -58,6 +58,8 @@ async function loadCriticalData({context, request}) {
       variables: {
         ...paginationVariables,
         query,
+        reverse,
+        sortKey,
       },
     }),
     storefront.query(SEARCH_QUERY_FOR_FILTERS),
@@ -87,7 +89,7 @@ export default function Collection() {
   return (
     <div className="collection">
       <div className="filter-placeholder" />
-      <Filter title={'Shop All'} filters={filters} />
+      <Filter title={'Shop All'} filters={filters} shopAll={true} />
       <PaginatedResourceSection
         connection={products}
         resourcesClassName="products-grid"
@@ -190,8 +192,10 @@ const CATALOG_QUERY = `#graphql
     $startCursor: String
     $endCursor: String
     $query: String
+    $reverse: Boolean
+    $sortKey: ProductSortKeys
   ) @inContext(country: $country, language: $language) {
-    products(first: $first, last: $last, before: $startCursor, after: $endCursor, query: $query) {
+    products(first: $first, last: $last, before: $startCursor, after: $endCursor, query: $query,reverse: $reverse, sortKey: $sortKey) {
       nodes {
         ...ProductItem
       }

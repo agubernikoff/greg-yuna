@@ -121,7 +121,7 @@ export default function Collection() {
   );
 }
 
-export function Filter({title, filters}) {
+export function Filter({title, filters, shopAll}) {
   // console.log(filters);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -224,13 +224,14 @@ export function Filter({title, filters}) {
           addSort={addSort}
           removeSort={removeSort}
           isChecked={isSortChecked}
+          shopAll={shopAll}
         />
       </div>
     </div>
   );
 }
 
-function Sort({addSort, removeSort, isChecked, term}) {
+function Sort({addSort, removeSort, isChecked, term, shopAll}) {
   const [isOpen, setIsOpen] = useState(false);
   function toggleIsOpen() {
     setIsOpen(!isOpen);
@@ -303,7 +304,10 @@ function Sort({addSort, removeSort, isChecked, term}) {
                 />
                 <FilterInput
                   label={'date, new to old'}
-                  value={JSON.stringify({reverse: true, sortKey: 'CREATED'})}
+                  value={JSON.stringify({
+                    reverse: true,
+                    sortKey: shopAll ? 'CREATED_AT' : 'CREATED',
+                  })}
                   addFilter={addSort}
                   isChecked={isChecked}
                   removeFilter={removeSort}
@@ -312,7 +316,10 @@ function Sort({addSort, removeSort, isChecked, term}) {
                 />
                 <FilterInput
                   label={'date, old to new'}
-                  value={JSON.stringify({reverse: false, sortKey: 'CREATED'})}
+                  value={JSON.stringify({
+                    reverse: false,
+                    sortKey: shopAll ? 'CREATED_AT' : 'CREATED',
+                  })}
                   addFilter={addSort}
                   isChecked={isChecked}
                   removeFilter={removeSort}
@@ -420,9 +427,10 @@ function FilterInput({
             layoutId={`${isSort ? 'sort-' : ''}hover-indicator`}
             id={`${isSort ? 'sort-' : ''}hover-indicator`}
             style={{
-              right: isSort ? 'calc(100% - 3px)' : 0,
+              right: isSort ? 'auto' : 0,
               left: 0,
               height: isSort ? '100%' : '3px',
+              width: isSort ? '3px' : '100%',
               position: 'absolute',
               bottom: 0,
               background: '#999999',
@@ -435,9 +443,10 @@ function FilterInput({
             layoutId={`${isSort ? 'sort-' : ''}filter-indicator`}
             id={`${isSort ? 'sort-' : ''}filter-indicator`}
             style={{
-              right: isSort ? 'calc(100% - 3px)' : 0,
+              right: isSort ? 'auto' : 0,
               left: 0,
               height: isSort ? '100%' : '3px',
+              width: isSort ? '3px' : '100%',
               position: 'absolute',
               bottom: 0,
               background: 'black',
