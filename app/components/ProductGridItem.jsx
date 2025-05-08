@@ -2,11 +2,9 @@ import React, {useState} from 'react';
 import {useVariantUrl} from '~/lib/variants';
 import {Link, useLocation} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
-import {motion, AnimatePresence} from 'motion/react';
+import {motion} from 'motion/react';
 
 function ProductGridItem({product, loading}) {
-  const [image, setImage] = useState(product?.images?.nodes[0]);
-  const [hovered, setHovered] = useState(false);
   const variantUrl = useVariantUrl(product.handle);
   const {pathname} = useLocation();
 
