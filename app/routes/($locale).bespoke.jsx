@@ -91,7 +91,7 @@ const BESPOKE_QUERY = `#graphiql
         $country: CountryCode
         $language: LanguageCode
       ) @inContext(country: $country, language: $language) {
-    metaobjects(type: "bespoke_page_image", first: 1, sortKey: "updated_at") {
+    metaobjects(type: "bespoke_page_image", first: 10, sortKey: "updated_at") {
       nodes {
         id
         fields {
