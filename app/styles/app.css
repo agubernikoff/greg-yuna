@@ -1562,10 +1562,13 @@ MEDIA QUIERIES
   .product-item-details {
     opacity: 1 !important;
     position: static;
-    padding: 1rem 1rem 2rem;
+    padding: 0rem 1rem 1.5rem;
+  }
+  .product-item-details > p {
+    line-height: 1rem;
   }
   .product-item-details > div {
-    padding-top: 0.5rem;
+    padding-top: 0.1rem;
   }
   .collections-container {
     display: flex;
