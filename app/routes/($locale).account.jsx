@@ -86,6 +86,7 @@ export function Logout() {
       method="POST"
       action="/account/logout"
       layout
+      transition={{ease: 'easeInOut', duration: 0.15}}
     >
       <motion.button
         type="submit"
@@ -93,6 +94,7 @@ export function Logout() {
         onMouseLeave={() => setHover(false)}
         style={hover ? {background: 'black', color: 'white'} : null}
         layout
+        transition={{ease: 'easeInOut', duration: 0.15}}
       >
         LOG OUT
       </motion.button>

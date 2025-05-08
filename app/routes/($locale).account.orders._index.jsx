@@ -171,7 +171,11 @@ function Addresses() {
   }
 
   return (
-    <motion.div className="account-addresses" layout="size">
+    <motion.div
+      className="account-addresses"
+      layout="size"
+      transition={{ease: 'easeInOut', duration: 0.15}}
+    >
       <AnimatePresence mode="popLayout">
         <motion.p
           layout="position"
@@ -179,6 +183,7 @@ function Addresses() {
           initial={{opacity: 0}}
           animate={{opacity: 1}}
           exit={{opacity: 0}}
+          transition={{ease: 'easeInOut', duration: 0.15}}
         >
           {displayAddressForm ? 'ADD A NEW ADDRESS' : 'ADDRESSES'}
         </motion.p>
@@ -195,6 +200,7 @@ function Addresses() {
               animate={{opacity: displayAddressForm ? 1 : 0}}
               exit={{opacity: 0}}
               layout="position"
+              transition={{ease: 'easeInOut', duration: 0.15}}
             >
               <AddressForm
                 addressId={addressId}
@@ -238,6 +244,7 @@ function Addresses() {
               initial={{opacity: 0}}
               animate={{opacity: !displayAddressForm ? 1 : 0}}
               exit={{opacity: 0}}
+              transition={{ease: 'easeInOut', duration: 0.15}}
             >
               <ExistingAddresses
                 addresses={addresses}
