@@ -1,5 +1,6 @@
 import {useLoaderData, NavLink} from '@remix-run/react';
 import {Image} from '@shopify/hydrogen';
+import {useEffect} from 'react';
 
 export const meta = ({data}) => {
   return [
@@ -42,13 +43,32 @@ function loadDeferredData({context, params}) {
 }
 
 export default function Contact() {
+  useEffect(() => {
+    // Check if POWR is already loaded
+    if (!window.POWR) {
+      const script = document.createElement('script');
+      script.src = 'https://www.powr.io/powr.js?platform=shopify';
+      script.async = true;
+      script.onload = () => {
+        if (window.POWR) {
+          window.POWR.renderAll();
+        }
+      };
+      document.body.appendChild(script);
+    } else {
+      // Re-render POWR if already loaded
+      window.POWR.renderAll();
+    }
+  }, []);
+
   return (
     <div className="page-contact">
       <main>
         <div className="pp-page">
           <p className="header-aux-page">CONTACT</p>
-          <div id="form-embed" style={{margin: '10.5rem 0'}}>
-            EMBED FORM HERE
+
+          <div id="form-embed">
+            <div className="powr-form-builder" id="15c6d6e9_1746660215"></div>
           </div>
 
           <p className="section-header-aux">LEAD TIMES</p>

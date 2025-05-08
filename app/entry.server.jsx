@@ -22,9 +22,23 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
+    scriptSrc: [
+      'https://www.powr.io',
+      'https://cdn.shopify.com',
+      'http://localhost:*',
+    ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
       'wss://kitten-composed-notably.ngrok-free.app:*',
+      'https://www.powr.io',
+    ],
+    imgSrc: [
+      'https://cdn.shopify.com', // ✅ Allow Shopify images
+      'https://www.powrcdn.com', // Allow Powr.io image resources
+      'http://localhost:*',
+    ],
+    frameSrc: [
+      'https://www.powr.io', // ✅ Allow framing from powr.io
     ],
   });
 
