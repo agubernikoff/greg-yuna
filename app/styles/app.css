@@ -1328,12 +1328,13 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   background: white;
 }
 .page-contact {
-  padding: 10rem 0 !important;
+  padding: 10rem 0 0 !important;
   width: 100%;
   display: grid;
   grid-column: 1 / -1;
   margin: auto;
   background: white;
+  min-height: calc(100vh - 10rem);
 }
 
 .pp-page {
