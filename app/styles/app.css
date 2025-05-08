@@ -507,7 +507,7 @@ button.reset:hover:not(:has(> *)) {
 }
 .cart-line-quantity > form {
   width: 40%;
-  padding: 0.25rem;
+  padding: 0.1rem;
 }
 .cart-line-quantity > p {
   width: 20%;
@@ -515,7 +515,7 @@ button.reset:hover:not(:has(> *)) {
   margin: 0;
   padding: 0;
   background-color: #e9e9e9;
-  padding: 0.25rem;
+  padding: 0.1rem;
 }
 .cart-line-quantity > form > button {
   width: 100%;
