@@ -10,61 +10,78 @@ function ProductGridItem({product, loading}) {
   const variantUrl = useVariantUrl(product.handle);
   const {pathname} = useLocation();
 
+  const [imageIndex, setImageIndex] = useState(0);
+
+  function handleScroll(scrollWidth, scrollLeft) {
+    const widthOfAnImage = scrollWidth / product.images.nodes.length;
+    const dividend = scrollLeft / widthOfAnImage;
+    const rounded = parseFloat((scrollLeft / widthOfAnImage).toFixed(0));
+    if (Math.abs(dividend - rounded) < 0.2) setImageIndex(rounded);
+  }
+  console.log(product);
+
+  const mappedIndicators =
+    product.images.nodes.length > 1
+      ? product.images.nodes.map((e, i) => (
+          <div
+            key={e.id}
+            className="circle"
+            style={{
+              height: '3px',
+              width: '22px',
+              position: 'relative',
+            }}
+          >
+            {i === imageIndex ? (
+              <motion.div
+                layoutId={`product-grid-indicator-${product.handle}`}
+                key={`product-grid-indicator-${product.handle}`}
+                id={`product-grid-indicator-${product.handle}`}
+                style={{
+                  background: '#999999',
+                  height: '3px',
+                  width: '22px',
+                  position: 'absolute',
+                }}
+                transition={{ease: 'easeInOut', duration: 0.15}}
+              />
+            ) : null}
+          </div>
+        ))
+      : null;
+
   return (
     <Link
       className="product-item"
       key={product.id}
       prefetch="intent"
       to={variantUrl}
-      onMouseEnter={() => {
-        setHovered(true);
-        if (product.images.nodes.length > 1) setImage(product.images.nodes[1]);
-      }}
-      onMouseLeave={() => {
-        setHovered(false);
-        setImage(product.images.nodes[0]);
-      }}
       state={pathname}
     >
-      <AnimatePresence mode="popLayout">
-        <motion.div
-          key={image.id}
-          initial={{opacity: 1}}
-          animate={{opacity: 1}}
-          exit={{opacity: 0}}
-          transition={{ease: 'easeInOut', duration: 0.15}}
+      <div style={{position: 'relative'}}>
+        <div
+          className="product-item-imgs-container"
+          onScroll={(e) =>
+            handleScroll(e.target.scrollWidth, e.target.scrollLeft)
+          }
         >
-          <Image
-            alt={image.altText || product.title}
-            aspectRatio="1/1"
-            data={image}
-            loading={'eager'}
-            sizes="(min-width: 45em) 400px, 100vw"
-            style={{mixBlendMode: hovered ? 'multiply' : 'normal'}}
-          />
-        </motion.div>
-        <div style={{display: 'none'}} key={'idk'}>
-          <Image
-            alt={product.images.nodes[1]?.altText || product.title}
-            aspectRatio="1/1"
-            data={product.images.nodes[1]}
-            loading={'eager'}
-            sizes="(min-width: 45em) 400px, 100vw"
-          />
+          {product.images.nodes.map((image) => (
+            <Image
+              key={image.id}
+              alt={image.altText || product.title}
+              aspectRatio="1/1"
+              data={image}
+              loading={'eager'}
+              sizes="(min-width: 45em) 400px, 100vw"
+            />
+          ))}
         </div>
-        <motion.div
-          className="product-item-details"
-          initial={{opacity: 0}}
-          animate={{
-            opacity: hovered ? 1 : 0,
-          }}
-          exit={{opacity: 0}}
-          transition={{ease: 'linear'}}
-        >
-          <p>{product.title.toLowerCase()}</p>
-          <Money data={product.priceRange.minVariantPrice} />
-        </motion.div>
-      </AnimatePresence>
+        <div className="mapped-indicators">{mappedIndicators}</div>
+      </div>
+      <div className="product-item-details">
+        <p>{product.title.toLowerCase()}</p>
+        <Money data={product.priceRange.minVariantPrice} />
+      </div>
     </Link>
   );
 }

@@ -121,18 +121,6 @@ export default function Product() {
     const widthOfAnImage = scrollWidth / product?.images?.edges.length;
     const dividend = scrollLeft / widthOfAnImage;
     const rounded = parseFloat((scrollLeft / widthOfAnImage).toFixed(0));
-    console.log(
-      'sw: ',
-      scrollWidth,
-      'sL; ',
-      scrollLeft,
-      'woi: ',
-      widthOfAnImage,
-      'dividend: ',
-      dividend,
-      'rounded: ',
-      rounded,
-    );
     if (Math.abs(dividend - rounded) < 0.2) setImageIndex(rounded);
   }
 
@@ -154,7 +142,8 @@ export default function Product() {
                 key="mapped-indicator"
                 style={{
                   background: '#999999',
-                  inset: 0,
+                  height: '3px',
+                  width: '22px',
                   position: 'absolute',
                 }}
                 transition={{ease: 'easeInOut', duration: 0.15}}
