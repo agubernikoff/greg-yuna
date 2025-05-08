@@ -241,7 +241,17 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
       className="filter-space-between inline-border sort-by-button"
       onClick={toggleIsOpen}
     >
-      <span>Sort By</span>
+      <AnimatePresence mode="popLayout">
+        <motion.span
+          key={`sort-by-${isOpen}`}
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          exit={{opacity: 0}}
+          style={{display: 'inline-block', width: '100%', textAlign: 'left'}}
+        >
+          {!isOpen ? 'Sort By' : 'Close'}
+        </motion.span>
+      </AnimatePresence>
       <svg
         width="16"
         height="12"
@@ -285,7 +295,18 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
             >
               <div className="sort-container">
                 <FilterInput
-                  label={'alphabetically, a-z'}
+                  label={'Best Selling'}
+                  value={JSON.stringify({
+                    reverse: false,
+                    sortKey: 'BEST_SELLING',
+                  })}
+                  addFilter={addSort}
+                  isChecked={isChecked}
+                  removeFilter={removeSort}
+                  isSort={true}
+                />
+                <FilterInput
+                  label={'Alphabetically, A-Z'}
                   value={JSON.stringify({reverse: false, sortKey: 'TITLE'})}
                   addFilter={addSort}
                   isChecked={isChecked}
@@ -294,7 +315,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   isSort={true}
                 />
                 <FilterInput
-                  label={'alphabetically, z-a'}
+                  label={'Alphabetically, A-Z'}
                   value={JSON.stringify({reverse: true, sortKey: 'TITLE'})}
                   addFilter={addSort}
                   isChecked={isChecked}
@@ -303,7 +324,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   isSort={true}
                 />
                 <FilterInput
-                  label={'date, new to old'}
+                  label={'Date, new to old'}
                   value={JSON.stringify({
                     reverse: true,
                     sortKey: shopAll ? 'CREATED_AT' : 'CREATED',
@@ -315,7 +336,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   isSort={true}
                 />
                 <FilterInput
-                  label={'date, old to new'}
+                  label={'Date, old to new'}
                   value={JSON.stringify({
                     reverse: false,
                     sortKey: shopAll ? 'CREATED_AT' : 'CREATED',
@@ -327,7 +348,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   isSort={true}
                 />
                 <FilterInput
-                  label={'price, low to high'}
+                  label={'Price, low to high'}
                   value={JSON.stringify({reverse: false, sortKey: 'PRICE'})}
                   addFilter={addSort}
                   isChecked={isChecked}
@@ -335,7 +356,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   isSort={true}
                 />
                 <FilterInput
-                  label={'price, high to low'}
+                  label={'Price, high to low'}
                   value={JSON.stringify({reverse: true, sortKey: 'PRICE'})}
                   addFilter={addSort}
                   isChecked={isChecked}
