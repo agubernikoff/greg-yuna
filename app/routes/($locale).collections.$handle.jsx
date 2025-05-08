@@ -121,7 +121,7 @@ export default function Collection() {
   );
 }
 
-function Filter({title, filters}) {
+export function Filter({title, filters}) {
   // console.log(filters);
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -220,13 +220,17 @@ function Filter({title, filters}) {
           isChecked={isChecked}
           clearFilter={clearFilter}
         />
-        <Sort />
+        <Sort
+          addSort={addSort}
+          removeSort={removeSort}
+          isChecked={isSortChecked}
+        />
       </div>
     </div>
   );
 }
 
-function Sort({}) {
+function Sort({addSort, removeSort, isChecked, term}) {
   const [isOpen, setIsOpen] = useState(false);
   function toggleIsOpen() {
     setIsOpen(!isOpen);
@@ -274,11 +278,64 @@ function Sort({}) {
           <div className="sort-overflow-hidden-container">
             <motion.div
               initial={{y: '-100%'}}
-              animate={{y: 0}}
+              animate={{y: '1px'}}
               exit={{y: '-100%'}}
               transition={{ease: 'easeInOut', duration: 0.15}}
             >
-              <div className="sort-container">x</div>
+              <div className="sort-container">
+                <FilterInput
+                  label={'alphabetically, a-z'}
+                  value={JSON.stringify({reverse: false, sortKey: 'TITLE'})}
+                  addFilter={addSort}
+                  isChecked={isChecked}
+                  removeFilter={removeSort}
+                  count={term ? 0 : null}
+                  isSort={true}
+                />
+                <FilterInput
+                  label={'alphabetically, z-a'}
+                  value={JSON.stringify({reverse: true, sortKey: 'TITLE'})}
+                  addFilter={addSort}
+                  isChecked={isChecked}
+                  removeFilter={removeSort}
+                  count={term ? 0 : null}
+                  isSort={true}
+                />
+                <FilterInput
+                  label={'date, new to old'}
+                  value={JSON.stringify({reverse: true, sortKey: 'CREATED'})}
+                  addFilter={addSort}
+                  isChecked={isChecked}
+                  removeFilter={removeSort}
+                  count={term ? 0 : null}
+                  isSort={true}
+                />
+                <FilterInput
+                  label={'date, old to new'}
+                  value={JSON.stringify({reverse: false, sortKey: 'CREATED'})}
+                  addFilter={addSort}
+                  isChecked={isChecked}
+                  removeFilter={removeSort}
+                  count={term ? 0 : null}
+                  isSort={true}
+                />
+                <FilterInput
+                  label={'price, low to high'}
+                  value={JSON.stringify({reverse: false, sortKey: 'PRICE'})}
+                  addFilter={addSort}
+                  isChecked={isChecked}
+                  removeFilter={removeSort}
+                  isSort={true}
+                />
+                <FilterInput
+                  label={'price, high to low'}
+                  value={JSON.stringify({reverse: true, sortKey: 'PRICE'})}
+                  addFilter={addSort}
+                  isChecked={isChecked}
+                  removeFilter={removeSort}
+                  isSort={true}
+                />
+              </div>
             </motion.div>
           </div>
         )}
@@ -334,13 +391,22 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
   );
 }
 
-function FilterInput({label, value, addFilter, isChecked, removeFilter}) {
+function FilterInput({
+  label,
+  value,
+  addFilter,
+  isChecked,
+  removeFilter,
+  isSort,
+}) {
   const [hovered, setHovered] = useState(false);
+  console.log(isSort, label);
   return (
     <>
       <button
         className="padded-filter-div inline-border filter-input"
-        onClick={() => {
+        onClick={(e) => {
+          e.stopPropagation();
           if (!isChecked(value)) addFilter(value);
           else removeFilter(value);
         }}
@@ -351,12 +417,12 @@ function FilterInput({label, value, addFilter, isChecked, removeFilter}) {
 
         {hovered && (
           <motion.div
-            layoutId="hover-indicator"
-            id="hover-indicator"
+            layoutId={`${isSort ? 'sort-' : ''}hover-indicator`}
+            id={`${isSort ? 'sort-' : ''}hover-indicator`}
             style={{
-              right: 0,
+              right: isSort ? 'calc(100% - 3px)' : 0,
               left: 0,
-              height: '3px',
+              height: isSort ? '100%' : '3px',
               position: 'absolute',
               bottom: 0,
               background: '#999999',
@@ -366,12 +432,12 @@ function FilterInput({label, value, addFilter, isChecked, removeFilter}) {
         )}
         {isChecked(value) && (
           <motion.div
-            layoutId="filter-indicator"
-            id="filter-indicator"
+            layoutId={`${isSort ? 'sort-' : ''}filter-indicator`}
+            id={`${isSort ? 'sort-' : ''}filter-indicator`}
             style={{
-              right: 0,
+              right: isSort ? 'calc(100% - 3px)' : 0,
               left: 0,
-              height: '3px',
+              height: isSort ? '100%' : '3px',
               position: 'absolute',
               bottom: 0,
               background: 'black',

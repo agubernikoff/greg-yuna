@@ -1,7 +1,14 @@
 import {useLoaderData, Link} from '@remix-run/react';
-import {getPaginationVariables, Image, Money} from '@shopify/hydrogen';
+import {
+  getPaginationVariables,
+  Image,
+  Money,
+  Analytics,
+} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
+import {Filter} from './($locale).collections.$handle';
+import ProductGridItem from '~/components/ProductGridItem';
 
 /**
  * @type {MetaFunction<typeof loader>}
@@ -30,17 +37,37 @@ export async function loader(args) {
  */
 async function loadCriticalData({context, request}) {
   const {storefront} = context;
+  const url = new URL(request.url);
+  const searchParams = new URLSearchParams(url.search);
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 8,
+    pageBy: 24,
   });
+  let query = null;
+  let reverse = false;
+  let sortKey = null;
 
-  const [{products}] = await Promise.all([
+  if (searchParams.has('filter')) {
+    query = `tag:${JSON.parse(searchParams.get('filter')).tag}`;
+  }
+  if (searchParams.has('sortKey')) sortKey = searchParams.get('sortKey');
+  if (searchParams.has('reverse'))
+    reverse = searchParams.get('reverse') === 'true';
+
+  const [{products}, {search}] = await Promise.all([
     storefront.query(CATALOG_QUERY, {
-      variables: {...paginationVariables},
+      variables: {
+        ...paginationVariables,
+        query,
+      },
     }),
+    storefront.query(SEARCH_QUERY_FOR_FILTERS),
     // Add other queries here, so that they are loaded in parallel
   ]);
-  return {products};
+
+  return {
+    products,
+    filters: search?.productFilters,
+  };
 }
 
 /**
@@ -55,23 +82,32 @@ function loadDeferredData({context}) {
 
 export default function Collection() {
   /** @type {LoaderReturnData} */
-  const {products} = useLoaderData();
-
+  const {products, filters} = useLoaderData();
+  console.log(products, filters);
   return (
     <div className="collection">
-      <h1>Products</h1>
+      <div className="filter-placeholder" />
+      <Filter title={'Shop All'} filters={filters} />
       <PaginatedResourceSection
         connection={products}
         resourcesClassName="products-grid"
       >
         {({node: product, index}) => (
-          <ProductItem
+          <ProductGridItem
             key={product.id}
             product={product}
             loading={index < 8 ? 'eager' : undefined}
           />
         )}
       </PaginatedResourceSection>
+      <Analytics.CollectionView
+        data={{
+          collection: {
+            id: 'shop_all',
+            handle: 'shop_all',
+          },
+        }}
+      />
     </div>
   );
 }
@@ -124,6 +160,15 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
       width
       height
     }
+    images(first:2) {
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
+    }
     priceRange {
       minVariantPrice {
         ...MoneyProductItem
@@ -144,8 +189,9 @@ const CATALOG_QUERY = `#graphql
     $last: Int
     $startCursor: String
     $endCursor: String
+    $query: String
   ) @inContext(country: $country, language: $language) {
-    products(first: $first, last: $last, before: $startCursor, after: $endCursor) {
+    products(first: $first, last: $last, before: $startCursor, after: $endCursor, query: $query) {
       nodes {
         ...ProductItem
       }
@@ -158,6 +204,25 @@ const CATALOG_QUERY = `#graphql
     }
   }
   ${PRODUCT_ITEM_FRAGMENT}
+`;
+
+const SEARCH_QUERY_FOR_FILTERS = `#graphql
+query SEARCH {
+  search(first: 1, query: "") {
+    productFilters {
+      id
+      label
+      presentation
+      type
+      values {
+        id
+        count
+        input
+        label
+      }
+    }
+  }
+}
 `;
 
 /** @typedef {import('@shopify/remix-oxygen').LoaderFunctionArgs} LoaderFunctionArgs */
