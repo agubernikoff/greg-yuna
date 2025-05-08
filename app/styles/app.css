@@ -1305,6 +1305,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 }
 .bespoke-breadcrumbs {
   background: white;
+  z-index: 3;
   top: 1rem;
   left: calc(1rem + var(--header-width));
   position: fixed;
@@ -1342,7 +1343,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   height: 100%;
   object-fit: cover;
   opacity: 0;
-  transition: opacity 150ms ease-in-out;
+  transition: opacity 1s ease-in-out;
   z-index: 0;
 }
 .fade-image.active {
