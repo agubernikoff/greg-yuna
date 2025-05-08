@@ -1740,6 +1740,11 @@ MEDIA QUIERIES
   .product-main-details {
     margin-top: 0;
   }
+  .product-options-grid > button > div,
+  .filter-container > div > button > span {
+    color: black !important;
+  }
+
   .pp-page {
     width: calc(100% - 2rem);
   }
