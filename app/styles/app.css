@@ -469,6 +469,10 @@ button.reset:hover:not(:has(> *)) {
   padding: 0.75rem 0;
 }
 
+.cart-line:last-of-type {
+  padding-bottom: 1.5rem;
+}
+
 .cart-line img {
   height: 100%;
   display: block;
@@ -1868,14 +1872,11 @@ MEDIA QUIERIES
   .cart-line-quantity > form > button {
     color: black;
   }
-  .cart-details,
-  .cart-lines {
-    overflow: hidden !important;
+  .cart-main {
     scrollbar-width: none !important;
   }
 
-  .cart-details::-webkit-scrollbar,
-  .cart-lines::-webkit-scrollbar {
+  .cart-main::-webkit-scrollbar {
     display: none !important;
   }
 }
