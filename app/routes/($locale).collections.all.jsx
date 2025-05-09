@@ -85,7 +85,6 @@ function loadDeferredData({context}) {
 export default function Collection() {
   /** @type {LoaderReturnData} */
   const {products, filters} = useLoaderData();
-  console.log(products, filters);
   return (
     <div className="collection">
       <div className="filter-placeholder" />

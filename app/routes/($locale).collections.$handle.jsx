@@ -122,7 +122,6 @@ export default function Collection() {
 }
 
 export function Filter({title, filters, shopAll}) {
-  // console.log(filters);
   const [searchParams, setSearchParams] = useSearchParams();
 
   function addFilter(input) {
@@ -212,9 +211,14 @@ export function Filter({title, filters, shopAll}) {
       </div>
       <div className="filter-space-between bottom-border filter-second-row">
         <Filt
-          filter={filters
-            .find((f) => f.id === 'filter.p.tag')
-            .values.filter((v) => v.id !== 'filter.p.tag.new-arrivals')}
+          filter={
+            title === 'New Arrivals' || title === 'Shop All'
+              ? filters
+                  .find((f) => f.id === 'filter.p.tag')
+                  .values.filter((v) => v.id !== 'filter.p.tag.new-arrivals')
+              : filters.find((f) => f.id === 'filter.v.option.material').values
+          }
+          isNewArrivals={title === 'New Arrivals' || title === 'Shop All'}
           addFilter={addFilter}
           removeFilter={removeFilter}
           isChecked={isChecked}
@@ -372,7 +376,14 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
   );
 }
 
-function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
+function Filt({
+  filter,
+  addFilter,
+  isChecked,
+  removeFilter,
+  clearFilter,
+  isNewArrivals,
+}) {
   const filterOrderRef = useRef(new Map()); // Persist across renders
 
   function storeInitialOrder(filters) {
@@ -399,13 +410,15 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
   return (
     <>
       <div style={{display: 'flex'}} className="desktop-filter">
-        <FilterInput
-          label={'View All'}
-          value={'viewAll'}
-          addFilter={clearFilter}
-          isChecked={isChecked}
-          removeFilter={clearFilter}
-        />
+        {isNewArrivals ? (
+          <FilterInput
+            label={'View All'}
+            value={'viewAll'}
+            addFilter={clearFilter}
+            isChecked={isChecked}
+            removeFilter={clearFilter}
+          />
+        ) : null}
         {sortByStoredOrder(filter).map((v) => (
           <FilterInput
             key={v.id}
@@ -503,7 +516,6 @@ function FilterInput({
   isSort,
 }) {
   const [hovered, setHovered] = useState(false);
-  console.log(isSort, label);
   return (
     <>
       <button
@@ -517,7 +529,6 @@ function FilterInput({
         onMouseLeave={() => setHovered(false)}
       >
         {label}
-
         {hovered && (
           <motion.div
             layoutId={`${isSort ? 'sort-' : ''}hover-indicator`}
