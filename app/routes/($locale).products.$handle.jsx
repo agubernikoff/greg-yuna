@@ -53,9 +53,12 @@ async function loadCriticalData({context, params, request}) {
     throw new Error('Expected product handle to be defined');
   }
 
-  const [{product}] = await Promise.all([
+  const [{product}, compliments] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
       variables: {handle, selectedOptions: getSelectedProductOptions(request)},
+    }),
+    storefront.query(COMPLEMENTARY_QUERY, {
+      variables: {handle},
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
@@ -66,6 +69,8 @@ async function loadCriticalData({context, params, request}) {
 
   return {
     product,
+    compliments,
+    request,
   };
 }
 
@@ -84,11 +89,8 @@ function loadDeferredData({context, params}) {
   const recs = storefront.query(PRODUCT_RECOMENDATIONS_QUERY, {
     variables: {handle},
   });
-  const compliments = storefront.query(COMPLEMENTARY_QUERY, {
-    variables: {handle},
-  });
 
-  return {recs, compliments};
+  return {recs};
 }
 
 export default function Product() {
@@ -223,6 +225,7 @@ export default function Product() {
             <ProductForm
               productOptions={productOptions}
               selectedVariant={selectedVariant}
+              compliments={compliments}
             />
             <br />
             <br />
@@ -248,17 +251,17 @@ export default function Product() {
           />
         </div>
       </div>
-      <YouMayAlsoLike recs={recs} compliments={compliments} />
+      <YouMayAlsoLike recs={recs} />
     </>
   );
 }
 
-function YouMayAlsoLike({compliments, recs}) {
+function YouMayAlsoLike({recs}) {
   const [resolvedCompliments, setResolvedCompliments] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    Promise.all([compliments, recs])
+    Promise.all([recs])
       .then(([complimentsRes, recsRes]) => {
         const complimentsData = complimentsRes?.productRecommendations || [];
         const recsData = recsRes?.productRecommendations || [];
@@ -274,7 +277,7 @@ function YouMayAlsoLike({compliments, recs}) {
         setResolvedCompliments(uniqueProducts);
       })
       .finally(() => setLoading(false));
-  }, [compliments, recs]);
+  }, [recs]);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -448,13 +451,39 @@ $handle: String!
 $language: LanguageCode
 ) @inContext(country: $country, language: $language) {
   productRecommendations(intent: COMPLEMENTARY, productHandle: $handle) {
-    images(first: 2) {
+    images(first: 1) {
       nodes {
         url
         width
         height
         altText
       }
+    }
+    options {
+      name
+      optionValues {
+        name
+        firstSelectableVariant {
+          ...ProductVariant
+        }
+        swatch {
+          color
+          image {
+            previewImage {
+              url
+            }
+          }
+        }
+      }
+    }
+    selectedOrFirstAvailableVariant(
+      ignoreUnknownOptions: true
+      caseInsensitiveMatch: true
+    ) {
+      ...ProductVariant
+    }
+    adjacentVariants {
+      ...ProductVariant
     }
     id
     handle
@@ -466,7 +495,8 @@ $language: LanguageCode
       }
     }
   }
-}`;
+}
+${PRODUCT_VARIANT_FRAGMENT}`;
 /** @typedef {import('@shopify/remix-oxygen').LoaderFunctionArgs} LoaderFunctionArgs */
 /** @template T @typedef {import('@remix-run/react').MetaFunction<T>} MetaFunction */
 /** @typedef {import('@shopify/remix-oxygen').SerializeFrom<typeof loader>} LoaderReturnData */
