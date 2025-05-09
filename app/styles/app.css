@@ -1024,7 +1024,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 }
 
 .product p {
-  font-size: 12px;
+  /* font-size: 12px; */
 }
 .mapped-indicators {
   display: none;
@@ -1080,14 +1080,20 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   margin-top: 3rem;
 }
 
-.product-title-price {
+.product-title-price,
+.chain-title-price {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 1rem;
 }
+.chain-title-price {
+  margin-top: -0.5rem;
+  color: blue;
+}
 
 .product-title-price p,
+.chain-title-price p,
 .product-price {
   font-size: 16px;
 }
@@ -1117,6 +1123,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   grid-gap: 0rem;
   margin-top: 0.5rem;
   margin-bottom: 1rem;
+  align-items: flex-start;
 }
 
 .product-options-item,
@@ -1155,8 +1162,14 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   color: white;
 }
 
+.chain-title-container {
+  display: flex;
+  justify-content: space-between;
+  flex: 1;
+  align-items: center;
+}
 .add-a-chain-option {
-  width: calc(33% - 1px);
+  width: 33%;
   appearance: none;
   border: none;
   background: transparent;
@@ -1168,6 +1181,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   width: calc(100% - 1px);
   border: 1px solid #e9e9e9;
   display: flex;
+  position: relative;
 }
 .add-a-chain-option-img-container img {
   width: 100%;
@@ -1175,12 +1189,13 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 }
 .add-a-chain-option p {
   padding-top: 5px;
-  padding-right: 5%;
+  /* padding-right: 5%; */
   padding-left: 2px;
   padding-bottom: 2.5px;
   box-sizing: border-box;
 }
-.add-a-chain-option div {
+.add-a-chain-option div,
+.add-a-chain-pop-up-money {
   font-size: 12px;
   color: #999999;
 }
@@ -1190,8 +1205,41 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: pink;
+  background: white;
   width: 352px;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+.add-a-chain-header {
+  display: flex;
+  justify-content: space-between;
+}
+.add-a-chain-header button,
+.chain-title-container button {
+  background: transparent;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: none;
+  gap: 5px;
+  padding: 0;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.chain-title-container button {
+  margin-bottom: 0px;
+}
+.add-a-chain-header svg,
+.chain-title-container svg {
+  scale: 0.8;
+}
+.add-a-chain-pop-up img {
+  width: calc(100% - 2px);
+  height: auto;
+  border: 1px solid #e9e9e9;
+}
+.add-a-chain-pop-up-title-and-money {
+  margin-block: 10px 20px;
 }
 /*
 * --------------------------------------------------

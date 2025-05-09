@@ -170,6 +170,16 @@ export default function Product() {
   const notNewArrivalsCollection = product.collections.nodes.find(
     (col) => col.title !== 'New Arrivals',
   );
+
+  const [chain, setChain] = useState();
+
+  function addAChain(chain) {
+    setChain(chain);
+  }
+
+  function removeChain() {
+    setChain();
+  }
   return (
     <>
       <div className="product">
@@ -220,18 +230,42 @@ export default function Product() {
                 compareAtPrice={selectedVariant?.compareAtPrice}
               />
             </div>
+            {chain ? (
+              <div className="chain-title-price">
+                <p>{chain.product.title}</p>
+                <ProductPrice
+                  price={chain?.price}
+                  compareAtPrice={chain?.compareAtPrice}
+                />
+              </div>
+            ) : null}
 
             <br />
-            <ProductForm
-              productOptions={productOptions}
-              selectedVariant={selectedVariant}
-              compliments={compliments}
+            <motion.div layout transition={{ease: 'easeInOut', duration: 0.15}}>
+              <ProductForm
+                productOptions={productOptions}
+                selectedVariant={selectedVariant}
+                compliments={compliments}
+                chain={chain}
+                addAChain={addAChain}
+                removeChain={removeChain}
+              />
+            </motion.div>
+            <br />
+            <br />
+            <motion.p
+              layout
+              style={{color: '#999999'}}
+              transition={{ease: 'easeInOut', duration: 0.15}}
+            >
+              Details:
+            </motion.p>
+            <br />
+            <motion.div
+              transition={{ease: 'easeInOut', duration: 0.15}}
+              layout
+              dangerouslySetInnerHTML={{__html: descriptionHtml}}
             />
-            <br />
-            <br />
-            <p style={{color: '#999999'}}>Details:</p>
-            <br />
-            <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
             <br />
           </div>
           <Analytics.ProductView
@@ -459,6 +493,8 @@ $language: LanguageCode
         altText
       }
     }
+    encodedVariantExistence
+    encodedVariantAvailability
     options {
       name
       optionValues {

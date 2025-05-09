@@ -19,17 +19,15 @@ import {
  *   selectedVariant: ProductFragment['selectedOrFirstAvailableVariant'];
  * }}
  */
-export function ProductForm({productOptions, selectedVariant, compliments}) {
+export function ProductForm({
+  productOptions,
+  selectedVariant,
+  compliments,
+  chain,
+  addAChain,
+  removeChain,
+}) {
   const location = useLocation();
-  const [chain, setChain] = useState();
-
-  function addAChain(chain) {
-    setChain(chain);
-  }
-
-  function removeChain() {
-    setChain();
-  }
   // useEffect(() => {
   //   console.log('🔁 Variant changed! Location is now:', location.search);
   // }, [location.search]);
@@ -50,13 +48,14 @@ export function ProductForm({productOptions, selectedVariant, compliments}) {
       padding: isColorOption ? 0 : null,
     };
   };
-
   return (
     <div className="product-form">
       {productOptions.map((option) => {
         if (option.optionValues.length === 0) return null;
 
-        const isColorOption = option.name.toLowerCase() === 'material';
+        const isColorOption =
+          option.name.toLowerCase() === 'material' ||
+          option.name.toLowerCase() === 'color';
 
         return (
           <div className="product-options" key={option.name}>
@@ -181,6 +180,15 @@ export function ProductForm({productOptions, selectedVariant, compliments}) {
                   quantity: 1,
                   selectedVariant,
                 },
+                ...(chain
+                  ? [
+                      {
+                        merchandiseId: chain.id,
+                        quantity: 1,
+                        selectedVariant: chain,
+                      },
+                    ]
+                  : []),
               ]
             : []
         }
@@ -195,9 +203,10 @@ function Comps({compliments, chain, addAChain, removeChain}) {
   function closePopUp() {
     setClicked();
   }
+
   return (
     <div className="product-options">
-      <p>
+      <div style={{display: 'flex', alignItems: 'center', gap: '.25rem'}}>
         <span style={{color: '#999999'}}>Add a Chain:</span>{' '}
         <AnimatePresence mode="popLayout">
           {chain && (
@@ -208,8 +217,8 @@ function Comps({compliments, chain, addAChain, removeChain}) {
               transition={{ease: 'easeInOut', duration: 0.15}}
               className="chain-title-container"
             >
-              <span>{chain.title}</span>
-              <button>
+              <span>{chain.product.title}</span>
+              <button onClick={removeChain}>
                 <span>Remove</span>
                 <svg
                   width="15"
@@ -229,38 +238,199 @@ function Comps({compliments, chain, addAChain, removeChain}) {
             </motion.div>
           )}
         </AnimatePresence>
-      </p>
+      </div>
       <div className="product-options-grid">
         {compliments.map((comp) => (
-          <Compliment compliment={comp} key={comp.id} setClicked={setClicked} />
+          <Compliment
+            compliment={comp}
+            key={comp.id}
+            setClicked={setClicked}
+            chain={chain}
+          />
         ))}
       </div>
-      {clicked && <AddAChain clicked={clicked} closePopUp={closePopUp} />}
+      <AddAChainPopUp
+        clicked={clicked}
+        closePopUp={closePopUp}
+        addAChain={addAChain}
+      />
     </div>
   );
 }
 
-function AddAChain({clicked, closePopUp}) {
+function AddAChainPopUp({clicked, closePopUp, addAChain}) {
+  const [selectedVariant, setSelectedVariant] = useState();
+
+  useEffect(
+    () => setSelectedVariant(clicked?.selectedOrFirstAvailableVariant),
+    [clicked],
+  );
+
+  const productOptions = getProductOptions({
+    ...clicked,
+    selectedOrFirstAvailableVariant: selectedVariant,
+  });
+
+  function handleClick(variant) {
+    setSelectedVariant(variant);
+  }
+
+  const itemStyle = (selected, available, isColorOption) => {
+    return {
+      opacity: available ? 1 : 0.3,
+      padding: isColorOption ? 0 : null,
+    };
+  };
   return (
-    <div className="overlay expanded">
+    <div
+      className={`overlay ${clicked ? 'expanded' : ''}`}
+      style={{transition: 'all 150ms ease-in-out'}}
+    >
       <button
         onClick={closePopUp}
         style={{position: 'absolute', inset: 0, background: 'transparent'}}
       />
-      <div className="add-a-chain-pop-up">
-        <p>{clicked.title}</p>
-      </div>
+      {clicked && (
+        <div className="add-a-chain-pop-up">
+          <div className="add-a-chain-header">
+            <p>Add A Chain</p>
+            <button onClick={closePopUp}>
+              <span>Close</span>
+              <svg
+                width="15"
+                height="13"
+                viewBox="0 0 15 13"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M12.977 0.197266L7.65503 5.51984L2.35128 0.197266H0.328125L6.65294 6.52208L0.328125 12.8469H2.35128L7.65503 7.54254L12.977 12.8469H15.0001L8.67533 6.52208L15.0001 0.197266H12.977Z"
+                  fill="black"
+                />
+              </svg>
+            </button>
+          </div>
+          <Image data={clicked.images.nodes[0]} width={304} height={304} />
+          <div className="add-a-chain-pop-up-title-and-money">
+            <p>{clicked.title}</p>
+            <div className="add-a-chain-pop-up-money">
+              <Money data={clicked.priceRange.minVariantPrice} />
+            </div>
+          </div>
+          {productOptions.map((option) => {
+            if (option.optionValues.length === 0) return null;
+
+            const isColorOption =
+              option.name.toLowerCase() === 'material' ||
+              option.name.toLowerCase() === 'color';
+
+            return (
+              <div className="product-options" key={option.name}>
+                <p>
+                  <span style={{color: '#999999'}}>{option.name}:</span>{' '}
+                  <AnimatePresence mode="popLayout">
+                    <motion.span
+                      key={`${option.optionValues.find((v) => v.selected)?.name}`}
+                      initial={{opacity: 1}}
+                      animate={{opacity: 1}}
+                      exit={{opacity: 0}}
+                      style={{display: 'inline-block', width: '10rem'}}
+                      transition={{ease: 'easeInOut', duration: 0.15}}
+                    >
+                      {option.optionValues.find((v) => v.selected)?.name || ''}
+                    </motion.span>
+                  </AnimatePresence>
+                </p>
+                <div className="product-options-grid">
+                  {option.optionValues.map((value) => {
+                    const {
+                      name,
+                      handle,
+                      variantUriQuery,
+                      selected,
+                      available,
+                      exists,
+                      isDifferentProduct,
+                      swatch,
+                      variant,
+                    } = value;
+                    const variantImage = isColorOption ? variant?.image : null;
+                    const styles = itemStyle(
+                      selected,
+                      available,
+                      isColorOption,
+                    );
+
+                    if (isDifferentProduct) {
+                      return (
+                        <button className="product-options-item" style={styles}>
+                          <ProductOptionSwatch
+                            swatch={swatch}
+                            name={name}
+                            isColorOption={isColorOption}
+                            productImage={variantImage}
+                          />
+                        </button>
+                      );
+                    } else {
+                      return (
+                        <button
+                          type="button"
+                          className={`product-options-item${
+                            exists && !selected ? ' link' : ''
+                          }`}
+                          key={option.name + name}
+                          style={styles}
+                          disabled={!exists}
+                          onClick={() => handleClick(variant, name)}
+                        >
+                          <ProductOptionSwatch
+                            swatch={swatch}
+                            name={name}
+                            isColorOption={isColorOption}
+                            productImage={variantImage}
+                          />
+                          {selected && (
+                            <motion.div
+                              layoutId={`${option.name}-${clicked.handle}`}
+                              id={`${option.name}`}
+                              transition={{ease: 'easeInOut', duration: 0.15}}
+                              style={{
+                                position: 'absolute',
+                                bottom: 0,
+                                left: '-1px',
+                                right: '-1px',
+                                height: '2px',
+                                background: 'black',
+                              }}
+                            />
+                          )}
+                        </button>
+                      );
+                    }
+                  })}
+                </div>
+              </div>
+            );
+          })}
+          <button
+            className="cart-button"
+            onClick={() => {
+              setTimeout(() => addAChain(selectedVariant), 150);
+              closePopUp();
+            }}
+          >
+            ADD CHAIN
+          </button>
+        </div>
+      )}
     </div>
   );
 }
 
-function Compliment({compliment, setClicked}) {
-  // const productOptions = getProductOptions({
-  //   ...compliment,
-  //   selectedOrFirstAvailableVariant: compliment.selectedOrFirstAvailableVariant,
-  // });
-  // console.log(productOptions);
-  console.log(compliment);
+function Compliment({compliment, setClicked, chain}) {
   return (
     <button
       className="add-a-chain-option"
@@ -268,7 +438,21 @@ function Compliment({compliment, setClicked}) {
     >
       <div className="add-a-chain-option-img-container">
         <Image data={compliment.images.nodes[0]} width={200} height={200} />
-        <motion.div />
+        {chain?.product?.title === compliment.title && (
+          <motion.div
+            layoutId={`chain-indicator`}
+            id={`chain-indicator`}
+            transition={{ease: 'easeInOut', duration: 0.15}}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: '-1px',
+              right: '-1px',
+              height: '2px',
+              background: 'black',
+            }}
+          />
+        )}
       </div>
       <p>{compliment.title}</p>
       <Money data={compliment.priceRange.minVariantPrice} />
