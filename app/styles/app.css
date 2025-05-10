@@ -1966,7 +1966,23 @@ MEDIA QUIERIES
   .filter-container > div > button > span {
     color: black !important;
   }
+  .chain-title-container > button > span,
+  .add-a-chain-header > button > span,
+  .add-a-chain-option > p {
+    color: black !important;
+  }
+  .add-a-chain-pop-up > button {
+    color: white;
+  }
+  .cart-button {
+    color: white;
+    background: black;
+  }
 
+  .cart-button:hover {
+    background: black;
+    color: white;
+  }
   .pp-page {
     width: calc(100% - 2rem);
   }
