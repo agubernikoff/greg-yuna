@@ -113,22 +113,33 @@ export default function Product() {
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
-  const productImage = product.images.edges.map((edge) => (
+  const filteredImages = product.images.edges.filter((i) => {
+    if (selectedVariant?.availableForSale || !i?.node?.altText)
+      return (
+        i?.node?.altText?.toLowerCase() ===
+        selectedVariant?.image?.altText?.toLowerCase()
+      );
+    else
+      return selectedVariant.title
+        .toLowerCase()
+        .includes(i?.node?.altText?.toLowerCase());
+  });
+  const productImage = filteredImages.map((edge) => (
     <ProductImage key={edge.node.id} image={edge.node} />
   ));
 
   const [imageIndex, setImageIndex] = useState(0);
 
   function handleScroll(scrollWidth, scrollLeft) {
-    const widthOfAnImage = scrollWidth / product?.images?.edges.length;
+    const widthOfAnImage = scrollWidth / filteredImages.length;
     const dividend = scrollLeft / widthOfAnImage;
     const rounded = parseFloat((scrollLeft / widthOfAnImage).toFixed(0));
     if (Math.abs(dividend - rounded) < 0.2) setImageIndex(rounded);
   }
 
   const mappedIndicators =
-    product?.images?.edges.length > 1
-      ? product?.images?.edges.map((e, i) => (
+    filteredImages.length > 1
+      ? filteredImages.map((e, i) => (
           <div
             key={e.node.id}
             className="circle"
