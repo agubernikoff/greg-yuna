@@ -84,12 +84,30 @@ Aside.Provider = function AsideProvider({children}) {
   const [growVertically, setGrowVertically] = useState(false);
   const [growHorizontally, setGrowHorizontally] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  // Detect if we're on mobile
   useEffect(() => {
-    window
-      .matchMedia('(max-width:500px)')
-      .addEventListener('change', (e) => setIsMobile(e.matches));
-    if (window.matchMedia('(max-width:500px)').matches) setIsMobile(true);
+    const mediaQuery = window.matchMedia('(max-width: 500px)');
+    const handleChange = (e) => setIsMobile(e.matches);
+
+    handleChange(mediaQuery); // set initial value
+    mediaQuery.addEventListener('change', handleChange);
+
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
+
+  // Handle scroll locking on mobile
+  useEffect(() => {
+    if (isMobile && type !== 'closed') {
+      document.body.classList.add('no-scroll');
+    } else {
+      document.body.classList.remove('no-scroll');
+    }
+
+    return () => {
+      document.body.classList.remove('no-scroll');
+    };
+  }, [type, isMobile]);
 
   return (
     <AsideContext.Provider
@@ -97,9 +115,9 @@ Aside.Provider = function AsideProvider({children}) {
         type,
         growVertically,
         growHorizontally,
-        open: (type) => {
-          setType(type);
-          if (type === 'cart') {
+        open: (newType) => {
+          setType(newType);
+          if (newType === 'cart') {
             setGrowHorizontally(true);
             setTimeout(() => {
               setGrowVertically(true);
@@ -115,7 +133,9 @@ Aside.Provider = function AsideProvider({children}) {
             setTimeout(() => {
               setType('closed');
             }, 800);
-          } else setType('closed');
+          } else {
+            setType('closed');
+          }
         },
       }}
     >

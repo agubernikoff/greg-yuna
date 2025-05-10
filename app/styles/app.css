@@ -1974,15 +1974,12 @@ MEDIA QUIERIES
   .add-a-chain-pop-up > button {
     color: white;
   }
-  .cart-button {
+  .cart-button,
+  .cart-checkout > a {
     color: white;
     background: black;
   }
 
-  .cart-button:hover {
-    background: black;
-    color: white;
-  }
   .pp-page {
     width: calc(100% - 2rem);
   }
@@ -2037,5 +2034,10 @@ MEDIA QUIERIES
 
   .cart-line:last-of-type {
     padding-bottom: 0.75rem;
+  }
+  body.no-scroll {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
   }
 }
