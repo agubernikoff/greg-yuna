@@ -1639,6 +1639,29 @@ MEDIA QUIERIES
     opacity: 1;
     background-color: rgba(0, 0, 0, 0);
   }
+  .product-options .overlay {
+    opacity: 0;
+    background: rgba(0, 0, 0, 0.2);
+  }
+  .product-options .overlay .add-a-chain-pop-up {
+    top: 100%;
+    left: 0;
+    right: 0;
+    width: 100%;
+    transform: translate(0);
+  }
+  .product-options .overlay.expanded {
+    opacity: 1;
+  }
+  .product-options .overlay.expanded .add-a-chain-pop-up {
+    transform: translate(0, -100%);
+    overflow: scroll;
+    max-height: 100vh;
+  }
+  .add-a-chain-header + img {
+    width: 80%;
+    margin-inline: 10%;
+  }
   .overlay:has(aside#cart) {
     z-index: 11;
   }

@@ -249,11 +249,13 @@ function Comps({compliments, chain, addAChain, removeChain}) {
           />
         ))}
       </div>
-      <AddAChainPopUp
-        clicked={clicked}
-        closePopUp={closePopUp}
-        addAChain={addAChain}
-      />
+      {clicked && (
+        <AddAChainPopUp
+          clicked={clicked}
+          closePopUp={closePopUp}
+          addAChain={addAChain}
+        />
+      )}
     </div>
   );
 }
@@ -290,142 +292,136 @@ function AddAChainPopUp({clicked, closePopUp, addAChain}) {
         onClick={closePopUp}
         style={{position: 'absolute', inset: 0, background: 'transparent'}}
       />
-      {clicked && (
-        <div className="add-a-chain-pop-up">
-          <div className="add-a-chain-header">
-            <p>Add A Chain</p>
-            <button onClick={closePopUp}>
-              <span>Close</span>
-              <svg
-                width="15"
-                height="13"
-                viewBox="0 0 15 13"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M12.977 0.197266L7.65503 5.51984L2.35128 0.197266H0.328125L6.65294 6.52208L0.328125 12.8469H2.35128L7.65503 7.54254L12.977 12.8469H15.0001L8.67533 6.52208L15.0001 0.197266H12.977Z"
-                  fill="black"
-                />
-              </svg>
-            </button>
-          </div>
-          <Image data={clicked.images.nodes[0]} width={304} height={304} />
-          <div className="add-a-chain-pop-up-title-and-money">
-            <p>{clicked.title}</p>
-            <div className="add-a-chain-pop-up-money">
-              <Money data={clicked.priceRange.minVariantPrice} />
-            </div>
-          </div>
-          {productOptions.map((option) => {
-            if (option.optionValues.length === 0) return null;
-
-            const isColorOption =
-              option.name.toLowerCase() === 'material' ||
-              option.name.toLowerCase() === 'color';
-
-            return (
-              <div className="product-options" key={option.name}>
-                <p>
-                  <span style={{color: '#999999'}}>{option.name}:</span>{' '}
-                  <AnimatePresence mode="popLayout">
-                    <motion.span
-                      key={`${option.optionValues.find((v) => v.selected)?.name}`}
-                      initial={{opacity: 1}}
-                      animate={{opacity: 1}}
-                      exit={{opacity: 0}}
-                      style={{display: 'inline-block', width: '10rem'}}
-                      transition={{ease: 'easeInOut', duration: 0.15}}
-                    >
-                      {option.optionValues.find((v) => v.selected)?.name || ''}
-                    </motion.span>
-                  </AnimatePresence>
-                </p>
-                <div className="product-options-grid">
-                  {option.optionValues.map((value) => {
-                    const {
-                      name,
-                      handle,
-                      variantUriQuery,
-                      selected,
-                      available,
-                      exists,
-                      isDifferentProduct,
-                      swatch,
-                      variant,
-                    } = value;
-                    const variantImage = isColorOption ? variant?.image : null;
-                    const styles = itemStyle(
-                      selected,
-                      available,
-                      isColorOption,
-                    );
-
-                    if (isDifferentProduct) {
-                      return (
-                        <button className="product-options-item" style={styles}>
-                          <ProductOptionSwatch
-                            swatch={swatch}
-                            name={name}
-                            isColorOption={isColorOption}
-                            productImage={variantImage}
-                          />
-                        </button>
-                      );
-                    } else {
-                      return (
-                        <button
-                          type="button"
-                          className={`product-options-item${
-                            exists && !selected ? ' link' : ''
-                          }`}
-                          key={option.name + name}
-                          style={styles}
-                          disabled={!exists}
-                          onClick={() => handleClick(variant, name)}
-                        >
-                          <ProductOptionSwatch
-                            swatch={swatch}
-                            name={name}
-                            isColorOption={isColorOption}
-                            productImage={variantImage}
-                          />
-                          {selected && (
-                            <motion.div
-                              layoutId={`${option.name}-${clicked.handle}`}
-                              id={`${option.name}`}
-                              transition={{ease: 'easeInOut', duration: 0.15}}
-                              style={{
-                                position: 'absolute',
-                                bottom: 0,
-                                left: '-1px',
-                                right: '-1px',
-                                height: '2px',
-                                background: 'black',
-                              }}
-                            />
-                          )}
-                        </button>
-                      );
-                    }
-                  })}
-                </div>
-              </div>
-            );
-          })}
-          <button
-            className="cart-button"
-            onClick={() => {
-              setTimeout(() => addAChain(selectedVariant), 150);
-              closePopUp();
-            }}
-          >
-            ADD CHAIN
+      <div className="add-a-chain-pop-up">
+        <div className="add-a-chain-header">
+          <p>Add A Chain</p>
+          <button onClick={closePopUp}>
+            <span>Close</span>
+            <svg
+              width="15"
+              height="13"
+              viewBox="0 0 15 13"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M12.977 0.197266L7.65503 5.51984L2.35128 0.197266H0.328125L6.65294 6.52208L0.328125 12.8469H2.35128L7.65503 7.54254L12.977 12.8469H15.0001L8.67533 6.52208L15.0001 0.197266H12.977Z"
+                fill="black"
+              />
+            </svg>
           </button>
         </div>
-      )}
+        <Image data={clicked.images.nodes[0]} width={304} height={304} />
+        <div className="add-a-chain-pop-up-title-and-money">
+          <p>{clicked.title}</p>
+          <div className="add-a-chain-pop-up-money">
+            <Money data={clicked.priceRange.minVariantPrice} />
+          </div>
+        </div>
+        {productOptions.map((option) => {
+          if (option.optionValues.length === 0) return null;
+
+          const isColorOption =
+            option.name.toLowerCase() === 'material' ||
+            option.name.toLowerCase() === 'color';
+
+          return (
+            <div className="product-options" key={option.name}>
+              <p>
+                <span style={{color: '#999999'}}>{option.name}:</span>{' '}
+                <AnimatePresence mode="popLayout">
+                  <motion.span
+                    key={`${option.optionValues.find((v) => v.selected)?.name}`}
+                    initial={{opacity: 1}}
+                    animate={{opacity: 1}}
+                    exit={{opacity: 0}}
+                    style={{display: 'inline-block', width: '10rem'}}
+                    transition={{ease: 'easeInOut', duration: 0.15}}
+                  >
+                    {option.optionValues.find((v) => v.selected)?.name || ''}
+                  </motion.span>
+                </AnimatePresence>
+              </p>
+              <div className="product-options-grid">
+                {option.optionValues.map((value) => {
+                  const {
+                    name,
+                    handle,
+                    variantUriQuery,
+                    selected,
+                    available,
+                    exists,
+                    isDifferentProduct,
+                    swatch,
+                    variant,
+                  } = value;
+                  const variantImage = isColorOption ? variant?.image : null;
+                  const styles = itemStyle(selected, available, isColorOption);
+
+                  if (isDifferentProduct) {
+                    return (
+                      <button className="product-options-item" style={styles}>
+                        <ProductOptionSwatch
+                          swatch={swatch}
+                          name={name}
+                          isColorOption={isColorOption}
+                          productImage={variantImage}
+                        />
+                      </button>
+                    );
+                  } else {
+                    return (
+                      <button
+                        type="button"
+                        className={`product-options-item${
+                          exists && !selected ? ' link' : ''
+                        }`}
+                        key={option.name + name}
+                        style={styles}
+                        disabled={!exists}
+                        onClick={() => handleClick(variant, name)}
+                      >
+                        <ProductOptionSwatch
+                          swatch={swatch}
+                          name={name}
+                          isColorOption={isColorOption}
+                          productImage={variantImage}
+                        />
+                        {selected && (
+                          <motion.div
+                            layoutId={`${option.name}-${clicked.handle}`}
+                            id={`${option.name}`}
+                            transition={{ease: 'easeInOut', duration: 0.15}}
+                            style={{
+                              position: 'absolute',
+                              bottom: 0,
+                              left: '-1px',
+                              right: '-1px',
+                              height: '2px',
+                              background: 'black',
+                            }}
+                          />
+                        )}
+                      </button>
+                    );
+                  }
+                })}
+              </div>
+            </div>
+          );
+        })}
+        <button
+          className="cart-button"
+          onClick={() => {
+            setTimeout(() => addAChain(selectedVariant), 150);
+            closePopUp();
+          }}
+        >
+          ADD CHAIN
+        </button>
+      </div>
     </div>
   );
 }
