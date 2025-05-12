@@ -37,7 +37,7 @@ async function loadCriticalData({context}) {
     context.storefront.query(FEATURED_COLLECTION_QUERY),
     // Add other queries here, so that they are loaded in parallel
   ]);
-  console.log(newArrivals);
+
   return {
     featuredCollection: newArrivals.collection,
     collections,
