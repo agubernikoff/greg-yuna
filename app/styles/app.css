@@ -1966,6 +1966,19 @@ MEDIA QUIERIES
   .filter-container > div > button > span {
     color: black !important;
   }
+  .chain-title-container > button > span,
+  .add-a-chain-header > button > span,
+  .add-a-chain-option > p {
+    color: black !important;
+  }
+  .add-a-chain-pop-up > button {
+    color: white;
+  }
+  .cart-button,
+  .cart-checkout > a {
+    color: white;
+    background: black;
+  }
 
   .pp-page {
     width: calc(100% - 2rem);
@@ -2021,5 +2034,10 @@ MEDIA QUIERIES
 
   .cart-line:last-of-type {
     padding-bottom: 0.75rem;
+  }
+  body.no-scroll {
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
   }
 }
