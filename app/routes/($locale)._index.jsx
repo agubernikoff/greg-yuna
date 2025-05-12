@@ -70,7 +70,7 @@ export default function Homepage() {
   return (
     <div className="home">
       <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
+      <RecommendedProducts products={data.featuredCollection} />
       <Collections collections={data.collections} />
       <FlagshipHome />
     </div>
@@ -273,7 +273,7 @@ const NEW_ARRIVALS_QUERY = `#graphql
         height
       }
       products(
-        first: 6
+        first: 12
       ) {
         filters{
           id
