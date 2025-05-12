@@ -1,5 +1,5 @@
 import React, {Suspense, useId} from 'react';
-import {Await, NavLink, useAsyncValue} from '@remix-run/react';
+import {Await, NavLink, useAsyncValue, useLocation} from '@remix-run/react';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
 import {motion} from 'motion/react';
@@ -15,6 +15,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   useEffect(() => {
     setTimeout(() => setT(false), 1000);
   }, []);
+  const {close} = useAside();
   return (
     <>
       <motion.header
@@ -36,7 +37,13 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
           animate={{opacity: 1}}
           transition={{opacity: {duration: 1}, layout: {duration: 1}}}
         >
-          <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
+          <NavLink
+            prefetch="intent"
+            to="/"
+            style={activeLinkStyle}
+            end
+            onClick={close}
+          >
             <Logo />
           </NavLink>
         </motion.div>
@@ -386,6 +393,8 @@ function CartBadge({count}) {
 
   const {publish, shop, cart, prevCart} = useAnalytics();
 
+  const {pathname} = useLocation();
+
   return (
     <a
       href="/cart"
@@ -402,6 +411,12 @@ function CartBadge({count}) {
       }}
       style={{
         display: isOpen ? 'none' : 'inline',
+        visibility:
+          count === 0 &&
+          !pathname.includes('/collections') &&
+          !pathname.includes('/product')
+            ? 'hidden'
+            : 'visible',
       }}
       className="cart-badge"
     >
