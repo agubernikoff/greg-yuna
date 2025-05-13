@@ -326,7 +326,6 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   removeFilter={removeSort}
                   term={term}
                   isSort={true}
-                  term={term}
                 />
                 <FilterInput
                   label={'Alphabetically, A-Z'}
@@ -336,7 +335,6 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   removeFilter={removeSort}
                   term={term}
                   isSort={true}
-                  term={term}
                 />
                 <FilterInput
                   label={'Date, new to old'}
@@ -349,7 +347,6 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   removeFilter={removeSort}
                   term={term}
                   isSort={true}
-                  term={term}
                 />
                 <FilterInput
                   label={'Date, old to new'}
@@ -362,7 +359,6 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   removeFilter={removeSort}
                   term={term}
                   isSort={true}
-                  term={term}
                 />
                 <FilterInput
                   label={'Price, low to high'}
