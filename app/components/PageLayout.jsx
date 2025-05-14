@@ -1,5 +1,5 @@
-import {Await, Link} from '@remix-run/react';
-import {Suspense, useId} from 'react';
+import {Await, Link, useLocation, Form} from '@remix-run/react';
+import {Suspense, useId, useState, useEffect} from 'react';
 import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
 import {Header, HeaderMenu} from '~/components/Header';
@@ -9,6 +9,7 @@ import {
   SearchFormPredictive,
 } from '~/components/SearchFormPredictive';
 import {SearchResultsPredictive} from '~/components/SearchResultsPredictive';
+import {useAside} from './Aside';
 
 /**
  * @param {PageLayoutProps}
@@ -20,12 +21,23 @@ export function PageLayout({
   header,
   isLoggedIn,
   publicStoreDomain,
+  selectedLocale,
+  availableCountries,
 }) {
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
       <SearchAside />
-      <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
+      <LocationAside
+        availableCountries={availableCountries}
+        selectedLocale={selectedLocale}
+      />
+      <MobileMenuAside
+        header={header}
+        publicStoreDomain={publicStoreDomain}
+        selectedLocale={selectedLocale}
+        availableCountries={availableCountries}
+      />
       {header && (
         <Header
           header={header}
@@ -41,6 +53,129 @@ export function PageLayout({
         publicStoreDomain={publicStoreDomain}
       />
     </Aside.Provider>
+  );
+}
+
+function LocationAside({availableCountries, selectedLocale}) {
+  const {close} = useAside();
+  return (
+    <Aside type="location" heading="choose country">
+      <Suspense fallback={<div>Loading...</div>}>
+        <Await resolve={availableCountries}>
+          {(availableCountries) => {
+            return (
+              <LocationForm
+                availableCountries={availableCountries}
+                selectedLocale={selectedLocale}
+                close={close}
+              />
+            );
+          }}
+        </Await>
+      </Suspense>
+    </Aside>
+  );
+}
+
+function LocationForm({availableCountries, selectedLocale, close}) {
+  const {pathname, search} = useLocation();
+  const {type} = useAside();
+  const [open, setOpen] = useState(false);
+  const [country, setCountry] = useState({
+    currency: {
+      isoCode: 'USD',
+      name: 'United States Dollar',
+      symbol: '$',
+    },
+    isoCode: 'US',
+    name: 'United States',
+    unitSystem: 'IMPERIAL_SYSTEM',
+  });
+  console.log(availableCountries);
+  useEffect(
+    () => setCountry(availableCountries.localization.country),
+    [availableCountries, pathname, selectedLocale],
+  );
+
+  useEffect(() => {
+    setTimeout(() => setCountry(availableCountries.localization.country), 300);
+  }, [type]);
+
+  // Prepare sorted country options
+  const sortedCountries = availableCountries.localization.availableCountries
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  // Move selected country to the top
+  const countryOptions = [
+    country,
+    ...sortedCountries.filter((c) => c.isoCode !== country.isoCode),
+  ];
+
+  const options = countryOptions.map((c) => (
+    <p
+      className="country-option"
+      key={c.isoCode}
+      onClick={() => {
+        setCountry(c);
+        setOpen(false);
+      }}
+    >
+      {`${c.name.toLowerCase()} / ${c.currency.isoCode.toLowerCase()}`}
+    </p>
+  ));
+
+  const strippedPathname = pathname.includes('EN-')
+    ? pathname
+        .split('/')
+        .filter((part) => !part.includes('EN-'))
+        .join('/')
+    : pathname;
+
+  return (
+    <div className="location-form">
+      <p>
+        {'Please select the country where your order will be shipped to. This will give you the correct pricing, delivery dates and shipping costs for your destination. All orders are dispatched from the united states.'.toLowerCase()}
+      </p>
+      <div className="country-dropdown">
+        <div className="location-select" onClick={() => setOpen(true)}>
+          <p>{`${country.name.toLowerCase()} / ${country.currency.isoCode.toLowerCase()}`}</p>
+          <svg
+            width="7"
+            height="8"
+            viewBox="0 0 7 8"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M7 3.79668L0.7 7.43399L0.7 0.159373L7 3.79668Z"
+              fill="black"
+            />
+          </svg>
+        </div>
+        {open ? (
+          <div className="country-dropdown-content">{options}</div>
+        ) : null}
+      </div>
+      {open ? (
+        <button
+          className="close-dropdown"
+          onClick={() => setOpen(false)}
+        ></button>
+      ) : null}
+      <Form method="post" action="/locale" preventScrollReset={true}>
+        <input type="hidden" name="language" value={country.language} />
+        <input type="hidden" name="country" value={country.isoCode} />
+        <input
+          type="hidden"
+          name="path"
+          value={`${strippedPathname}${search}`}
+        />
+        <button type="submit" onClick={close} className="add-to-cart-form-pdp">
+          save
+        </button>
+      </Form>
+    </div>
   );
 }
 
@@ -149,7 +284,12 @@ function SearchAside() {
  *   publicStoreDomain: PageLayoutProps['publicStoreDomain'];
  * }}
  */
-function MobileMenuAside({header, publicStoreDomain}) {
+function MobileMenuAside({
+  header,
+  publicStoreDomain,
+  selectedLocale,
+  availableCountries,
+}) {
   return (
     header.menu &&
     header.shop.primaryDomain?.url && (
@@ -159,6 +299,8 @@ function MobileMenuAside({header, publicStoreDomain}) {
           viewport="mobile"
           primaryDomainUrl={header.shop.primaryDomain.url}
           publicStoreDomain={publicStoreDomain}
+          selectedLocale={selectedLocale}
+          availableCountries={availableCountries}
         />
       </Aside>
     )

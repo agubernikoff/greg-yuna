@@ -1,7 +1,7 @@
 import {getShopAnalytics} from '@shopify/hydrogen';
 import {Outlet, useRouteError, isRouteErrorResponse} from '@remix-run/react';
 import favicon from '~/assets/favicon.svg';
-import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
+import {FOOTER_QUERY, HEADER_QUERY, COUNTRIES_QUERY} from '~/lib/fragments';
 
 /**
  * This is important to avoid re-fetching root queries on sub-navigations
@@ -66,6 +66,7 @@ export async function loader(args) {
       storefront,
       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
     }),
+    selectedLocale: args.context.storefront.i18n,
     consent: {
       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
@@ -120,10 +121,20 @@ function loadDeferredData({context}) {
       console.error(error);
       return null;
     });
+  const availableCountries = storefront
+    .query(COUNTRIES_QUERY, {
+      cache: storefront.CacheLong(),
+    })
+    .catch((error) => {
+      // Log query errors, but don't throw them so the page can still render
+      console.error(error);
+      return null;
+    });
   return {
     cart: cart.get(),
     isLoggedIn: customerAccount.isLoggedIn(),
     footer,
+    availableCountries,
   };
 }
 

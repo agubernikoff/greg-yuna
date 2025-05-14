@@ -1,10 +1,11 @@
-import {Await, useLoaderData, Link} from '@remix-run/react';
+import {Await, useLoaderData} from '@remix-run/react';
 import {Suspense, useState} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import ProductGridItem from '~/components/ProductGridItem';
 import {motion} from 'motion/react';
 import flag1 from '../assets/flagship.png';
 import flag2 from '../assets/flag2.png';
+import NavLink from '~/components/NavLink';
 
 /**
  * @type {MetaFunction}
@@ -86,7 +87,7 @@ function FeaturedCollection({collection}) {
   if (!collection) return null;
   const image = collection?.image;
   return (
-    <Link
+    <NavLink
       className="featured-collection"
       to={`/collections/${collection.handle}`}
     >
@@ -96,7 +97,7 @@ function FeaturedCollection({collection}) {
         </div>
       )}
       <h1>{collection.title.toUpperCase()}</h1>
-    </Link>
+    </NavLink>
   );
 }
 
@@ -145,9 +146,9 @@ function CollectionGridItem({node}) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <Link to={`/collections/${node.handle}`}>
+      <NavLink to={`/collections/${node.handle}`}>
         <Image data={node.image} sizes="25vw" aspectRatio=".8/1" />
-      </Link>
+      </NavLink>
       <p>{`Shop ${node.title} →`}</p>
     </motion.div>
   );

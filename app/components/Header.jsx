@@ -1,10 +1,11 @@
 import React, {Suspense, useId} from 'react';
-import {Await, NavLink, useAsyncValue, useLocation} from '@remix-run/react';
+import {Await, useAsyncValue, useLocation} from '@remix-run/react';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
 import {motion} from 'motion/react';
 import {useState, useEffect} from 'react';
 import {SearchFormPredictive} from './SearchFormPredictive';
+import NavLink from './NavLink';
 
 /**
  * @param {HeaderProps}
@@ -198,7 +199,10 @@ export function HeaderMenu({
   primaryDomainUrl,
   viewport,
   publicStoreDomain,
+  selectedLocale,
+  availableCountries,
 }) {
+  console.log(selectedLocale, availableCountries);
   const className = `header-menu-${viewport}`;
   const {close} = useAside();
   const queriesDatalistId = useId();
@@ -313,16 +317,10 @@ export function HeaderMenu({
         >
           Account
         </NavLink>
-        <NavLink
-          className="header-menu-item-aux"
-          end
-          onClick={close}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
-        >
-          EN/USD
-        </NavLink>
+        <LocationToggle
+          selectedLocale={selectedLocale}
+          availableCountries={availableCountries}
+        />
         <NavLink
           className="header-menu-item-aux"
           end
@@ -338,6 +336,29 @@ export function HeaderMenu({
   );
 }
 
+function LocationToggle({selectedLocale, availableCountries}) {
+  const {open} = useAside();
+
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Await resolve={availableCountries}>
+        {(availableCountries) => {
+          console.log(availableCountries);
+          return (
+            <button
+              className="header-menu-item-aux"
+              onClick={() => {
+                open('location');
+              }}
+            >
+              EN/USD
+            </button>
+          );
+        }}
+      </Await>
+    </Suspense>
+  );
+}
 /**
  * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}
  */
