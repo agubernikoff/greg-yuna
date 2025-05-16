@@ -363,6 +363,19 @@ button.header-menu-item-aux:hover > svg > path {
   stroke: #999999;
 }
 .location-form {
+  padding: 0.5rem 1rem;
+}
+.country-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.country-option:first-of-type {
+  color: #256eff;
+  margin-bottom: 1rem;
+}
+.country-option:hover {
+  opacity: 0.8;
 }
 .header-ctas {
   align-items: center;

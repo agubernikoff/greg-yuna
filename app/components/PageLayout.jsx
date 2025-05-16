@@ -132,19 +132,16 @@ export function LocationForm({availableCountries, selectedLocale, close}) {
 
   return (
     <div className="location-form">
-      <div className="country-dropdown">
-        <div className="country-dropdown-content">
-          {countryOptions.map((c) => (
-            <p
-              className="country-option"
-              key={c.isoCode}
-              onClick={() => handleCountrySelect(c)}
-            >
-              {`${c.name} (${c.currency.isoCode} ${c.currency.symbol})`}
-            </p>
-          ))}
-        </div>
-      </div>
+      {countryOptions.map((c) => (
+        <p
+          className="country-option"
+          key={c.isoCode}
+          onClick={() => handleCountrySelect(c)}
+        >
+          <span>{`${c.name}`}</span>
+          <span>{`(${c.currency.isoCode} ${c.currency.symbol})`}</span>
+        </p>
+      ))}
     </div>
   );
 }
