@@ -1227,16 +1227,17 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   font-size: 12px;
   color: #999999;
 }
-
+.popupoverlay {
+  display: flex;
+  align-items: center;
+}
 .add-a-chain-pop-up {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: auto;
   background: white;
   width: 352px;
   padding: 1rem;
   box-sizing: border-box;
+  z-index: 2;
 }
 .add-a-chain-header {
   display: flex;
@@ -1668,22 +1669,21 @@ MEDIA QUIERIES
     opacity: 1;
     background-color: rgba(0, 0, 0, 0);
   }
-  .product-options .overlay {
+  .overlay {
     opacity: 0;
     background: rgba(0, 0, 0, 0.2);
   }
-  .product-options .overlay .add-a-chain-pop-up {
-    top: 100%;
-    left: 0;
-    right: 0;
-    width: 100%;
-    transform: translate(0);
+  .popupoverlay {
+    align-items: flex-end;
   }
-  .product-options .overlay.expanded {
+  .overlay .add-a-chain-pop-up {
+    margin: 0;
+    width: 100%;
+  }
+  .overlay.expanded {
     opacity: 1;
   }
-  .product-options .overlay.expanded .add-a-chain-pop-up {
-    transform: translate(0, -100%);
+  .overlay.expanded .add-a-chain-pop-up {
     overflow: scroll;
     max-height: 100vh;
   }

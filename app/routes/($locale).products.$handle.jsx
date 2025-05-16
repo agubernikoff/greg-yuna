@@ -12,7 +12,8 @@ import {ProductPrice} from '~/components/ProductPrice';
 import {ProductImage} from '~/components/ProductImage';
 import {ProductForm} from '~/components/ProductForm';
 import ProductGridItem from '~/components/ProductGridItem';
-import {motion} from 'motion/react';
+import {AnimatePresence, motion} from 'motion/react';
+import {AddAChainPopUp} from '~/components/ProductForm';
 
 /**
  * @type {MetaFunction<typeof loader>}
@@ -182,6 +183,15 @@ export default function Product() {
     (col) => col.title !== 'New Arrivals',
   );
 
+  const [clicked, setClicked] = useState();
+
+  function openPopUp(chain) {
+    setClicked(chain);
+  }
+  function closePopUp() {
+    setClicked();
+  }
+
   const [chain, setChain] = useState();
 
   function addAChain(chain) {
@@ -257,6 +267,8 @@ export default function Product() {
                 productOptions={productOptions}
                 selectedVariant={selectedVariant}
                 compliments={compliments}
+                openPopUp={openPopUp}
+                closePopUp={closePopUp}
                 chain={chain}
                 addAChain={addAChain}
                 removeChain={removeChain}
@@ -296,6 +308,15 @@ export default function Product() {
           />
         </div>
       </div>
+      <AnimatePresence mode="popLayout">
+        {clicked && (
+          <AddAChainPopUp
+            clicked={clicked}
+            closePopUp={closePopUp}
+            addAChain={addAChain}
+          />
+        )}
+      </AnimatePresence>
       <YouMayAlsoLike recs={recs} />
     </>
   );
