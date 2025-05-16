@@ -14,6 +14,7 @@ import {ProductForm} from '~/components/ProductForm';
 import ProductGridItem from '~/components/ProductGridItem';
 import {AnimatePresence, motion} from 'motion/react';
 import {AddAChainPopUp} from '~/components/ProductForm';
+import {useNavigationContext} from '~/context/NavigationContext';
 
 /**
  * @type {MetaFunction<typeof loader>}
@@ -168,10 +169,12 @@ export default function Product() {
       : null;
 
   const {title, descriptionHtml} = product;
-  const {state} = useLocation();
 
-  const to = state
-    ? state
+  const {lastCollectionPath} = useNavigationContext();
+  console.log(lastCollectionPath);
+
+  const to = lastCollectionPath
+    ? lastCollectionPath
     : `/collections/${product.collections.nodes[0].handle}`;
 
   function capitalizeFirstLetter(word) {
@@ -210,12 +213,15 @@ export default function Product() {
               Home
             </NavLink>
             {' → '}
-            {(notNewArrivalsCollection && state?.includes('collections')) ||
-            state?.includes('products') ? (
+            {(notNewArrivalsCollection &&
+              lastCollectionPath?.includes('collections')) ||
+            lastCollectionPath?.includes('products') ? (
               <>
                 <NavLink className="crumb" to={to}>
-                  {state?.includes('collections')
-                    ? capitalizeFirstLetter(state.split('/collections/')[1])
+                  {lastCollectionPath?.includes('collections')
+                    ? capitalizeFirstLetter(
+                        lastCollectionPath.split('/collections/')[1],
+                      )
                     : notNewArrivalsCollection.title}
                 </NavLink>
                 {' → '}
