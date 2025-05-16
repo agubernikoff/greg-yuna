@@ -6,6 +6,7 @@ import {motion} from 'motion/react';
 import {useState, useEffect} from 'react';
 import {SearchFormPredictive} from './SearchFormPredictive';
 import NavLink from './NavLink';
+import {LocationForm} from './PageLayout';
 
 /**
  * @param {HeaderProps}
@@ -202,10 +203,17 @@ export function HeaderMenu({
   selectedLocale,
   availableCountries,
 }) {
-  console.log(selectedLocale, availableCountries);
   const className = `header-menu-${viewport}`;
   const {close} = useAside();
   const queriesDatalistId = useId();
+
+  const [open, setOpen] = useState(false);
+  function openLocation() {
+    setOpen(true);
+  }
+  function closeLocation() {
+    setOpen(false);
+  }
 
   return (
     <div className="header-menu-container">
@@ -317,10 +325,6 @@ export function HeaderMenu({
         >
           Account
         </NavLink>
-        <LocationToggle
-          selectedLocale={selectedLocale}
-          availableCountries={availableCountries}
-        />
         <NavLink
           className="header-menu-item-aux"
           end
@@ -332,27 +336,102 @@ export function HeaderMenu({
           Contact
         </NavLink>
       </nav>
+      <LocationToggle
+        selectedLocale={selectedLocale}
+        availableCountries={availableCountries}
+        openLocation={openLocation}
+        closeLocation={closeLocation}
+        open={open}
+      />
     </div>
   );
 }
 
-function LocationToggle({selectedLocale, availableCountries}) {
-  const {open} = useAside();
-
+function LocationToggle({
+  selectedLocale,
+  availableCountries,
+  openLocation,
+  closeLocation,
+  open,
+}) {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Await resolve={availableCountries}>
         {(availableCountries) => {
-          console.log(availableCountries);
           return (
-            <button
-              className="header-menu-item-aux"
-              onClick={() => {
-                open('location');
+            <div
+              style={{
+                height: '100vh',
+                position: 'absolute',
+                width: '100%',
+                top: 0,
+                left: 0,
+                background: open ? 'rgba(0,0,0,0.2)' : 'transparent',
+                transition: 'background 150ms ease-in-out',
+                pointerEvents: open ? 'auto' : 'none',
               }}
             >
-              EN/USD
-            </button>
+              {open && (
+                <button
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'transparent',
+                    border: 'none',
+                  }}
+                  onClick={closeLocation}
+                />
+              )}
+              <motion.div
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  borderTop: '1px solid #e9e9e9',
+                  left: 0,
+                  right: 0,
+                  background: 'white',
+                  pointerEvents: 'auto',
+                }}
+                initial={{height: '32px'}}
+                animate={{height: open ? 'auto' : '32px'}}
+              >
+                <button
+                  className="header-menu-item-aux"
+                  onClick={() => {
+                    if (!open) openLocation();
+                    else closeLocation();
+                  }}
+                >
+                  <div style={{flex: 1, textAlign: 'left', height: '16px'}}>
+                    <span
+                      style={{opacity: open ? 0 : 1}}
+                    >{`${availableCountries.localization.country.name} (${availableCountries.localization.country.currency.isoCode} ${availableCountries.localization.country.currency.symbol})`}</span>
+                    <span style={{opacity: !open ? 0 : 1}}>
+                      CHOOSE A LOCATION
+                    </span>
+                  </div>
+                  <svg
+                    width="9"
+                    height="6"
+                    viewBox="0 0 9 6"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{
+                      rotate: open ? '-180deg' : '0deg',
+                      transition: 'rotate 150ms ease-in-out',
+                    }}
+                  >
+                    <path d="M8 4.75L4.5 1.25L0.999999 4.75" stroke="black" />
+                  </svg>
+                </button>
+
+                <LocationForm
+                  availableCountries={availableCountries}
+                  selectedLocale={selectedLocale}
+                  close={closeLocation}
+                />
+              </motion.div>
+            </div>
           );
         }}
       </Await>

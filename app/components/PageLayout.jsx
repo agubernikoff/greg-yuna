@@ -1,4 +1,4 @@
-import {Await, Link, useLocation, Form} from '@remix-run/react';
+import {Await, Link, useLocation, useFetcher, Form} from '@remix-run/react';
 import {Suspense, useId, useState, useEffect} from 'react';
 import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
@@ -10,6 +10,7 @@ import {
 } from '~/components/SearchFormPredictive';
 import {SearchResultsPredictive} from '~/components/SearchResultsPredictive';
 import {useAside} from './Aside';
+import {useRef} from 'react';
 
 /**
  * @param {PageLayoutProps}
@@ -28,10 +29,6 @@ export function PageLayout({
     <Aside.Provider>
       <CartAside cart={cart} />
       <SearchAside />
-      <LocationAside
-        availableCountries={availableCountries}
-        selectedLocale={selectedLocale}
-      />
       <MobileMenuAside
         header={header}
         publicStoreDomain={publicStoreDomain}
@@ -56,30 +53,33 @@ export function PageLayout({
   );
 }
 
-function LocationAside({availableCountries, selectedLocale}) {
-  const {close} = useAside();
-  return (
-    <Aside type="location" heading="choose country">
-      <Suspense fallback={<div>Loading...</div>}>
-        <Await resolve={availableCountries}>
-          {(availableCountries) => {
-            return (
-              <LocationForm
-                availableCountries={availableCountries}
-                selectedLocale={selectedLocale}
-                close={close}
-              />
-            );
-          }}
-        </Await>
-      </Suspense>
-    </Aside>
-  );
-}
+// function LocationAside({availableCountries, selectedLocale}) {
+//   const {close} = useAside();
+//   return (
+//     <Aside type="location" heading="choose country">
+//       <Suspense fallback={<div>Loading...</div>}>
+//         <Await resolve={availableCountries}>
+//           {(availableCountries) => {
+//             return (
+//               <LocationForm
+//                 availableCountries={availableCountries}
+//                 selectedLocale={selectedLocale}
+//                 close={close}
+//               />
+//             );
+//           }}
+//         </Await>
+//       </Suspense>
+//     </Aside>
+//   );
+// }
 
-function LocationForm({availableCountries, selectedLocale, close}) {
+export function LocationForm({availableCountries, selectedLocale, close}) {
+  const fetcher = useFetcher();
+  fetcher.formAction = '/locale';
   const {pathname, search} = useLocation();
   const {type} = useAside();
+  const formRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [country, setCountry] = useState({
     currency: {
@@ -91,39 +91,25 @@ function LocationForm({availableCountries, selectedLocale, close}) {
     name: 'United States',
     unitSystem: 'IMPERIAL_SYSTEM',
   });
-  console.log(availableCountries);
-  useEffect(
-    () => setCountry(availableCountries.localization.country),
-    [availableCountries, pathname, selectedLocale],
-  );
 
   useEffect(() => {
-    setTimeout(() => setCountry(availableCountries.localization.country), 300);
+    setCountry(availableCountries.localization.country);
+  }, [availableCountries, pathname, selectedLocale]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setCountry(availableCountries.localization.country);
+    }, 300);
   }, [type]);
 
-  // Prepare sorted country options
   const sortedCountries = availableCountries.localization.availableCountries
     .slice()
     .sort((a, b) => a.name.localeCompare(b.name));
 
-  // Move selected country to the top
   const countryOptions = [
     country,
     ...sortedCountries.filter((c) => c.isoCode !== country.isoCode),
   ];
-
-  const options = countryOptions.map((c) => (
-    <p
-      className="country-option"
-      key={c.isoCode}
-      onClick={() => {
-        setCountry(c);
-        setOpen(false);
-      }}
-    >
-      {`${c.name.toLowerCase()} / ${c.currency.isoCode.toLowerCase()}`}
-    </p>
-  ));
 
   const strippedPathname = pathname.includes('EN-')
     ? pathname
@@ -132,49 +118,33 @@ function LocationForm({availableCountries, selectedLocale, close}) {
         .join('/')
     : pathname;
 
+  const handleCountrySelect = (selected) => {
+    setCountry(selected);
+    close();
+
+    // Update inputs and submit form
+    const formData = new FormData();
+    formData.append('country', `${selected.isoCode}`);
+    formData.append('path', `${strippedPathname}${search}`);
+
+    fetcher.submit(formData, {method: 'POST'});
+  };
+
   return (
     <div className="location-form">
-      <p>
-        {'Please select the country where your order will be shipped to. This will give you the correct pricing, delivery dates and shipping costs for your destination. All orders are dispatched from the united states.'.toLowerCase()}
-      </p>
       <div className="country-dropdown">
-        <div className="location-select" onClick={() => setOpen(true)}>
-          <p>{`${country.name.toLowerCase()} / ${country.currency.isoCode.toLowerCase()}`}</p>
-          <svg
-            width="7"
-            height="8"
-            viewBox="0 0 7 8"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M7 3.79668L0.7 7.43399L0.7 0.159373L7 3.79668Z"
-              fill="black"
-            />
-          </svg>
+        <div className="country-dropdown-content">
+          {countryOptions.map((c) => (
+            <p
+              className="country-option"
+              key={c.isoCode}
+              onClick={() => handleCountrySelect(c)}
+            >
+              {`${c.name} (${c.currency.isoCode} ${c.currency.symbol})`}
+            </p>
+          ))}
         </div>
-        {open ? (
-          <div className="country-dropdown-content">{options}</div>
-        ) : null}
       </div>
-      {open ? (
-        <button
-          className="close-dropdown"
-          onClick={() => setOpen(false)}
-        ></button>
-      ) : null}
-      <Form method="post" action="/locale" preventScrollReset={true}>
-        <input type="hidden" name="language" value={country.language} />
-        <input type="hidden" name="country" value={country.isoCode} />
-        <input
-          type="hidden"
-          name="path"
-          value={`${strippedPathname}${search}`}
-        />
-        <button type="submit" onClick={close} className="add-to-cart-form-pdp">
-          save
-        </button>
-      </Form>
     </div>
   );
 }
