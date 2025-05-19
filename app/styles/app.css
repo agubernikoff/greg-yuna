@@ -1828,6 +1828,7 @@ MEDIA QUIERIES
   }
   .featured-collection-image img {
     max-width: 100%;
+    width: 100vw !important;
   }
   .recommended-products {
     display: block;
