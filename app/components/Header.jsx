@@ -18,17 +18,32 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     setTimeout(() => setT(false), 1000);
   }, []);
   const {close} = useAside();
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(max-width:499px)').matches;
+    }
+    return false; // default to desktop for SSR
+  });
   return (
     <>
       <motion.header
         className="header"
-        initial={{width: '100vw'}}
-        animate={{width: 'var(--header-width)'}}
+        initial={!isMobile ? {width: '100vw'} : {height: '100vh'}}
+        animate={
+          !isMobile
+            ? {width: 'var(--header-width)'}
+            : {height: 'var(--header-height)'}
+        }
         style={{
           justifyContent: t ? 'center' : 'space-between',
+          alignItems: !isMobile ? '' : t ? 'center' : 'flex-start',
           position: 'fixed',
         }}
-        transition={{width: {delay: 2, duration: 1}}}
+        transition={
+          !isMobile
+            ? {width: {delay: 1.5, duration: 0.5}}
+            : {height: {delay: 1.5, duration: 0.5}}
+        }
         layoutRoot
         layoutScroll
       >
@@ -37,7 +52,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
           layout
           initial={{opacity: 0}}
           animate={{opacity: 1}}
-          transition={{opacity: {duration: 1}, layout: {duration: 1}}}
+          transition={{opacity: {duration: 1}, layout: {duration: 0.5}}}
         >
           <NavLink
             prefetch="intent"
@@ -46,7 +61,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
             end
             onClick={close}
           >
-            <Logo />
+            <Logo isMobile={isMobile} />
           </NavLink>
         </motion.div>
         {/* <button onClick={toggle}>fuck</button> */}
@@ -89,7 +104,7 @@ function MenuToggle({}) {
       }}
       initial={{opacity: 0}}
       animate={{opacity: 1}}
-      transition={{delay: 2, duration: 2}}
+      transition={{delay: 2, duration: 0.5}}
       onClick={handleClick}
     >
       <svg
@@ -149,14 +164,22 @@ function MenuToggle({}) {
     </motion.button>
   );
 }
-function Logo() {
+function Logo({isMobile}) {
   return (
     <motion.svg
-      initial={{width: '351px', height: '362px'}}
-      animate={{width: '41px', height: '42.281px'}}
+      initial={
+        !isMobile
+          ? {width: '351px', height: '362px'}
+          : {width: '274px', height: '282px'}
+      }
+      animate={
+        !isMobile
+          ? {width: '41px', height: '42.281px'}
+          : {width: '32.74px', height: '33.76px'}
+      }
       transition={{
-        width: {delay: 1, duration: 1},
-        height: {delay: 1, duration: 1},
+        width: {delay: 1, duration: 0.5},
+        height: {delay: 1, duration: 0.5},
       }}
       width="351"
       height="362"
@@ -496,7 +519,10 @@ function CartBadge({count}) {
   const {pathname} = useLocation();
 
   return (
-    <a
+    <motion.a
+      initial={{opacity: 0}}
+      animate={{opacity: 1}}
+      transition={{delay: 2, duration: 0.5}}
       href="/cart"
       onClick={(e) => {
         e.preventDefault();
@@ -534,7 +560,7 @@ function CartBadge({count}) {
           stroke="black"
         />
       </svg>
-    </a>
+    </motion.a>
   );
 }
 

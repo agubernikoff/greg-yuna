@@ -1760,16 +1760,18 @@ MEDIA QUIERIES
   .header {
     position: fixed;
     height: var(--header-height);
+    min-height: var(--header-height);
     width: 100vw !important;
-    flex-direction: row;
     align-items: center;
     padding: 1rem;
     /* z-index: 1000; */
-    flex-direction: row-reverse !important;
+    flex-direction: row-reverse;
+    box-sizing: border-box;
   }
-  .header a > svg {
-    width: 32.74px !important;
-    height: 33.76px !important;
+  .header a:has(svg) {
+    /* width: 32.74px !important;
+    height: 33.76px !important; */
+    /* display: block; */
   }
   .header > button {
     position: relative !important;
@@ -1780,7 +1782,7 @@ MEDIA QUIERIES
     align-items: center;
   }
   .header > div {
-    margin: auto;
+    /* margin: auto; */
   }
   .cart-badge {
     position: static;
