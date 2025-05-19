@@ -1792,6 +1792,7 @@ MEDIA QUIERIES
   }
   .cart-badge svg {
     display: block;
+    float: right;
   }
 
   body,
