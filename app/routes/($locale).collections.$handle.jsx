@@ -251,7 +251,11 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
     <div
       className={`filter-space-between  sort-by-button ${isOpen ? 'isOpen-btn' : ''}`}
     >
-      <button onClick={toggleIsOpen} className="sort-by-button">
+      <button
+        onClick={toggleIsOpen}
+        className="sort-by-button"
+        style={{border: 'none', width: '100%'}}
+      >
         <AnimatePresence mode="popLayout">
           <motion.span
             key={`sort-by-${isOpen}`}

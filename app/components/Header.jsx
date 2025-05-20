@@ -18,25 +18,34 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     setTimeout(() => setT(false), 1000);
   }, []);
   const {close} = useAside();
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window !== 'undefined') {
-      return window.matchMedia('(max-width:499px)').matches;
-    }
-    return false; // default to desktop for SSR
-  });
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile screen
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    const handleChange = (e) => setIsMobile(e.matches);
+
+    handleChange(mediaQuery);
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
+  }, []);
   return (
     <>
       <motion.header
         className="header"
-        initial={!isMobile ? {width: '100vw'} : {height: '100vh'}}
+        initial={
+          !isMobile
+            ? {width: '100vw', height: '100vh'}
+            : {width: '100vw', height: '100vh'}
+        }
         animate={
           !isMobile
-            ? {width: 'var(--header-width)'}
-            : {height: 'var(--header-height)'}
+            ? {width: 'var(--header-width)', height: '100vh'}
+            : {width: '100vw', height: 'var(--header-height)'}
         }
         style={{
           justifyContent: t ? 'center' : 'space-between',
-          alignItems: !isMobile ? '' : t ? 'center' : 'flex-start',
+          alignItems: !isMobile ? 'center' : t ? 'center' : 'flex-start',
           position: 'fixed',
         }}
         transition={
@@ -384,7 +393,7 @@ function LocationToggle({
           return (
             <div
               style={{
-                height: '100vh',
+                height: '100%',
                 position: 'absolute',
                 width: '100%',
                 top: 0,

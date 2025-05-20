@@ -284,7 +284,7 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
   };
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window !== 'undefined') {
-      return window.matchMedia('(max-width:499px)').matches;
+      return window.matchMedia('(max-width:768px)').matches;
     }
     return false; // default to desktop for SSR
   });
