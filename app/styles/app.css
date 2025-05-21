@@ -1656,7 +1656,9 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   background: white;
   min-height: calc(100vh - 10rem);
 }
-
+#powrIframeLoader {
+  display: none;
+}
 .pp-page {
   width: 50%;
   margin: auto;
