@@ -445,6 +445,7 @@ button.header-menu-item-aux:hover > svg > path {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
+  gap: 10px;
 }
 
 .footer-menu {
@@ -454,6 +455,9 @@ button.header-menu-item-aux:hover > svg > path {
   grid-gap: 0.25rem;
   width: fit-content;
   padding-left: 0;
+}
+.footer-menu > a {
+  text-wrap: nowrap;
 }
 
 .email-input-container {
