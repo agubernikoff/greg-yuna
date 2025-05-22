@@ -101,16 +101,16 @@ function MenuToggle({}) {
   }
   return (
     <motion.button
-      style={{
-        position: 'absolute',
-        left: 'calc(57px * .5)',
-        bottom: '1rem',
-        transform: 'translateX(-50%)',
-        border: 'none',
-        background: 'transparent',
-        padding: 0,
-        cursor: 'pointer',
-      }}
+      // style={{
+      //   position: 'absolute',
+      //   left: 'calc(57px * .5)',
+      //   bottom: '1rem',
+      //   transform: 'translateX(-50%)',
+      //   border: 'none',
+      //   background: 'transparent',
+      //   padding: 0,
+      //   cursor: 'pointer',
+      // }}
       initial={{opacity: 0}}
       animate={{opacity: 1}}
       transition={{delay: 2, duration: 0.5}}
@@ -195,6 +195,10 @@ function Logo({isMobile}) {
       viewBox="0 0 351 362"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      style={{
+        maxWidth:
+          'calc(100vw - 2rem - var(--cart-badge-adjustment) - var(--cart-badge-adjustment))',
+      }}
     >
       <g clipPath="url(#clip0_104_2698)">
         <path

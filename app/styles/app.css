@@ -277,6 +277,16 @@ button.reset:hover:not(:has(> *)) {
   box-sizing: border-box;
   width: var(--header-width);
 }
+.header > button {
+  position: absolute;
+  left: calc(28.5px);
+  bottom: 1rem;
+  transform: translateX(-50%);
+  border: none;
+  background: transparent;
+  padding: 0px;
+  cursor: pointer;
+}
 .line {
   transition: all 200ms ease-in-out;
 }
@@ -1782,12 +1792,13 @@ MEDIA QUIERIES
     /* display: block; */
   }
   .header > button {
-    position: relative !important;
-    left: -10px !important;
-    bottom: auto !important;
-    transform: none !important;
+    position: relative;
+    left: -10px;
+    bottom: auto;
+    transform: none;
     display: flex;
     align-items: center;
+    width: var(--cart-badge-adjustment);
   }
   .header > div {
     /* margin: auto; */
