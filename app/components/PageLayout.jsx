@@ -1,4 +1,11 @@
-import {Await, Link, useLocation, useFetcher, Form} from '@remix-run/react';
+import {
+  Await,
+  Link,
+  useLocation,
+  useFetcher,
+  Form,
+  useNavigation,
+} from '@remix-run/react';
 import {Suspense, useId, useState, useEffect} from 'react';
 import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
@@ -11,6 +18,7 @@ import {
 import {SearchResultsPredictive} from '~/components/SearchResultsPredictive';
 import {useAside} from './Aside';
 import {useRef} from 'react';
+import {AnimatePresence, motion} from 'motion/react';
 
 /**
  * @param {PageLayoutProps}
@@ -25,6 +33,8 @@ export function PageLayout({
   selectedLocale,
   availableCountries,
 }) {
+  const {pathname} = useLocation();
+  const {state, location} = useNavigation();
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
@@ -43,7 +53,17 @@ export function PageLayout({
           publicStoreDomain={publicStoreDomain}
         />
       )}
-      <main>{children}</main>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.main
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          exit={{opacity: 0}}
+          transition={{ease: 'easeInOut', duration: 0.1}}
+          key={state === 'loading' ? location?.pathname : pathname}
+        >
+          {children}
+        </motion.main>
+      </AnimatePresence>
       <Footer
         footer={footer}
         header={header}
