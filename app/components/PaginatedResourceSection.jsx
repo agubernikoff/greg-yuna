@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {Pagination} from '@shopify/hydrogen';
+import GridPlaceholder from './GridPlaceholder';
 
 /**
  * <PaginatedResourceSection > is a component that encapsulate how the previous and next behaviors throughout your application.
@@ -9,6 +10,7 @@ export function PaginatedResourceSection({
   connection,
   children,
   resourcesClassName,
+  fillEmptySpaces = true,
 }) {
   return (
     <Pagination connection={connection}>
@@ -30,9 +32,15 @@ export function PaginatedResourceSection({
               {isLoading ? 'Loading...' : <span>↑ Load previous</span>}
             </PreviousLink>
             {resourcesClassName ? (
-              <div className={resourcesClassName}>{resourcesMarkup}</div>
+              <div className={resourcesClassName}>
+                {resourcesMarkup}
+                {fillEmptySpaces && <GridPlaceholder products={nodes} />}
+              </div>
             ) : (
-              resourcesMarkup
+              <>
+                {resourcesMarkup}
+                {fillEmptySpaces && <GridPlaceholder products={nodes} />}
+              </>
             )}
             <NextLink>
               {isLoading ? 'Loading...' : <span>Load more ↓</span>}
