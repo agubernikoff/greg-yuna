@@ -92,7 +92,14 @@ function FeaturedCollection({collection}) {
       to={`/collections/${collection.handle}`}
     >
       {image && (
-        <div className="featured-collection-image">
+        <div
+          className="featured-collection-image"
+          style={{
+            background: `url("${image.url}&width=100") center center`,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
           <Image data={image} sizes="100vw" />
         </div>
       )}
