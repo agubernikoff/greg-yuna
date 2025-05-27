@@ -15,7 +15,12 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   const {shop, menu} = header;
   const [t, setT] = useState(true);
   useEffect(() => {
-    setTimeout(() => setT(false), 1000);
+    setTimeout(() => {
+      setT(false);
+    }, 1000);
+    setTimeout(() => {
+      document.querySelector('#shopify-pc__banner').style.opacity = 1;
+    }, 2000);
   }, []);
   const {close} = useAside();
   const [isMobile, setIsMobile] = useState(false);

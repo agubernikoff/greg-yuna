@@ -1696,6 +1696,40 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   margin-bottom: 1rem;
 }
 
+#shopify-pc__banner {
+  width: 22vw;
+  left: calc(var(--header-width) + 50%) !important;
+  transform: translate(-50%, -50%) !important;
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+}
+#shopify-pc__banner__btn-accept {
+  color: white;
+  background: black;
+}
+#shopify-pc__banner__body-policy-link {
+  display: none;
+}
+.shopify-pc__banner__btns {
+  flex-direction: column-reverse !important;
+}
+.shopify-pc__banner__dialog button {
+  margin: 0 !important;
+}
+#shopify-pc__banner__btn-decline {
+  border: none;
+  padding: 0;
+  text-align: left;
+  text-decoration: underline;
+}
+#shopify-pc__banner__btn-manage-prefs {
+  border: 1px solid hsl(0deg, 0%, 12%, 100%);
+  background: #fff;
+  color: #333;
+  padding: 10px 25px;
+  text-decoration: none;
+}
+
 /* 
 MEDIA QUIERIES
 */
