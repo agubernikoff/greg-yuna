@@ -332,7 +332,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   isSort={true}
                 />
                 <FilterInput
-                  label={'Alphabetically, A-Z'}
+                  label={'Alphabetically, Z-A'}
                   value={JSON.stringify({reverse: true, sortKey: 'TITLE'})}
                   addFilter={addSort}
                   isChecked={isChecked}
