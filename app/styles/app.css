@@ -1735,6 +1735,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .pp-page {
   width: 50%;
   margin: auto;
+  margin-bottom: 5rem;
 }
 
 .pp-page > p > strong {
