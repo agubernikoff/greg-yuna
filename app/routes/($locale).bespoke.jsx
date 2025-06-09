@@ -69,6 +69,24 @@ export default function Bespoke() {
     return () => clearInterval(interval);
   }, [bespokeImages]);
 
+  useEffect(() => {
+    // Check if POWR is already loaded
+    if (!window.POWR) {
+      const script = document.createElement('script');
+      script.src = 'https://www.powr.io/powr.js?platform=shopify';
+      script.async = true;
+      script.onload = () => {
+        if (window.POWR) {
+          window.POWR.renderAll();
+        }
+      };
+      document.body.appendChild(script);
+    } else {
+      // Re-render POWR if already loaded
+      window.POWR.renderAll();
+    }
+  }, []);
+
   return (
     <div className="bespoke-container">
       <div className="bespoke-breadcrumbs">
@@ -82,7 +100,9 @@ export default function Bespoke() {
           </>
         </div>
       </div>
-      <div className="bespoke-form-container">*insert form here*</div>
+      <div className="bespoke-form-container">
+        <div className="powr-form-builder" id="ebdf6df2_1749490648"></div>
+      </div>
       <div className="bespoke-image-container">
         {bespokeImages.map((img, index) => (
           <Image
