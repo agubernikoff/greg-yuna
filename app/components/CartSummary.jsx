@@ -1,15 +1,23 @@
 import {CartForm, Money} from '@shopify/hydrogen';
 import {useRef} from 'react';
-
+import {AnimatePresence, motion} from 'motion/react';
+import {useState} from 'react';
 /**
  * @param {CartSummaryProps}
  */
 export function CartSummary({cart, layout}) {
   const className =
     layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
+  console.log(cart);
 
+  const [open, setOpen] = useState(false);
+  function close() {
+    setOpen(false);
+  }
   return (
     <div aria-labelledby="cart-summary" className={className}>
+      {/* <CartDiscounts discountCodes={cart.discountCodes} />
+      <CartGiftCard giftCardCodes={cart.appliedGiftCards} /> */}
       <div className="cart-sub-text">
         <dl className="cart-subtotal">
           <dt>Subtotal</dt>
@@ -21,14 +29,80 @@ export function CartSummary({cart, layout}) {
             )}
           </dd>
         </dl>
-        {/* <CartDiscounts discountCodes={cart.discountCodes} />
-      <CartGiftCard giftCardCodes={cart.appliedGiftCards} /> */}
 
         <p>Taxes and shipping calcuated at checkout.</p>
-        <a>Submit an order note</a>
+        <button onClick={() => setOpen(true)}>
+          {cart.note.length > 0 ? 'Edit an order note' : 'Submit an order note'}
+        </button>
       </div>
       <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
+      <AnimatePresence mode="popLayout">
+        {open && <AddANote close={close} initialNote={cart.note} />}
+      </AnimatePresence>
     </div>
+  );
+}
+
+function AddANote({close, initialNote}) {
+  const [note, setNote] = useState(initialNote);
+  return (
+    <motion.div
+      className="note-form-container"
+      initial={{y: '100%'}}
+      animate={{y: 0}}
+      exit={{y: '100%'}}
+      transition={{ease: 'easeInOut', duration: 0.15}}
+    >
+      <div className="add-a-chain-header">
+        <p>Order Note:</p>
+        <button onClick={close}>
+          <span>Close</span>
+          <svg
+            width="15"
+            height="13"
+            viewBox="0 0 15 13"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M12.977 0.197266L7.65503 5.51984L2.35128 0.197266H0.328125L6.65294 6.52208L0.328125 12.8469H2.35128L7.65503 7.54254L12.977 12.8469H15.0001L8.67533 6.52208L15.0001 0.197266H12.977Z"
+              fill="black"
+            />
+          </svg>
+        </button>
+      </div>
+      <div className="textarea-container">
+        <textarea
+          value={note}
+          onChange={(e) => setNote(e.target.value)}
+          id="note"
+          class="textarea"
+          placeholder="Message*"
+          maxLength={1000}
+        />
+        <div id="counter" class="character-counter">
+          {note.length}/1000
+        </div>
+      </div>
+      <CartForm
+        route="/cart"
+        inputs={{note}}
+        action={CartForm.ACTIONS.NoteUpdate}
+      >
+        {(fetcher) => (
+          <button
+            className="cart-button"
+            type="submit"
+            disabled={fetcher.state !== 'idle'}
+            onClick={close}
+          >
+            SUBMIT
+          </button>
+        )}
+      </CartForm>
+    </motion.div>
   );
 }
 /**

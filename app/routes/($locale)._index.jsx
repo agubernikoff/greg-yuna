@@ -1,10 +1,11 @@
-import {Await, useLoaderData, Link} from '@remix-run/react';
+import {Await, useLoaderData} from '@remix-run/react';
 import {Suspense, useState} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import ProductGridItem from '~/components/ProductGridItem';
 import {motion} from 'motion/react';
 import flag1 from '../assets/flagship.png';
 import flag2 from '../assets/flag2.png';
+import NavLink from '~/components/NavLink';
 
 /**
  * @type {MetaFunction}
@@ -37,7 +38,7 @@ async function loadCriticalData({context}) {
     context.storefront.query(FEATURED_COLLECTION_QUERY),
     // Add other queries here, so that they are loaded in parallel
   ]);
-  console.log(newArrivals);
+
   return {
     featuredCollection: newArrivals.collection,
     collections,
@@ -70,7 +71,7 @@ export default function Homepage() {
   return (
     <div className="home">
       <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
+      <RecommendedProducts products={data.featuredCollection} />
       <Collections collections={data.collections} />
       <FlagshipHome />
     </div>
@@ -86,17 +87,24 @@ function FeaturedCollection({collection}) {
   if (!collection) return null;
   const image = collection?.image;
   return (
-    <Link
+    <NavLink
       className="featured-collection"
       to={`/collections/${collection.handle}`}
     >
       {image && (
-        <div className="featured-collection-image">
+        <div
+          className="featured-collection-image"
+          style={{
+            background: `url("${image.url}&width=100") center center`,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
           <Image data={image} sizes="100vw" />
         </div>
       )}
       <h1>{collection.title.toUpperCase()}</h1>
-    </Link>
+    </NavLink>
   );
 }
 
@@ -145,9 +153,9 @@ function CollectionGridItem({node}) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      <Link to={`/collections/${node.handle}`}>
+      <NavLink to={`/collections/${node.handle}`}>
         <Image data={node.image} sizes="25vw" aspectRatio=".8/1" />
-      </Link>
+      </NavLink>
       <p>{`Shop ${node.title} →`}</p>
     </motion.div>
   );
@@ -273,7 +281,7 @@ const NEW_ARRIVALS_QUERY = `#graphql
         height
       }
       products(
-        first: 6
+        first: 12
       ) {
         filters{
           id

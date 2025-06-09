@@ -10,6 +10,7 @@ import {
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import {PageLayout} from '~/components/PageLayout';
+import {NavigationProvider} from './context/NavigationContext';
 
 export default function Layout() {
   const nonce = useNonce();
@@ -33,7 +34,9 @@ export default function Layout() {
             consent={data.consent}
           >
             <PageLayout {...data}>
-              <Outlet />
+              <NavigationProvider>
+                <Outlet />
+              </NavigationProvider>
             </PageLayout>
           </Analytics.Provider>
         ) : (

@@ -121,7 +121,7 @@ export default function Collection() {
   );
 }
 
-export function Filter({title, filters, shopAll}) {
+export function Filter({title, filters, shopAll, term}) {
   const [searchParams, setSearchParams] = useSearchParams();
 
   function addFilter(input) {
@@ -198,27 +198,33 @@ export function Filter({title, filters, shopAll}) {
       searchParams.get('sortKey') === parsed.sortKey
     );
   }
+
   return (
     <div className="filter-container">
       <div className="padded-filter-div full-border">
         <>
-          <NavLink className="crumb" to="/">
-            Home
-          </NavLink>
-          <span className="crumb">{' → '}</span>
-          <span>{title}</span>
+          {term ? (
+            <span>{term}</span>
+          ) : (
+            <>
+              <NavLink className="crumb" to="/">
+                Home
+              </NavLink>
+              <span className="crumb">{' → '}</span>
+              <span>{title}</span>
+            </>
+          )}
         </>
       </div>
       <div className="filter-space-between bottom-border filter-second-row">
         <Filt
           filter={
-            title === 'New Arrivals' || title === 'Shop All'
+            title === 'New Arrivals' || title === 'Shop All' || term
               ? filters
                   .find((f) => f.id === 'filter.p.tag')
                   .values.filter((v) => v.id !== 'filter.p.tag.new-arrivals')
               : filters.find((f) => f.id === 'filter.v.option.material').values
           }
-          isNewArrivals={title === 'New Arrivals' || title === 'Shop All'}
           addFilter={addFilter}
           removeFilter={removeFilter}
           isChecked={isChecked}
@@ -229,6 +235,7 @@ export function Filter({title, filters, shopAll}) {
           removeSort={removeSort}
           isChecked={isSortChecked}
           shopAll={shopAll}
+          term={term}
         />
       </div>
     </div>
@@ -241,53 +248,58 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
     setIsOpen(!isOpen);
   }
   return (
-    <button
-      className={`filter-space-between sort-by-button ${isOpen ? 'isOpen-btn' : ''}`}
-      onClick={toggleIsOpen}
+    <div
+      className={`filter-space-between  sort-by-button ${isOpen ? 'isOpen-btn' : ''}`}
     >
-      <AnimatePresence mode="popLayout">
-        <motion.span
-          key={`sort-by-${isOpen}`}
-          initial={{opacity: 1}}
-          animate={{opacity: 1}}
-          exit={{opacity: 0}}
-          style={{display: 'inline-block', width: '100%', textAlign: 'left'}}
-        >
-          {!isOpen ? 'Sort By' : 'Close'}
-        </motion.span>
-      </AnimatePresence>
-      <svg
-        width="16"
-        height="12"
-        viewBox="0 0 16 12"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
+      <button
+        onClick={toggleIsOpen}
+        className="sort-by-button"
+        style={{border: 'none', width: '100%'}}
       >
-        <line y1="3" x2="16" y2="3" stroke="black" />
-        <motion.rect
-          x="3.5"
-          y="1"
-          width="4"
-          height="4"
-          fill="white"
-          stroke="black"
-          initial={{x: 0}}
-          animate={{x: isOpen ? '6px' : 0}}
-          transition={{ease: 'easeInOut', duration: 0.15}}
-        />
-        <line y1="9" x2="16" y2="9" stroke="black" />
-        <motion.rect
-          x="9.5"
-          y="7"
-          width="4"
-          height="4"
-          fill="white"
-          stroke="black"
-          initial={{x: 0}}
-          animate={{x: isOpen ? '-6px' : 0}}
-          transition={{ease: 'easeInOut', duration: 0.15}}
-        />
-      </svg>
+        <AnimatePresence mode="popLayout">
+          <motion.span
+            key={`sort-by-${isOpen}`}
+            initial={{opacity: 1}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+            style={{display: 'inline-block', width: '100%', textAlign: 'left'}}
+          >
+            {!isOpen ? 'Sort By' : 'Close'}
+          </motion.span>
+        </AnimatePresence>
+        <svg
+          width="16"
+          height="12"
+          viewBox="0 0 16 12"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <line y1="3" x2="16" y2="3" stroke="black" />
+          <motion.rect
+            x="3.5"
+            y="1"
+            width="4"
+            height="4"
+            fill="white"
+            stroke="black"
+            initial={{x: 0}}
+            animate={{x: isOpen ? '6px' : 0}}
+            transition={{ease: 'easeInOut', duration: 0.15}}
+          />
+          <line y1="9" x2="16" y2="9" stroke="black" />
+          <motion.rect
+            x="9.5"
+            y="7"
+            width="4"
+            height="4"
+            fill="white"
+            stroke="black"
+            initial={{x: 0}}
+            animate={{x: isOpen ? '-6px' : 0}}
+            transition={{ease: 'easeInOut', duration: 0.15}}
+          />
+        </svg>
+      </button>
       <AnimatePresence>
         {isOpen && (
           <div className="sort-overflow-hidden-container">
@@ -308,6 +320,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   isChecked={isChecked}
                   removeFilter={removeSort}
                   isSort={true}
+                  term={term}
                 />
                 <FilterInput
                   label={'Alphabetically, A-Z'}
@@ -315,16 +328,16 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   addFilter={addSort}
                   isChecked={isChecked}
                   removeFilter={removeSort}
-                  count={term ? 0 : null}
+                  term={term}
                   isSort={true}
                 />
                 <FilterInput
-                  label={'Alphabetically, A-Z'}
+                  label={'Alphabetically, Z-A'}
                   value={JSON.stringify({reverse: true, sortKey: 'TITLE'})}
                   addFilter={addSort}
                   isChecked={isChecked}
                   removeFilter={removeSort}
-                  count={term ? 0 : null}
+                  term={term}
                   isSort={true}
                 />
                 <FilterInput
@@ -336,7 +349,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   addFilter={addSort}
                   isChecked={isChecked}
                   removeFilter={removeSort}
-                  count={term ? 0 : null}
+                  term={term}
                   isSort={true}
                 />
                 <FilterInput
@@ -348,7 +361,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   addFilter={addSort}
                   isChecked={isChecked}
                   removeFilter={removeSort}
-                  count={term ? 0 : null}
+                  term={term}
                   isSort={true}
                 />
                 <FilterInput
@@ -372,18 +385,11 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
           </div>
         )}
       </AnimatePresence>
-    </button>
+    </div>
   );
 }
 
-function Filt({
-  filter,
-  addFilter,
-  isChecked,
-  removeFilter,
-  clearFilter,
-  isNewArrivals,
-}) {
+function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
   const filterOrderRef = useRef(new Map()); // Persist across renders
 
   function storeInitialOrder(filters) {
@@ -410,15 +416,13 @@ function Filt({
   return (
     <>
       <div style={{display: 'flex'}} className="desktop-filter">
-        {isNewArrivals ? (
-          <FilterInput
-            label={'View All'}
-            value={'viewAll'}
-            addFilter={clearFilter}
-            isChecked={isChecked}
-            removeFilter={clearFilter}
-          />
-        ) : null}
+        <FilterInput
+          label={'View All'}
+          value={'viewAll'}
+          addFilter={clearFilter}
+          isChecked={isChecked}
+          removeFilter={clearFilter}
+        />
         {sortByStoredOrder(filter).map((v) => (
           <FilterInput
             key={v.id}
@@ -514,6 +518,7 @@ function FilterInput({
   isChecked,
   removeFilter,
   isSort,
+  term,
 }) {
   const [hovered, setHovered] = useState(false);
   return (
@@ -527,6 +532,7 @@ function FilterInput({
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        disabled={term ? true : false}
       >
         {label}
         {hovered && (

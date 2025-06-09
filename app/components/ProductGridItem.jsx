@@ -3,6 +3,8 @@ import {useVariantUrl} from '~/lib/variants';
 import {Link, useLocation} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {motion} from 'motion/react';
+import {useNavigationContext} from '~/context/NavigationContext';
+import {useEffect} from 'react';
 
 function ProductGridItem({product, loading}) {
   const variantUrl = useVariantUrl(product.handle);
@@ -47,13 +49,15 @@ function ProductGridItem({product, loading}) {
         ))
       : null;
 
+  const {setLastCollectionPath} = useNavigationContext();
+
   return (
     <Link
       className="product-item"
       key={product.id}
       prefetch="intent"
       to={variantUrl}
-      state={pathname}
+      onClick={() => setLastCollectionPath(pathname)}
     >
       <div style={{position: 'relative'}}>
         <div

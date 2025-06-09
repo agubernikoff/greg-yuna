@@ -39,33 +39,13 @@ export default function SearchPage() {
 
   return (
     <div className="search">
-      <h1>Search</h1>
-      <SearchForm>
-        {({inputRef}) => (
-          <>
-            <input
-              defaultValue={term}
-              name="q"
-              placeholder="Search…"
-              ref={inputRef}
-              type="search"
-            />
-            &nbsp;
-            <button type="submit">Search</button>
-          </>
-        )}
-      </SearchForm>
       {error && <p style={{color: 'red'}}>{error}</p>}
       {!term || !result?.total ? (
         <SearchResults.Empty />
       ) : (
         <SearchResults result={result} term={term}>
-          {({articles, pages, products, term}) => (
-            <div>
-              <SearchResults.Products products={products} term={term} />
-              <SearchResults.Pages pages={pages} term={term} />
-              <SearchResults.Articles articles={articles} term={term} />
-            </div>
+          {({products, term}) => (
+            <SearchResults.Products products={products} term={term} />
           )}
         </SearchResults>
       )}
@@ -79,65 +59,66 @@ export default function SearchPage() {
  * (adjust as needed)
  */
 const SEARCH_PRODUCT_FRAGMENT = `#graphql
-  fragment SearchProduct on Product {
-    __typename
-    handle
-    id
-    publishedAt
-    title
-    trackingParameters
-    vendor
-    selectedOrFirstAvailableVariant(
-      selectedOptions: []
-      ignoreUnknownOptions: true
-      caseInsensitiveMatch: true
-    ) {
-      id
-      image {
-        url
-        altText
-        width
-        height
-      }
-      price {
-        amount
-        currencyCode
-      }
-      compareAtPrice {
-        amount
-        currencyCode
-      }
-      selectedOptions {
-        name
-        value
-      }
-      product {
-        handle
-        title
-      }
-    }
-  }
-`;
-
-const SEARCH_PAGE_FRAGMENT = `#graphql
-  fragment SearchPage on Page {
+ fragment MoneyProductItem on MoneyV2 {
+   amount
+   currencyCode
+ }
+   fragment SearchProduct on Product {
      __typename
      handle
-    id
-    title
-    trackingParameters
-  }
-`;
-
-const SEARCH_ARTICLE_FRAGMENT = `#graphql
-  fragment SearchArticle on Article {
-    __typename
-    handle
-    id
-    title
-    trackingParameters
-  }
-`;
+     id
+     publishedAt
+     title
+     trackingParameters
+     vendor
+     images(first: 2) {
+       nodes {
+         id
+         url
+         altText
+         width
+         height
+       }
+     }
+     priceRange {
+       minVariantPrice {
+         ...MoneyProductItem
+       }
+       maxVariantPrice {
+         ...MoneyProductItem
+       }
+     }
+     selectedOrFirstAvailableVariant(
+       selectedOptions: []
+       ignoreUnknownOptions: true
+       caseInsensitiveMatch: true
+     ) {
+       id
+       image {
+         url
+         altText
+         width
+         height
+       }
+       price {
+         amount
+         currencyCode
+       }
+       compareAtPrice {
+         amount
+         currencyCode
+       }
+       selectedOptions {
+         name
+         value
+       }
+       product {
+         handle
+         title
+       }
+     }
+   }
+ `;
 
 const PAGE_INFO_FRAGMENT = `#graphql
   fragment PageInfoFragment on PageInfo {
@@ -158,39 +139,38 @@ export const SEARCH_QUERY = `#graphql
     $last: Int
     $term: String!
     $startCursor: String
+    $filters: [ProductFilter!]
+    $reverse: Boolean
+    $sortKey: SearchSortKeys
   ) @inContext(country: $country, language: $language) {
-    articles: search(
-      query: $term,
-      types: [ARTICLE],
-      first: $first,
-    ) {
-      nodes {
-        ...on Article {
-          ...SearchArticle
-        }
-      }
-    }
-    pages: search(
-      query: $term,
-      types: [PAGE],
-      first: $first,
-    ) {
-      nodes {
-        ...on Page {
-          ...SearchPage
-        }
-      }
-    }
     products: search(
       after: $endCursor,
       before: $startCursor,
       first: $first,
       last: $last,
       query: $term,
-      sortKey: RELEVANCE,
+      reverse: $reverse,
+      sortKey: $sortKey,
       types: [PRODUCT],
       unavailableProducts: HIDE,
-    ) {
+      productFilters: $filters,
+      ) {
+        totalCount
+        productFilters{
+        id
+        label
+        presentation
+        type
+        values{
+          count
+          id
+          input
+          label
+          swatch{
+            color
+          }
+        }
+      }
       nodes {
         ...on Product {
           ...SearchProduct
@@ -202,8 +182,6 @@ export const SEARCH_QUERY = `#graphql
     }
   }
   ${SEARCH_PRODUCT_FRAGMENT}
-  ${SEARCH_PAGE_FRAGMENT}
-  ${SEARCH_ARTICLE_FRAGMENT}
   ${PAGE_INFO_FRAGMENT}
 `;
 
@@ -218,12 +196,26 @@ export const SEARCH_QUERY = `#graphql
 async function regularSearch({request, context}) {
   const {storefront} = context;
   const url = new URL(request.url);
-  const variables = getPaginationVariables(request, {pageBy: 8});
+  const variables = getPaginationVariables(request, {pageBy: 24});
   const term = String(url.searchParams.get('q') || '');
+
+  const filters = [];
+  let reverse = false;
+  let sortKey = 'RELEVANCE';
+
+  if (url.searchParams.has('filter')) {
+    filters.push(
+      ...url.searchParams.getAll('filter').map((x) => JSON.parse(x)),
+    );
+  }
+  if (url.searchParams.has('sortKey'))
+    sortKey = url.searchParams.get('sortKey');
+  if (url.searchParams.has('reverse'))
+    reverse = url.searchParams.get('reverse') === 'true';
 
   // Search articles, pages, and products for the `q` term
   const {errors, ...items} = await storefront.query(SEARCH_QUERY, {
-    variables: {...variables, term},
+    variables: {...variables, filters, reverse, sortKey, term},
   });
 
   if (!items) {

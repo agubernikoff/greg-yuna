@@ -1,10 +1,12 @@
 import React, {Suspense, useId} from 'react';
-import {Await, NavLink, useAsyncValue} from '@remix-run/react';
+import {Await, useAsyncValue, useLocation} from '@remix-run/react';
 import {useAnalytics, useOptimisticCart} from '@shopify/hydrogen';
 import {useAside} from '~/components/Aside';
 import {motion} from 'motion/react';
 import {useState, useEffect} from 'react';
 import {SearchFormPredictive} from './SearchFormPredictive';
+import NavLink from './NavLink';
+import {LocationForm} from './PageLayout';
 
 /**
  * @param {HeaderProps}
@@ -13,19 +15,49 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   const {shop, menu} = header;
   const [t, setT] = useState(true);
   useEffect(() => {
-    setTimeout(() => setT(false), 1000);
+    setTimeout(() => {
+      setT(false);
+    }, 1000);
+    setTimeout(() => {
+      document.querySelector('#shopify-pc__banner').style.opacity = 1;
+    }, 2000);
+  }, []);
+  const {close} = useAside();
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Detect mobile screen
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
+    const handleChange = (e) => setIsMobile(e.matches);
+
+    handleChange(mediaQuery);
+    mediaQuery.addEventListener('change', handleChange);
+    return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
   return (
     <>
       <motion.header
         className="header"
-        initial={{width: '100vw'}}
-        animate={{width: 'var(--header-width)'}}
+        initial={
+          !isMobile
+            ? {width: '100vw', height: '100vh'}
+            : {width: '100vw', height: '100vh'}
+        }
+        animate={
+          !isMobile
+            ? {width: 'var(--header-width)', height: '100vh'}
+            : {width: '100vw', height: 'var(--header-height)'}
+        }
         style={{
           justifyContent: t ? 'center' : 'space-between',
+          alignItems: !isMobile ? 'center' : t ? 'center' : 'flex-start',
           position: 'fixed',
         }}
-        transition={{width: {delay: 2, duration: 1}}}
+        transition={
+          !isMobile
+            ? {width: {delay: 1.5, duration: 0.5}}
+            : {height: {delay: 1.5, duration: 0.5}}
+        }
         layoutRoot
         layoutScroll
       >
@@ -34,10 +66,16 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
           layout
           initial={{opacity: 0}}
           animate={{opacity: 1}}
-          transition={{opacity: {duration: 1}, layout: {duration: 1}}}
+          transition={{opacity: {duration: 1}, layout: {duration: 0.5}}}
         >
-          <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-            <Logo />
+          <NavLink
+            prefetch="intent"
+            to="/"
+            style={activeLinkStyle}
+            end
+            onClick={close}
+          >
+            <Logo isMobile={isMobile} />
           </NavLink>
         </motion.div>
         {/* <button onClick={toggle}>fuck</button> */}
@@ -68,19 +106,19 @@ function MenuToggle({}) {
   }
   return (
     <motion.button
-      style={{
-        position: 'absolute',
-        left: 'calc(57px * .5)',
-        bottom: '1rem',
-        transform: 'translateX(-50%)',
-        border: 'none',
-        background: 'transparent',
-        padding: 0,
-        cursor: 'pointer',
-      }}
+      // style={{
+      //   position: 'absolute',
+      //   left: 'calc(57px * .5)',
+      //   bottom: '1rem',
+      //   transform: 'translateX(-50%)',
+      //   border: 'none',
+      //   background: 'transparent',
+      //   padding: 0,
+      //   cursor: 'pointer',
+      // }}
       initial={{opacity: 0}}
       animate={{opacity: 1}}
-      transition={{delay: 2, duration: 2}}
+      transition={{delay: 2, duration: 0.5}}
       onClick={handleClick}
     >
       <svg
@@ -140,20 +178,32 @@ function MenuToggle({}) {
     </motion.button>
   );
 }
-function Logo() {
+function Logo({isMobile}) {
   return (
     <motion.svg
-      initial={{width: '351px', height: '362px'}}
-      animate={{width: '41px', height: '42.281px'}}
+      initial={
+        !isMobile
+          ? {width: '351px', height: '362px'}
+          : {width: '274px', height: '282px'}
+      }
+      animate={
+        !isMobile
+          ? {width: '41px', height: '42.281px'}
+          : {width: '32.74px', height: '33.76px'}
+      }
       transition={{
-        width: {delay: 1, duration: 1},
-        height: {delay: 1, duration: 1},
+        width: {delay: 1, duration: 0.5},
+        height: {delay: 1, duration: 0.5},
       }}
       width="351"
       height="362"
       viewBox="0 0 351 362"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      style={{
+        maxWidth:
+          'calc(100vw - 2rem - var(--cart-badge-adjustment) - var(--cart-badge-adjustment))',
+      }}
     >
       <g clipPath="url(#clip0_104_2698)">
         <path
@@ -191,10 +241,20 @@ export function HeaderMenu({
   primaryDomainUrl,
   viewport,
   publicStoreDomain,
+  selectedLocale,
+  availableCountries,
 }) {
   const className = `header-menu-${viewport}`;
   const {close} = useAside();
   const queriesDatalistId = useId();
+
+  const [open, setOpen] = useState(false);
+  function openLocation() {
+    setOpen(true);
+  }
+  function closeLocation() {
+    setOpen(false);
+  }
 
   return (
     <div className="header-menu-container">
@@ -312,25 +372,113 @@ export function HeaderMenu({
           onClick={close}
           prefetch="intent"
           style={activeLinkStyle}
-          to="/"
-        >
-          EN/USD
-        </NavLink>
-        <NavLink
-          className="header-menu-item-aux"
-          end
-          onClick={close}
-          prefetch="intent"
-          style={activeLinkStyle}
           to="/contact"
         >
           Contact
         </NavLink>
       </nav>
+      <LocationToggle
+        selectedLocale={selectedLocale}
+        availableCountries={availableCountries}
+        openLocation={openLocation}
+        closeLocation={closeLocation}
+        open={open}
+      />
     </div>
   );
 }
 
+function LocationToggle({
+  selectedLocale,
+  availableCountries,
+  openLocation,
+  closeLocation,
+  open,
+}) {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Await resolve={availableCountries}>
+        {(availableCountries) => {
+          return (
+            <div
+              style={{
+                height: '100%',
+                position: 'absolute',
+                width: '100%',
+                top: 0,
+                left: 0,
+                background: open ? 'rgba(0,0,0,0.2)' : 'transparent',
+                transition: 'background 150ms ease-in-out',
+                pointerEvents: open ? 'auto' : 'none',
+              }}
+            >
+              {open && (
+                <button
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    background: 'transparent',
+                    border: 'none',
+                  }}
+                  onClick={closeLocation}
+                />
+              )}
+              <motion.div
+                style={{
+                  position: 'absolute',
+                  bottom: 0,
+                  borderTop: '1px solid #e9e9e9',
+                  left: 0,
+                  right: 0,
+                  background: 'white',
+                  pointerEvents: 'auto',
+                }}
+                initial={{height: '32px'}}
+                animate={{height: open ? 'auto' : '32px'}}
+              >
+                <button
+                  className="header-menu-item-aux"
+                  onClick={() => {
+                    if (!open) openLocation();
+                    else closeLocation();
+                  }}
+                >
+                  <div style={{flex: 1, textAlign: 'left', height: '16px'}}>
+                    <span
+                      style={{opacity: open ? 0 : 1}}
+                    >{`${availableCountries.localization.country.name} (${availableCountries.localization.country.currency.isoCode} ${availableCountries.localization.country.currency.symbol})`}</span>
+                    <span style={{opacity: !open ? 0 : 1}}>
+                      CHOOSE A LOCATION
+                    </span>
+                  </div>
+                  <svg
+                    width="9"
+                    height="6"
+                    viewBox="0 0 9 6"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{
+                      rotate: open ? '-180deg' : '0deg',
+                      transition: 'rotate 150ms ease-in-out',
+                    }}
+                  >
+                    <path d="M8 4.75L4.5 1.25L0.999999 4.75" stroke="black" />
+                  </svg>
+                </button>
+
+                <LocationForm
+                  availableCountries={availableCountries}
+                  selectedLocale={selectedLocale}
+                  close={closeLocation}
+                />
+              </motion.div>
+            </div>
+          );
+        }}
+      </Await>
+    </Suspense>
+  );
+}
 /**
  * @param {Pick<HeaderProps, 'isLoggedIn' | 'cart'>}
  */
@@ -386,8 +534,13 @@ function CartBadge({count}) {
 
   const {publish, shop, cart, prevCart} = useAnalytics();
 
+  const {pathname} = useLocation();
+
   return (
-    <a
+    <motion.a
+      initial={{opacity: 0}}
+      animate={{opacity: 1}}
+      transition={{delay: 2, duration: 0.5}}
       href="/cart"
       onClick={(e) => {
         e.preventDefault();
@@ -402,6 +555,12 @@ function CartBadge({count}) {
       }}
       style={{
         display: isOpen ? 'none' : 'inline',
+        visibility:
+          count === 0 &&
+          !pathname.includes('/collections') &&
+          !pathname.includes('/product')
+            ? 'hidden'
+            : 'visible',
       }}
       className="cart-badge"
     >
@@ -419,7 +578,7 @@ function CartBadge({count}) {
           stroke="black"
         />
       </svg>
-    </a>
+    </motion.a>
   );
 }
 

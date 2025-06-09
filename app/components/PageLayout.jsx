@@ -1,5 +1,12 @@
-import {Await, Link} from '@remix-run/react';
-import {Suspense, useId} from 'react';
+import {
+  Await,
+  Link,
+  useLocation,
+  useFetcher,
+  Form,
+  useNavigation,
+} from '@remix-run/react';
+import {Suspense, useId, useState, useEffect} from 'react';
 import {Aside} from '~/components/Aside';
 import {Footer} from '~/components/Footer';
 import {Header, HeaderMenu} from '~/components/Header';
@@ -9,6 +16,9 @@ import {
   SearchFormPredictive,
 } from '~/components/SearchFormPredictive';
 import {SearchResultsPredictive} from '~/components/SearchResultsPredictive';
+import {useAside} from './Aside';
+import {useRef} from 'react';
+import {AnimatePresence, motion} from 'motion/react';
 
 /**
  * @param {PageLayoutProps}
@@ -20,12 +30,21 @@ export function PageLayout({
   header,
   isLoggedIn,
   publicStoreDomain,
+  selectedLocale,
+  availableCountries,
 }) {
+  const {pathname} = useLocation();
+  const {state, location} = useNavigation();
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
       <SearchAside />
-      <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
+      <MobileMenuAside
+        header={header}
+        publicStoreDomain={publicStoreDomain}
+        selectedLocale={selectedLocale}
+        availableCountries={availableCountries}
+      />
       {header && (
         <Header
           header={header}
@@ -34,13 +53,116 @@ export function PageLayout({
           publicStoreDomain={publicStoreDomain}
         />
       )}
-      <main>{children}</main>
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.main
+          initial={{opacity: 0}}
+          animate={{opacity: 1}}
+          exit={{opacity: 0}}
+          transition={{ease: 'easeInOut', duration: 0.1}}
+          key={state === 'loading' ? location?.pathname : pathname}
+        >
+          {children}
+        </motion.main>
+      </AnimatePresence>
       <Footer
         footer={footer}
         header={header}
         publicStoreDomain={publicStoreDomain}
       />
     </Aside.Provider>
+  );
+}
+
+// function LocationAside({availableCountries, selectedLocale}) {
+//   const {close} = useAside();
+//   return (
+//     <Aside type="location" heading="choose country">
+//       <Suspense fallback={<div>Loading...</div>}>
+//         <Await resolve={availableCountries}>
+//           {(availableCountries) => {
+//             return (
+//               <LocationForm
+//                 availableCountries={availableCountries}
+//                 selectedLocale={selectedLocale}
+//                 close={close}
+//               />
+//             );
+//           }}
+//         </Await>
+//       </Suspense>
+//     </Aside>
+//   );
+// }
+
+export function LocationForm({availableCountries, selectedLocale, close}) {
+  const fetcher = useFetcher();
+  fetcher.formAction = '/locale';
+  const {pathname, search} = useLocation();
+  const {type} = useAside();
+  const formRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const [country, setCountry] = useState({
+    currency: {
+      isoCode: 'USD',
+      name: 'United States Dollar',
+      symbol: '$',
+    },
+    isoCode: 'US',
+    name: 'United States',
+    unitSystem: 'IMPERIAL_SYSTEM',
+  });
+
+  useEffect(() => {
+    setCountry(availableCountries.localization.country);
+  }, [availableCountries, pathname, selectedLocale]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setCountry(availableCountries.localization.country);
+    }, 300);
+  }, [type]);
+
+  const sortedCountries = availableCountries.localization.availableCountries
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name));
+
+  const countryOptions = [
+    country,
+    ...sortedCountries.filter((c) => c.isoCode !== country.isoCode),
+  ];
+
+  const strippedPathname = pathname.includes('EN-')
+    ? pathname
+        .split('/')
+        .filter((part) => !part.includes('EN-'))
+        .join('/')
+    : pathname;
+
+  const handleCountrySelect = (selected) => {
+    setCountry(selected);
+    close();
+
+    // Update inputs and submit form
+    const formData = new FormData();
+    formData.append('country', `${selected.isoCode}`);
+    formData.append('path', `${strippedPathname}${search}`);
+
+    fetcher.submit(formData, {method: 'POST'});
+  };
+
+  return (
+    <div className="location-form">
+      {countryOptions.map((c) => (
+        <p
+          className="country-option"
+          key={c.isoCode}
+          onClick={() => handleCountrySelect(c)}
+        >
+          <span>{`${c.name}`}</span>
+          <span>{`(${c.currency.isoCode} ${c.currency.symbol})`}</span>
+        </p>
+      ))}
+    </div>
   );
 }
 
@@ -149,7 +271,12 @@ function SearchAside() {
  *   publicStoreDomain: PageLayoutProps['publicStoreDomain'];
  * }}
  */
-function MobileMenuAside({header, publicStoreDomain}) {
+function MobileMenuAside({
+  header,
+  publicStoreDomain,
+  selectedLocale,
+  availableCountries,
+}) {
   return (
     header.menu &&
     header.shop.primaryDomain?.url && (
@@ -159,6 +286,8 @@ function MobileMenuAside({header, publicStoreDomain}) {
           viewport="mobile"
           primaryDomainUrl={header.shop.primaryDomain.url}
           publicStoreDomain={publicStoreDomain}
+          selectedLocale={selectedLocale}
+          availableCountries={availableCountries}
         />
       </Aside>
     )

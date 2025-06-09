@@ -87,7 +87,7 @@ Aside.Provider = function AsideProvider({children}) {
 
   // Detect if we're on mobile
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 500px)');
+    const mediaQuery = window.matchMedia('(max-width: 768px)');
     const handleChange = (e) => setIsMobile(e.matches);
 
     handleChange(mediaQuery); // set initial value

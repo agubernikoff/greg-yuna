@@ -23,6 +23,8 @@ export function ProductForm({
   productOptions,
   selectedVariant,
   compliments,
+  openPopUp,
+  closePopUp,
   chain,
   addAChain,
   removeChain,
@@ -162,6 +164,8 @@ export function ProductForm({
       {compliments.productRecommendations.length > 0 ? (
         <Comps
           compliments={compliments.productRecommendations}
+          openPopUp={openPopUp}
+          closePopUp={closePopUp}
           chain={chain}
           addAChain={addAChain}
           removeChain={removeChain}
@@ -198,12 +202,14 @@ export function ProductForm({
     </div>
   );
 }
-function Comps({compliments, chain, addAChain, removeChain}) {
-  const [clicked, setClicked] = useState();
-  function closePopUp() {
-    setClicked();
-  }
-
+function Comps({
+  compliments,
+  chain,
+  addAChain,
+  removeChain,
+  openPopUp,
+  closePopUp,
+}) {
   return (
     <div className="product-options">
       <div style={{display: 'flex', alignItems: 'center', gap: '.25rem'}}>
@@ -244,23 +250,16 @@ function Comps({compliments, chain, addAChain, removeChain}) {
           <Compliment
             compliment={comp}
             key={comp.id}
-            setClicked={setClicked}
+            setClicked={openPopUp}
             chain={chain}
           />
         ))}
       </div>
-      {clicked && (
-        <AddAChainPopUp
-          clicked={clicked}
-          closePopUp={closePopUp}
-          addAChain={addAChain}
-        />
-      )}
     </div>
   );
 }
 
-function AddAChainPopUp({clicked, closePopUp, addAChain}) {
+export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
   const [selectedVariant, setSelectedVariant] = useState();
 
   useEffect(
@@ -283,16 +282,43 @@ function AddAChainPopUp({clicked, closePopUp, addAChain}) {
       padding: isColorOption ? 0 : null,
     };
   };
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.matchMedia('(max-width:768px)').matches;
+    }
+    return false; // default to desktop for SSR
+  });
+
+  const overlay = {
+    initial: {opacity: 0},
+    animate: {opacity: 1},
+    exit: {opacity: 0},
+  };
+
+  const popup = {
+    initial: {y: isMobile ? '100%' : 0},
+    animate: {y: 0},
+    exit: {y: isMobile ? '100%' : 0},
+  };
   return (
-    <div
-      className={`overlay ${clicked ? 'expanded' : ''}`}
-      style={{transition: 'all 150ms ease-in-out'}}
+    <motion.div
+      className={`popupoverlay overlay ${clicked ? 'expanded' : ''}`}
+      variants={overlay}
+      initial="initial"
+      animate="animate"
+      exit="exit"
+      key="popup"
     >
       <button
         onClick={closePopUp}
         style={{position: 'absolute', inset: 0, background: 'transparent'}}
       />
-      <div className="add-a-chain-pop-up">
+      <motion.div
+        className="add-a-chain-pop-up"
+        variants={popup}
+        key="popup-p"
+        transition={{ease: 'easeInOut', duration: 0.15}}
+      >
         <div className="add-a-chain-header">
           <p>Add A Chain</p>
           <button onClick={closePopUp}>
@@ -421,8 +447,8 @@ function AddAChainPopUp({clicked, closePopUp, addAChain}) {
         >
           ADD CHAIN
         </button>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

@@ -71,7 +71,7 @@ function OrdersTable({orders}) {
       <p>STATUS</p>
       <p>TOTAL</p>
       {orders?.nodes.length ? (
-        <PaginatedResourceSection connection={orders}>
+        <PaginatedResourceSection connection={orders} fillEmptySpaces={false}>
           {({node: order}) => <OrderItem key={order.id} order={order} />}
         </PaginatedResourceSection>
       ) : (
