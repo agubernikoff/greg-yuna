@@ -1689,7 +1689,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 
 .bespoke-form-container > div:first-of-type {
   grid-column: 1/3;
-  width: 75%;
+  width: 80%;
   margin: auto;
 }
 
@@ -2230,5 +2230,9 @@ MEDIA QUIERIES
     overflow: hidden;
     position: fixed;
     width: 100%;
+  }
+  .bespoke-form-container > div:first-of-type {
+    width: calc(100% - 2rem);
+    margin-top: -4rem;
   }
 }
