@@ -393,7 +393,6 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
   const filterOrderRef = useRef(new Map()); // Persist across renders
 
   function storeInitialOrder(filters) {
-    console.log(filterOrderRef.current, filters);
     if (filters && filterOrderRef.current.size === 0) {
       filters.forEach((filter, index) => {
         filterOrderRef.current.set(filter.label, index);
@@ -414,8 +413,6 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
   useEffect(() => {
     storeInitialOrder(filter);
   }, []);
-
-  console.log(filter);
 
   return (
     <>
