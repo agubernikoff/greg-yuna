@@ -380,6 +380,9 @@ button.header-menu-item-aux:hover > svg > path {
 .location-form {
   padding: 0.5rem 1rem;
 }
+.location-form > p:hover {
+  cursor: pointer;
+}
 .country-option {
   display: flex;
   justify-content: space-between;
@@ -511,6 +514,7 @@ button.header-menu-item-aux:hover > svg > path {
   border-bottom: 1px solid black;
   padding: 0.25rem 0;
   margin-top: 1rem;
+  font-family: 'regular';
 }
 
 .newsletter-bar input {
@@ -522,6 +526,7 @@ button.header-menu-item-aux:hover > svg > path {
   background: transparent;
   padding: 0;
   margin: 0;
+  font-family: 'regular';
 }
 
 .subscribe-text {
@@ -529,6 +534,7 @@ button.header-menu-item-aux:hover > svg > path {
   cursor: pointer;
   white-space: nowrap;
   padding-left: 1rem;
+  font-family: 'regular';
 }
 
 /*
