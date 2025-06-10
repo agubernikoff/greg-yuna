@@ -746,18 +746,21 @@ button.header-menu-item-aux:hover > svg > path {
 .predictive-search {
   height: calc(100vh - var(--header-height) - 40px);
   overflow-y: auto;
+  font-family: 'regular';
 }
 
 .predictive-search-form {
   background: var(--color-light);
   position: sticky;
   top: 0;
+  font-family: 'regular';
 }
 
 .predictive-search-form > input {
   border: none;
   padding: 0;
   width: 100%;
+  font-family: 'regular';
 }
 .predictive-search-form > input:focus-visible {
   outline: none;
