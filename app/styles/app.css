@@ -415,6 +415,10 @@ button.header-menu-item-aux:hover > svg > path {
   min-width: var(--cart-badge-adjustment);
   text-align: center;
 }
+
+.cart-badge:hover {
+  text-decoration: none !important;
+}
 .cart-badge svg {
   display: none;
 }
