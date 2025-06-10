@@ -268,7 +268,7 @@ const NEW_ARRIVALS_QUERY = `#graphql
     $country: CountryCode
     $language: LanguageCode
   ) @inContext(country: $country, language: $language) {
-    collection(handle: "new-arrivals") {
+    collection(handle: "new-arrivals-1") {
       id
       handle
       title
