@@ -80,7 +80,7 @@ function ProductGridItem({product, loading}) {
         <div className="mapped-indicators">{mappedIndicators}</div>
       </div>
       <div className="product-item-details">
-        <p>{product.title.toLowerCase()}</p>
+        <p>{product.title}</p>
         <Money data={product.priceRange.minVariantPrice} />
       </div>
     </Link>
