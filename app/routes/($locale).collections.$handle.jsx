@@ -222,8 +222,8 @@ export function Filter({title, filters, shopAll, term}) {
             title === 'New Arrivals' || title === 'Shop All' || term
               ? filters
                   .find((f) => f.id === 'filter.p.tag')
-                  .values.filter((v) => v.id !== 'filter.p.tag.new-arrivals')
-              : filters.find((f) => f.id === 'filter.v.option.material').values
+                  ?.values.filter((v) => v.id !== 'filter.p.tag.new-arrivals')
+              : filters.find((f) => f.id === 'filter.v.option.material')?.values
           }
           addFilter={addFilter}
           removeFilter={removeFilter}
@@ -393,7 +393,8 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
   const filterOrderRef = useRef(new Map()); // Persist across renders
 
   function storeInitialOrder(filters) {
-    if (filterOrderRef.current.size === 0) {
+    console.log(filterOrderRef.current, filters);
+    if (filters && filterOrderRef.current.size === 0) {
       filters.forEach((filter, index) => {
         filterOrderRef.current.set(filter.label, index);
       });
@@ -401,7 +402,8 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
   }
 
   function sortByStoredOrder(filters) {
-    return filters.slice().sort((a, b) => {
+    if (!filters) return [];
+    return filters?.slice().sort((a, b) => {
       return (
         (filterOrderRef.current.get(a.label) ?? Infinity) -
         (filterOrderRef.current.get(b.label) ?? Infinity)
@@ -413,6 +415,8 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
     storeInitialOrder(filter);
   }, []);
 
+  console.log(filter);
+
   return (
     <>
       <div style={{display: 'flex'}} className="desktop-filter">
@@ -423,16 +427,17 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
           isChecked={isChecked}
           removeFilter={clearFilter}
         />
-        {sortByStoredOrder(filter).map((v) => (
-          <FilterInput
-            key={v.id}
-            label={v.label}
-            value={v.input}
-            addFilter={addFilter}
-            isChecked={isChecked}
-            removeFilter={removeFilter}
-          />
-        ))}
+        {filter &&
+          sortByStoredOrder(filter)?.map((v) => (
+            <FilterInput
+              key={v.id}
+              label={v.label}
+              value={v.input}
+              addFilter={addFilter}
+              isChecked={isChecked}
+              removeFilter={removeFilter}
+            />
+          ))}
       </div>
       <MobileFilt>
         <FilterInput
@@ -443,17 +448,18 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
           removeFilter={clearFilter}
           isSort={true}
         />
-        {sortByStoredOrder(filter).map((v) => (
-          <FilterInput
-            key={v.id}
-            label={v.label}
-            value={v.input}
-            addFilter={addFilter}
-            isChecked={isChecked}
-            removeFilter={removeFilter}
-            isSort={true}
-          />
-        ))}
+        {filter &&
+          sortByStoredOrder(filter).map((v) => (
+            <FilterInput
+              key={v.id}
+              label={v.label}
+              value={v.input}
+              addFilter={addFilter}
+              isChecked={isChecked}
+              removeFilter={removeFilter}
+              isSort={true}
+            />
+          ))}
       </MobileFilt>
     </>
   );
