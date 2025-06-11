@@ -743,6 +743,18 @@ button.header-menu-item-aux:hover > svg > path {
   font-size: 13px;
 }
 
+.empty-cart-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 70vh !important;
+}
+
+.empty-cart-message {
+  font-family: 'regular';
+  font-size: 13px;
+}
+
 /*
 * --------------------------------------------------
 * components/Search
