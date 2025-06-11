@@ -259,7 +259,7 @@ export default function Product() {
             </div>
             {chain ? (
               <div className="chain-title-price">
-                <p>{chain.product.title}</p>
+                <p>{`+ ${chain.product.title}`}</p>
                 <ProductPrice
                   price={chain?.price}
                   compareAtPrice={chain?.compareAtPrice}
@@ -268,7 +268,11 @@ export default function Product() {
             ) : null}
 
             {/* <br /> */}
-            <motion.div layout transition={{ease: 'easeInOut', duration: 0.15}}>
+            <motion.div
+              layout
+              transition={{ease: 'easeInOut', duration: 0.15}}
+              style={{marginTop: '2rem'}}
+            >
               <ProductForm
                 productOptions={productOptions}
                 selectedVariant={selectedVariant}

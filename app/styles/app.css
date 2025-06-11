@@ -1252,10 +1252,10 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
 }
 .chain-title-price {
-  margin-top: -0.5rem;
+  margin-top: 0.5rem;
   color: blue;
 }
 
@@ -1301,6 +1301,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   font-family: inherit;
   border: 1px solid #e8e8e8 !important;
   position: relative;
+  padding: 8px 10px;
 }
 
 .product-option-label-swatch {
@@ -1364,7 +1365,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .add-a-chain-option div,
 .add-a-chain-pop-up-money {
   font-size: 13px;
-  color: #999999;
+  color: black;
 }
 .popupoverlay {
   display: flex;
