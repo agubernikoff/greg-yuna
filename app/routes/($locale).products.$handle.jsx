@@ -267,7 +267,7 @@ export default function Product() {
               </div>
             ) : null}
 
-            <br />
+            {/* <br /> */}
             <motion.div layout transition={{ease: 'easeInOut', duration: 0.15}}>
               <ProductForm
                 productOptions={productOptions}
@@ -284,12 +284,11 @@ export default function Product() {
             <br />
             <motion.p
               layout
-              style={{color: '#999999'}}
+              style={{color: '#999999', marginBottom: '.25rem'}}
               transition={{ease: 'easeInOut', duration: 0.15}}
             >
               Details:
             </motion.p>
-            <br />
             <motion.div
               transition={{ease: 'easeInOut', duration: 0.15}}
               layout

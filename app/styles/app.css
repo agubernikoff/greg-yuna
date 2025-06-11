@@ -1244,7 +1244,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 
 .product-main-details {
   max-width: 387px;
-  margin-top: 3rem;
+  margin-top: 6rem;
 }
 
 .product-title-price,
@@ -1252,7 +1252,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 .chain-title-price {
   margin-top: -0.5rem;
@@ -1289,7 +1289,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   flex-wrap: wrap;
   grid-gap: 0rem;
   margin-top: 0.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   align-items: flex-start;
 }
 
@@ -2180,7 +2180,6 @@ MEDIA QUIERIES
   .product-title-price {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1rem;
     align-items: flex-start;
     flex-direction: column;
   }
