@@ -188,8 +188,8 @@ function Logo({isMobile}) {
       }
       animate={
         !isMobile
-          ? {width: '41px', height: '42.281px'}
-          : {width: '32.74px', height: '33.76px'}
+          ? {width: '32px', height: '32px'}
+          : {width: '32px', height: '32px'}
       }
       transition={{
         width: {delay: 1, duration: 0.5},

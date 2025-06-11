@@ -281,6 +281,7 @@ button.reset:hover:not(:has(> *)) {
   padding-block: 2rem;
   box-sizing: border-box;
   width: var(--header-width);
+  padding-top: 1rem !important;
 }
 .header > button {
   position: absolute;
