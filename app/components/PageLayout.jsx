@@ -147,7 +147,7 @@ export function LocationForm({availableCountries, selectedLocale, close}) {
     formData.append('country', `${selected.isoCode}`);
     formData.append('path', `${strippedPathname}${search}`);
 
-    fetcher.submit(formData, {method: 'POST'});
+    fetcher.submit(formData, {method: 'POST', preventScrollReset: true});
   };
 
   return (
