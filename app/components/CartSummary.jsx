@@ -14,6 +14,7 @@ export function CartSummary({cart, layout}) {
   function close() {
     setOpen(false);
   }
+
   return (
     <div aria-labelledby="cart-summary" className={className}>
       {/* <CartDiscounts discountCodes={cart.discountCodes} />
