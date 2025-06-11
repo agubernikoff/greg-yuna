@@ -1053,6 +1053,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 }
 .padded-filter-div {
   padding: 0.5rem;
+  padding-right: 1.5rem;
 }
 .filter-space-between {
   display: flex;
@@ -1063,6 +1064,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 }
 .bottom-border {
   border-bottom: 1px solid #e9e9e9;
+  background-color: white;
 }
 .inline-border {
   border-inline: 1px solid #e9e9e9;
@@ -1099,7 +1101,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   background: white;
   border: 1px solid #e9e9e9;
   border-top: none;
-  padding: 0.5rem;
+  padding: 0.75rem;
   text-align: left;
   display: flex;
   flex-direction: column;
@@ -1223,6 +1225,9 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 }
 .crumb:last-child {
   color: #000000;
+}
+.crumb {
+  margin: 0 0.25rem;
 }
 
 .cart-link {
