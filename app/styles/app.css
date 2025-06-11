@@ -943,7 +943,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   grid-column: 1 / 5;
   border-top: 1px solid #e9e9e9;
   border-bottom: 1px solid #e9e9e9;
-  padding: 0.5rem;
+  padding: 8px 10px;
 }
 
 .collection-grid-item {
@@ -1860,6 +1860,9 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .route-error p,
 .route-error a {
   font-size: 13px;
+}
+.route-error a {
+  cursor: pointer;
 }
 
 /* 
