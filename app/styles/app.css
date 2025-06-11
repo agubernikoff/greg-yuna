@@ -1831,6 +1831,25 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   text-decoration: none;
 }
 
+.route-error {
+  grid-column: 1 / -1 !important;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: white;
+}
+.route-error > h2 {
+  font-size: 240px;
+  margin-bottom: -2rem;
+}
+.route-error p,
+.route-error a {
+  font-size: 13px;
+}
+
 /* 
 MEDIA QUIERIES
 */
