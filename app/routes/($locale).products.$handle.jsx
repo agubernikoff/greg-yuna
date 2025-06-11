@@ -212,7 +212,7 @@ export default function Product() {
             <NavLink className="crumb" to="/">
               Home
             </NavLink>
-            {' → '}
+            <span className="crumb-dash">{' → '}</span>
             {(notNewArrivalsCollection &&
               lastCollectionPath?.includes('collections')) ||
             lastCollectionPath?.includes('products') ? (
@@ -224,7 +224,7 @@ export default function Product() {
                       )
                     : notNewArrivalsCollection.title}
                 </NavLink>
-                {' → '}
+                <span className="crumb-dash">{' → '}</span>
               </>
             ) : null}
             <span className="crumb" sty>

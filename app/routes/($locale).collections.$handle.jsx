@@ -210,7 +210,7 @@ export function Filter({title, filters, shopAll, term}) {
               <NavLink className="crumb" to="/">
                 Home
               </NavLink>
-              <span className="crumb">{' → '}</span>
+              <span className="crumb-dash">{' → '}</span>
               <span>{title}</span>
             </>
           )}

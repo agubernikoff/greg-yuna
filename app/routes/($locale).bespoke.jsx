@@ -95,7 +95,7 @@ export default function Bespoke() {
             <NavLink className="crumb" to="/">
               Home
             </NavLink>
-            {' → '}
+            <span className="crumb-dash">{' → '}</span>
             <span className="crumb">Bespoke</span>
           </>
         </div>
