@@ -71,6 +71,14 @@ export default function Contact() {
             <div className="powr-form-builder" id="b41bdd2b_1749484866"></div>
           </div>
 
+          <p className="section-header-aux">APPOINTMENTS</p>
+          <p>
+            To book an appointment at our Nolita location, please reach out
+            through the form above and include the reason for your visit or the
+            products you’re interested in. A member of our team will follow up
+            to confirm availability.
+          </p>
+
           <p className="section-header-aux">LEAD TIMES</p>
           <p>
             Some items may be in stock & able to ship immediately. Please allow
