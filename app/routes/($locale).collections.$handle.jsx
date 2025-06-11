@@ -540,13 +540,13 @@ function FilterInput({
         {label}
         {hovered && (
           <motion.div
-            layoutId={`${isSort ? 'sort-' : ''}hover-indicator`}
+            // layoutId={`${isSort ? 'sort-' : ''}hover-indicator`}
             id={`${isSort ? 'sort-' : ''}hover-indicator`}
             style={{
               right: isSort ? 'auto' : 0,
               left: 0,
-              height: isSort ? '100%' : '3px',
-              width: isSort ? '3px' : '100%',
+              height: isSort ? '3px' : '3px',
+              width: isSort ? '100%' : '100%',
               position: 'absolute',
               bottom: 0,
               background: '#999999',
@@ -556,13 +556,13 @@ function FilterInput({
         )}
         {isChecked(value) && (
           <motion.div
-            layoutId={`${isSort ? 'sort-' : ''}filter-indicator`}
+            // layoutId={`${isSort ? 'sort-' : ''}filter-indicator`}
             id={`${isSort ? 'sort-' : ''}filter-indicator`}
             style={{
               right: isSort ? 'auto' : 0,
               left: 0,
-              height: isSort ? '100%' : '3px',
-              width: isSort ? '3px' : '100%',
+              height: isSort ? '3px' : '3px',
+              width: isSort ? '100%' : '100%',
               position: 'absolute',
               bottom: 0,
               background: 'black',
