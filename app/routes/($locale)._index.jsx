@@ -1,10 +1,8 @@
 import {Await, useLoaderData} from '@remix-run/react';
-import {Suspense, useState} from 'react';
+import {Suspense, useState, useEffect} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import ProductGridItem from '~/components/ProductGridItem';
 import {motion} from 'motion/react';
-import flag1 from '../assets/flagship.png';
-import flag2 from '../assets/flag2.png';
 import NavLink from '~/components/NavLink';
 
 /**
@@ -18,44 +16,29 @@ export const meta = () => {
  * @param {LoaderFunctionArgs} args
  */
 export async function loader(args) {
-  // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
-
   return {...deferredData, ...criticalData};
 }
 
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- * @param {LoaderFunctionArgs}
- */
 async function loadCriticalData({context}) {
-  const [newArrivals, {collections}] = await Promise.all([
+  const [newArrivals, {collections}, storeLocations] = await Promise.all([
     context.storefront.query(NEW_ARRIVALS_QUERY),
     context.storefront.query(FEATURED_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
+    context.storefront.query(STORE_LOCATIONS_QUERY),
   ]);
 
   return {
     featuredCollection: newArrivals.collection,
     collections,
+    storeLocations,
   };
 }
 
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- * @param {LoaderFunctionArgs}
- */
 function loadDeferredData({context}) {
   const recommendedProducts = context.storefront
     .query(RECOMMENDED_PRODUCTS_QUERY)
     .catch((error) => {
-      // Log query errors, but don't throw them so the page can still render
       console.error(error);
       return null;
     });
@@ -73,16 +56,11 @@ export default function Homepage() {
       <FeaturedCollection collection={data.featuredCollection} />
       <RecommendedProducts products={data.featuredCollection} />
       <Collections collections={data.collections} />
-      <FlagshipHome />
+      <FlagshipHome storeLocations={data.storeLocations} />
     </div>
   );
 }
 
-/**
- * @param {{
- *   collection: FeaturedCollectionFragment;
- * }}
- */
 function FeaturedCollection({collection}) {
   if (!collection) return null;
   const image = collection?.image;
@@ -108,11 +86,6 @@ function FeaturedCollection({collection}) {
   );
 }
 
-/**
- * @param {{
- *   products: Promise<RecommendedProductsQuery | null>;
- * }}
- */
 function RecommendedProducts({products}) {
   return (
     <div className="recommended-products">
@@ -138,7 +111,6 @@ function RecommendedProducts({products}) {
 }
 
 function Collections({collections}) {
-  // console.log(collections);
   const mapped = collections.nodes.map((node) => (
     <CollectionGridItem key={node.id} node={node} />
   ));
@@ -149,7 +121,7 @@ function CollectionGridItem({node}) {
   const [hovered, setHovered] = useState(false);
   return (
     <motion.div
-      className={`collection-grid-item ${hovered ? 'hovered' : null}`}
+      className={`collection-grid-item ${hovered ? 'hovered' : ''}`}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -161,15 +133,43 @@ function CollectionGridItem({node}) {
   );
 }
 
-function FlagshipHome() {
+function FlagshipHome({storeLocations}) {
+  useEffect(() => {}, [storeLocations]);
+
+  if (!storeLocations) return null;
+
+  const getImageFromMetaobjectFields = (nodes) => {
+    const imageField = nodes?.[0]?.fields?.find((f) => f.key === 'image');
+    return imageField?.reference?.image?.url || null;
+  };
+
+  const mainImageUrl = getImageFromMetaobjectFields(
+    storeLocations.store_location_main.nodes,
+  );
+  const secondaryImageUrl = getImageFromMetaobjectFields(
+    storeLocations.store_location_secondary.nodes,
+  );
+
   return (
     <div className="flagship-container">
       <div className="flagship-left">
-        <img src={flag1} alt="Greg Yuna Flagship" className="flagship-image" />
+        {mainImageUrl && (
+          <img
+            src={mainImageUrl}
+            alt="Greg Yuna Flagship"
+            className="flagship-image"
+          />
+        )}
       </div>
       <div className="flagship-right">
         <p className="flagship-title">GREG YUNA NOLITA FLAGSHIP</p>
-        <img src={flag2} alt="flagship" className="flagship-subimage" />
+        {secondaryImageUrl && (
+          <img
+            src={secondaryImageUrl}
+            alt="flagship"
+            className="flagship-subimage"
+          />
+        )}
         <p className="flagship-address">215 Mulberry Street</p>
         <p className="flagship-address">New York, New York</p>
         <p className="flagship-address">Monday–Sunday, 12PM–7PM</p>
@@ -177,7 +177,7 @@ function FlagshipHome() {
     </div>
   );
 }
-//add some kind of metafield 'displayOnHomepage' and add to query
+
 const FEATURED_COLLECTION_QUERY = `#graphql
   fragment FeaturedCollection on Collection {
     id
@@ -262,6 +262,45 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
   }
 `;
 
+const STORE_LOCATIONS_QUERY = `#graphql
+  query StoreLocationImages {
+  store_location_main: metaobjects(type: "store_location_main", first: 1) {
+    nodes {
+      fields {
+        key
+        reference {
+          ... on MediaImage {
+            image {
+              url
+              altText
+              width
+              height
+            }
+          }
+        }
+      }
+    }
+  }
+  store_location_secondary: metaobjects(type: "store_location_secondary", first: 1) {
+    nodes {
+      fields {
+        key
+        reference {
+          ... on MediaImage {
+            image {
+              url
+              altText
+              width
+              height
+            }
+          }
+        }
+      }
+    }
+  }
+}
+`;
+
 const NEW_ARRIVALS_QUERY = `#graphql
   ${PRODUCT_ITEM_FRAGMENT}
   query Collection(
@@ -311,6 +350,7 @@ const NEW_ARRIVALS_QUERY = `#graphql
     }
   }
 `;
+
 /** @typedef {import('@shopify/remix-oxygen').LoaderFunctionArgs} LoaderFunctionArgs */
 /** @template T @typedef {import('@remix-run/react').MetaFunction<T>} MetaFunction */
 /** @typedef {import('storefrontapi.generated').FeaturedCollectionFragment} FeaturedCollectionFragment */
