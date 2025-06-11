@@ -1166,10 +1166,10 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .product-item-imgs-container img:nth-of-type(2) {
   opacity: 0;
 }
-.product-item:hover img:first-of-type {
+.has-multiple-images:hover img:first-of-type {
   opacity: 0;
 }
-.product-item:hover img:nth-of-type(2) {
+.has-multiple-images:hover img:nth-of-type(2) {
   opacity: 0.9;
 }
 

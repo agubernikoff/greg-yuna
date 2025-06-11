@@ -19,6 +19,8 @@ function ProductGridItem({product, loading}) {
     if (Math.abs(dividend - rounded) < 0.2) setImageIndex(rounded);
   }
 
+  const hasMultipleImages = product.images.nodes.length > 1;
+
   const mappedIndicators =
     product.images.nodes.length > 1
       ? product.images.nodes.map((e, i) => (
@@ -53,10 +55,9 @@ function ProductGridItem({product, loading}) {
 
   return (
     <Link
-      className="product-item"
-      key={product.id}
-      prefetch="intent"
+      className={`product-item ${hasMultipleImages ? 'has-multiple-images' : ''}`}
       to={variantUrl}
+      prefetch="intent"
       onClick={() => setLastCollectionPath(pathname)}
     >
       <div style={{position: 'relative'}}>
