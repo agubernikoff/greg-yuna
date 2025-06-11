@@ -227,9 +227,7 @@ export default function Product() {
                 <span className="crumb-dash">{' → '}</span>
               </>
             ) : null}
-            <span className="crumb" sty>
-              {title}
-            </span>
+            <span className="crumb">{title}</span>
           </>
         </div>
         <div

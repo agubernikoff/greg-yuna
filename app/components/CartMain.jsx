@@ -13,7 +13,7 @@ export function CartMain({layout, cart: originalCart}) {
   // The useOptimisticCart hook applies pending actions to the cart
   // so the user immediately sees feedback when they modify the cart.
   const cart = useOptimisticCart(originalCart);
-
+  const linesExist = cart?.lines?.nodes?.length > 0;
   const linesCount = Boolean(cart?.lines?.nodes?.length || 0);
   const withDiscount =
     cart &&
@@ -23,7 +23,7 @@ export function CartMain({layout, cart: originalCart}) {
 
   return (
     <div className={className}>
-      <CartEmpty hidden={linesCount} layout={layout} />
+      {!linesExist && <CartEmpty layout={layout} />}
       <div className="cart-details">
         <div aria-labelledby="cart-lines" className="cart-lines">
           <ul>
