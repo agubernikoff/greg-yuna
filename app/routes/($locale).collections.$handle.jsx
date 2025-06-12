@@ -253,7 +253,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
     >
       <button
         onClick={toggleIsOpen}
-        className="sort-by-button"
+        className={`sort-by-button ${isOpen ? 'isOpen-btn' : ''}`}
         style={{border: 'none', width: '100%'}}
       >
         <AnimatePresence mode="popLayout">
@@ -498,7 +498,7 @@ function MobileFilt({children}) {
 
       <AnimatePresence>
         {isOpen && (
-          <div className="sort-overflow-hidden-container">
+          <div className="sort-overflow-filter-hidden-container">
             <motion.div
               initial={{y: '-100%'}}
               animate={{y: '1px'}}
