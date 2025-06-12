@@ -123,7 +123,10 @@ function Newsletter() {
       style={{position: 'relative'}}
     >
       <p>NEWSLETTER</p>
-      <div className="newsletter-bar" style={{border: text ? 'none' : ''}}>
+      <div
+        className="newsletter-bar"
+        style={text ? {border: 'none'} : undefined}
+      >
         {!text ? (
           <>
             <input
