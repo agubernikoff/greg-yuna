@@ -356,15 +356,16 @@ export function HeaderMenu({
         })}
       </nav>
       <nav className="header-menu-bottom-container">
-        <a
+        <NavLink
           className="header-menu-item-aux"
-          href="https://gregyuna.com/account"
-          // target="_blank"
-          rel="noopener noreferrer"
-          // style={activeLinkStyle}
+          end
+          onClick={close}
+          prefetch="intent"
+          style={activeLinkStyle}
+          to="/account"
         >
           Account
-        </a>
+        </NavLink>
         <NavLink
           className="header-menu-item-aux"
           end
