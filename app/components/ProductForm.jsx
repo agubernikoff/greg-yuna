@@ -462,7 +462,7 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                           />
                           {hovered && !selected && (
                             <motion.div
-                              layoutId={`${option.name}-${selectedVariant.product.handle}`}
+                              layoutId={`hovered-${option.name}-${clicked.handle}`}
                               id={`${option.name}`}
                               transition={{ease: 'easeInOut', duration: 0.15}}
                               style={{
