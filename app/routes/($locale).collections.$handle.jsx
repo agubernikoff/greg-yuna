@@ -580,7 +580,6 @@ function FilterInput({
   close,
 }) {
   const [hovered, setHovered] = useState(false);
-  console.log(typeof close === 'function');
   return (
     <>
       <button
