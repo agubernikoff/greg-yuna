@@ -512,7 +512,10 @@ button.header-menu-item-aux:hover > svg > path {
   font-size: 13px;
   color: #ababab;
 }
-
+.footer-newsletter {
+  width: 100%;
+  max-width: none;
+}
 .newsletter-bar {
   width: 100%;
   display: flex;
@@ -541,6 +544,11 @@ button.header-menu-item-aux:hover > svg > path {
   white-space: nowrap;
   padding-left: 1rem;
   font-family: 'regular';
+  border: none;
+  background: transparent;
+}
+.subscribe-text:hover {
+  color: #999999;
 }
 
 /*

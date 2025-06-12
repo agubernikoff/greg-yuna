@@ -37,6 +37,10 @@ export default async function handleRequest(
       'https://greg-yuna-store.com/*',
       'http://localhost:3000',
       'https://greg-yuna-hydrogen-4403d774125ce12f8cb7.o2.myshopify.dev',
+      'https://klaviyo.com',
+      'https://*.klaviyo.com',
+      'https://cdn.shopify.com',
+      'https://*.klaviyo.com/*',
     ],
     imgSrc: [
       'https://cdn.shopify.com', // ✅ Allow Shopify images

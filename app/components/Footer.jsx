@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import {Suspense, useState} from 'react';
 import {Await} from '@remix-run/react';
 import NavLink from './NavLink';
 
@@ -17,13 +17,7 @@ export function Footer({footer: footerPromise, header, publicStoreDomain}) {
         </p>
       </div>
       <div className="footer-right">
-        <div>
-          <p>NEWSLETTER</p>
-          <div className="newsletter-bar">
-            <input placeholder="Enter Email" />
-            <span className="subscribe-text">Subscribe</span>
-          </div>
-        </div>
+        <Newsletter />
         <div>
           <Suspense>
             <Await resolve={footerPromise}>
@@ -45,6 +39,110 @@ export function Footer({footer: footerPromise, header, publicStoreDomain}) {
         </div>
       </div>
     </footer>
+  );
+}
+
+function Newsletter() {
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+  const [text, setText] = useState('');
+
+  function subscribe(e) {
+    e.preventDefault();
+    if (!email) {
+      setError('please enter a valid email');
+      setTimeout(() => {
+        setError();
+      }, 1500);
+      return;
+    }
+
+    const payload = {
+      data: {
+        type: 'subscription',
+        attributes: {
+          profile: {
+            data: {
+              type: 'profile',
+              attributes: {
+                email: `${email}`,
+              },
+            },
+          },
+        },
+        relationships: {
+          list: {
+            data: {
+              type: 'list',
+              id: 'VqQNTT',
+            },
+          },
+        },
+      },
+    };
+
+    var requestOptions = {
+      mode: 'cors',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        revision: '2025-04-15',
+      },
+      body: JSON.stringify(payload),
+    };
+
+    fetch(
+      'https://a.klaviyo.com/client/subscriptions/?company_id=TBMgC2',
+      requestOptions,
+    ).then((result) => {
+      if (result.ok) {
+        setText('Thank you for subscribing.');
+      } else {
+        result.json().then((data) => {
+          console.log(data);
+          setError(data.errors[0].detail);
+          setTimeout(() => {
+            setError();
+          }, 1500);
+        });
+      }
+    });
+  }
+
+  return (
+    // <div>
+    //   <p>NEWSLETTER</p>
+    //   <div className="newsletter-bar">
+    //     <input placeholder="Enter Email" />
+    //     <span className="subscribe-text">Subscribe</span>
+    //   </div>
+    // </div>
+    <form
+      className="footer-newsletter"
+      onSubmit={subscribe}
+      style={{position: 'relative'}}
+    >
+      <p>NEWSLETTER</p>
+      <div className="newsletter-bar" style={{border: text ? 'none' : ''}}>
+        {!text ? (
+          <>
+            <input
+              placeholder="Enter Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <button type="submit" className="subscribe-text">
+              Subscribe
+            </button>
+          </>
+        ) : (
+          <p>{text}</p>
+        )}
+      </div>
+      <p style={{position: 'absolute', bottom: '-1.5rem', fontSize: '12px'}}>
+        {error}
+      </p>
+    </form>
   );
 }
 
