@@ -16,10 +16,14 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   const [t, setT] = useState(true);
   useEffect(() => {
     setTimeout(() => {
-      setT(false);
+      u(false); // setT(false)
     }, 1000);
+
     setTimeout(() => {
-      document.querySelector('#shopify-pc__banner').style.opacity = 1;
+      const banner = document.querySelector('#shopify-pc__banner');
+      if (banner) {
+        banner.style.opacity = 1;
+      }
     }, 2000);
   }, []);
   const {close} = useAside();
