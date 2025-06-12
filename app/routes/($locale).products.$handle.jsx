@@ -173,18 +173,27 @@ export default function Product() {
   const {lastCollectionPath} = useNavigationContext();
   console.log(lastCollectionPath);
 
-  const to = lastCollectionPath
-    ? lastCollectionPath
-    : `/collections/${product.collections.nodes[0].handle}`;
-
   function capitalizeFirstLetter(word) {
     if (!word) return '';
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
+  // Prefer a non-"New Arrivals" collection if available
   const notNewArrivalsCollection = product.collections.nodes.find(
     (col) => col.title !== 'New Arrivals',
   );
+
+  // Determine if lastCollectionPath is a valid collection path
+  const isValidCollectionPath = lastCollectionPath?.includes('/collections/');
+
+  // Choose the fallback collection if needed
+  const fallbackCollection =
+    notNewArrivalsCollection || product.collections.nodes[0];
+
+  // Final path for breadcrumb
+  const to = isValidCollectionPath
+    ? lastCollectionPath
+    : `/collections/${fallbackCollection?.handle}`;
 
   const [clicked, setClicked] = useState();
 
@@ -213,20 +222,16 @@ export default function Product() {
               Home
             </NavLink>
             <span className="crumb-dash">{' → '}</span>
-            {(notNewArrivalsCollection &&
-              lastCollectionPath?.includes('collections')) ||
-            lastCollectionPath?.includes('products') ? (
+
+            {to && (
               <>
                 <NavLink className="crumb" to={to}>
-                  {lastCollectionPath?.includes('collections')
-                    ? capitalizeFirstLetter(
-                        lastCollectionPath.split('/collections/')[1],
-                      )
-                    : notNewArrivalsCollection.title}
+                  {capitalizeFirstLetter(to.split('/collections/')[1])}
                 </NavLink>
                 <span className="crumb-dash">{' → '}</span>
               </>
-            ) : null}
+            )}
+
             <span className="crumb">{title}</span>
           </>
         </div>
