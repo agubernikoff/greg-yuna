@@ -2124,6 +2124,7 @@ MEDIA QUIERIES
     border-inline: none;
     box-sizing: border-box;
     background: white;
+    color: black;
   }
   .filter-space-between.inline-border.sort-by-button.mobile-filter {
     padding: 0;
@@ -2148,6 +2149,9 @@ MEDIA QUIERIES
   }
   .isOpen-btn {
     background: #e9e9e9;
+  }
+  .filter-input {
+    color: black;
   }
   .flagship-container {
     border-bottom: 1px solid #e9e9e9;
