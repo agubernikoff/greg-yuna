@@ -44,6 +44,8 @@ export function ProductForm({
   const navigate = useNavigate();
   const {open} = useAside();
 
+  const [hoverVariant, setHoverVariant] = useState();
+
   const itemStyle = (selected, available, isColorOption) => {
     return {
       opacity: available ? 1 : 0.3,
@@ -91,6 +93,7 @@ export function ProductForm({
                 } = value;
                 const variantImage = isColorOption ? variant?.image : null;
                 const styles = itemStyle(selected, available, isColorOption);
+                const hovered = name === hoverVariant;
 
                 if (isDifferentProduct) {
                   return (
@@ -131,6 +134,8 @@ export function ProductForm({
                           });
                         }
                       }}
+                      onMouseEnter={() => setHoverVariant(name)}
+                      onMouseLeave={() => setHoverVariant()}
                     >
                       <ProductOptionSwatch
                         swatch={swatch}
@@ -138,6 +143,21 @@ export function ProductForm({
                         isColorOption={isColorOption}
                         productImage={variantImage}
                       />
+                      {hovered && (
+                        <motion.div
+                          layoutId={`hovered-${option.name}-${selectedVariant.product.handle}`}
+                          id={`${option.name}`}
+                          transition={{ease: 'easeInOut', duration: 0.15}}
+                          style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            left: '-1px',
+                            right: '-1px',
+                            height: '2px',
+                            background: '#999999',
+                          }}
+                        />
+                      )}
                       {selected && (
                         <motion.div
                           layoutId={`${option.name}-${selectedVariant.product.handle}`}
@@ -261,6 +281,7 @@ function Comps({
 
 export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
   const [selectedVariant, setSelectedVariant] = useState();
+  const [hoverVariant, setHoverVariant] = useState();
 
   useEffect(() => {
     setSelectedVariant(clicked?.selectedOrFirstAvailableVariant);
@@ -409,6 +430,8 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                         ? name.replace(/"/g, '')
                         : name;
 
+                    const hovered = name === hoverVariant;
+
                     if (isDifferentProduct) {
                       return (
                         <button className="product-options-item" style={styles}>
@@ -429,6 +452,8 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                           style={styles}
                           disabled={!exists}
                           onClick={() => handleClick(variant, name)}
+                          onMouseEnter={() => setHoverVariant(name)}
+                          onMouseLeave={() => setHoverVariant()}
                         >
                           <ProductOptionSwatch
                             swatch={swatch}
@@ -436,6 +461,21 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                             isColorOption={isColorOption}
                             productImage={variantImage}
                           />
+                          {hovered && (
+                            <motion.div
+                              layoutId={`hovered-${option.name}-${clicked.handle}`}
+                              id={`${option.name}`}
+                              transition={{ease: 'easeInOut', duration: 0.15}}
+                              style={{
+                                position: 'absolute',
+                                bottom: 0,
+                                left: '-1px',
+                                right: '-1px',
+                                height: '2px',
+                                background: '#999999',
+                              }}
+                            />
+                          )}
                           {selected && (
                             <motion.div
                               layoutId={`${option.name}-${clicked.handle}`}
@@ -474,13 +514,31 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
   );
 }
 function Compliment({compliment, setClicked, chain}) {
+  const [hovered, setHovered] = useState(false);
   return (
     <button
       className="add-a-chain-option"
       onClick={() => setClicked(compliment)}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
     >
       <div className="add-a-chain-option-img-container">
         <Image data={compliment.images.nodes[0]} width={200} height={200} />
+        {hovered && chain?.product?.title !== compliment.title && (
+          <motion.div
+            layoutId={`hovered-chain-indicator`}
+            id={`hovered-chain-indicator`}
+            transition={{ease: 'easeInOut', duration: 0.15}}
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: '-1px',
+              right: '-1px',
+              height: '2px',
+              background: '#999999',
+            }}
+          />
+        )}
         {chain?.product?.title === compliment.title && (
           <motion.div
             layoutId={`chain-indicator`}

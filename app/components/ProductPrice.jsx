@@ -10,7 +10,7 @@ import {AnimatePresence, motion} from 'motion/react';
 export function ProductPrice({price, compareAtPrice}) {
   return (
     <div className="product-price">
-      {compareAtPrice ? (
+      {compareAtPrice > price ? (
         <div className="product-price-on-sale">
           {price ? <Money data={price} /> : null}
           <s>
