@@ -16,7 +16,7 @@ import {AnimatePresence, motion} from 'motion/react';
  * @type {MetaFunction<typeof loader>}
  */
 export const meta = ({data}) => {
-  return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
+  return [{title: `Greg Ÿuna | ${data?.collection.title ?? ''} Collection`}];
 };
 
 /**
@@ -123,7 +123,13 @@ export default function Collection() {
 
 export function Filter({title, filters, shopAll, term}) {
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const [isOpen, setIsOpen] = useState();
+  function openFilterSort(name) {
+    setIsOpen(name);
+  }
+  function closeFilterSort() {
+    setIsOpen();
+  }
   function addFilter(input) {
     setSearchParams(
       (prev) => {
@@ -229,6 +235,9 @@ export function Filter({title, filters, shopAll, term}) {
           removeFilter={removeFilter}
           isChecked={isChecked}
           clearFilter={clearFilter}
+          isOpen={isOpen}
+          open={openFilterSort}
+          close={closeFilterSort}
         />
         <Sort
           addSort={addSort}
@@ -236,35 +245,48 @@ export function Filter({title, filters, shopAll, term}) {
           isChecked={isSortChecked}
           shopAll={shopAll}
           term={term}
+          isOpen={isOpen}
+          open={openFilterSort}
+          close={closeFilterSort}
         />
       </div>
     </div>
   );
 }
 
-function Sort({addSort, removeSort, isChecked, term, shopAll}) {
-  const [isOpen, setIsOpen] = useState(false);
+function Sort({
+  addSort,
+  removeSort,
+  isChecked,
+  term,
+  shopAll,
+  isOpen,
+  open,
+  close,
+}) {
+  // const [isOpen, setIsOpen] = useState(false);
   function toggleIsOpen() {
-    setIsOpen(!isOpen);
+    if (isOpen === 'sort') close();
+    else open('sort');
   }
   return (
     <div
-      className={`filter-space-between  sort-by-button ${isOpen ? 'isOpen-btn' : ''}`}
+      className={`filter-space-between  sort-by-button ${isOpen === 'sort' ? 'isOpen-btn' : ''}`}
     >
       <button
         onClick={toggleIsOpen}
-        className={`sort-by-button ${isOpen ? 'isOpen-btn' : ''}`}
+        className={`sort-by-button ${isOpen === 'sort' ? 'isOpen-btn' : ''}`}
         style={{border: 'none', width: '100%'}}
       >
         <AnimatePresence mode="popLayout">
           <motion.span
-            key={`sort-by-${isOpen}`}
+            key={`sort-by-${isOpen === 'sort'}`}
             initial={{opacity: 1}}
             animate={{opacity: 1}}
             exit={{opacity: 0}}
             style={{display: 'inline-block', width: '100%', textAlign: 'left'}}
           >
-            {!isOpen ? 'Sort By' : 'Close'}
+            {isOpen !== 'sort' ? 'Sort By' : 'Close'}
           </motion.span>
         </AnimatePresence>
         <svg
@@ -283,7 +305,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
             fill="white"
             stroke="black"
             initial={{x: 0}}
-            animate={{x: isOpen ? '6px' : 0}}
+            animate={{x: isOpen === 'sort' ? '6px' : 0}}
             transition={{ease: 'easeInOut', duration: 0.15}}
           />
           <line y1="9" x2="16" y2="9" stroke="black" />
@@ -295,14 +317,19 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
             fill="white"
             stroke="black"
             initial={{x: 0}}
-            animate={{x: isOpen ? '-6px' : 0}}
+            animate={{x: isOpen === 'sort' ? '-6px' : 0}}
             transition={{ease: 'easeInOut', duration: 0.15}}
           />
         </svg>
       </button>
       <AnimatePresence>
-        {isOpen && (
-          <div className="sort-overflow-hidden-container">
+        {isOpen === 'sort' && (
+          <motion.div
+            className="sort-overflow-hidden-container"
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+          >
             <motion.div
               initial={{y: '-100%'}}
               animate={{y: '1px'}}
@@ -321,6 +348,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   removeFilter={removeSort}
                   isSort={true}
                   term={term}
+                  close={toggleIsOpen}
                 />
                 <FilterInput
                   label={'Alphabetically, A-Z'}
@@ -330,6 +358,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   removeFilter={removeSort}
                   term={term}
                   isSort={true}
+                  close={toggleIsOpen}
                 />
                 <FilterInput
                   label={'Alphabetically, Z-A'}
@@ -339,6 +368,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   removeFilter={removeSort}
                   term={term}
                   isSort={true}
+                  close={toggleIsOpen}
                 />
                 <FilterInput
                   label={'Date, new to old'}
@@ -351,6 +381,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   removeFilter={removeSort}
                   term={term}
                   isSort={true}
+                  close={toggleIsOpen}
                 />
                 <FilterInput
                   label={'Date, old to new'}
@@ -363,6 +394,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   removeFilter={removeSort}
                   term={term}
                   isSort={true}
+                  close={toggleIsOpen}
                 />
                 <FilterInput
                   label={'Price, low to high'}
@@ -371,6 +403,7 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   isChecked={isChecked}
                   removeFilter={removeSort}
                   isSort={true}
+                  close={toggleIsOpen}
                 />
                 <FilterInput
                   label={'Price, high to low'}
@@ -379,17 +412,27 @@ function Sort({addSort, removeSort, isChecked, term, shopAll}) {
                   isChecked={isChecked}
                   removeFilter={removeSort}
                   isSort={true}
+                  close={toggleIsOpen}
                 />
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
 }
 
-function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
+function Filt({
+  filter,
+  addFilter,
+  isChecked,
+  removeFilter,
+  clearFilter,
+  isOpen,
+  open,
+  close,
+}) {
   const filterOrderRef = useRef(new Map()); // Persist across renders
 
   function storeInitialOrder(filters) {
@@ -414,6 +457,11 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
     storeInitialOrder(filter);
   }, []);
 
+  function toggleIsOpen() {
+    if (isOpen === 'filt') close();
+    else open('filt');
+  }
+
   return (
     <>
       <div style={{display: 'flex'}} className="desktop-filter">
@@ -436,7 +484,7 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
             />
           ))}
       </div>
-      <MobileFilt>
+      <MobileFilt isOpen={isOpen} toggleIsOpen={toggleIsOpen}>
         <FilterInput
           label={'View All'}
           value={'viewAll'}
@@ -444,6 +492,7 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
           isChecked={isChecked}
           removeFilter={clearFilter}
           isSort={true}
+          close={toggleIsOpen}
         />
         {filter &&
           sortByStoredOrder(filter).map((v) => (
@@ -455,31 +504,32 @@ function Filt({filter, addFilter, isChecked, removeFilter, clearFilter}) {
               isChecked={isChecked}
               removeFilter={removeFilter}
               isSort={true}
+              close={toggleIsOpen}
             />
           ))}
       </MobileFilt>
     </>
   );
 }
-function MobileFilt({children}) {
-  const [isOpen, setIsOpen] = useState(false);
-  function toggleIsOpen() {
-    setIsOpen(!isOpen);
-  }
+function MobileFilt({children, isOpen, toggleIsOpen}) {
+  // const [isOpen, setIsOpen] = useState(false);
+  // function toggleIsOpen() {
+  //   setIsOpen(!isOpen);
+  // }
   return (
     <button
-      className={`filter-space-between inline-border sort-by-button mobile-filter ${isOpen ? 'isOpen-btn' : ''}`}
+      className={`filter-space-between inline-border sort-by-button mobile-filter ${isOpen === 'filt' ? 'isOpen-btn' : ''}`}
       onClick={toggleIsOpen}
     >
       <AnimatePresence mode="popLayout">
         <motion.span
-          key={`filt-by-${isOpen}`}
+          key={`filt-by-${isOpen === 'filt'}`}
           initial={{opacity: 1}}
           animate={{opacity: 1}}
           exit={{opacity: 0}}
           style={{display: 'inline-block', width: '100%', textAlign: 'left'}}
         >
-          {!isOpen ? 'Filter' : 'Close'}
+          {isOpen !== 'filt' ? 'Filter' : 'Close'}
         </motion.span>
       </AnimatePresence>
       <motion.svg
@@ -489,7 +539,7 @@ function MobileFilt({children}) {
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         initial={{rotate: 0}}
-        animate={{rotate: isOpen ? '45deg' : 0}}
+        animate={{rotate: isOpen === 'filt' ? '45deg' : 0}}
         transition={{ease: 'easeInOut', duration: 0.15}}
       >
         <line x1="5.5" y1="0.5" x2="5.5" y2="11.5" stroke="black" />
@@ -497,8 +547,13 @@ function MobileFilt({children}) {
       </motion.svg>
 
       <AnimatePresence>
-        {isOpen && (
-          <div className="sort-overflow-filter-hidden-container">
+        {isOpen === 'filt' && (
+          <motion.div
+            className="sort-overflow-filter-hidden-container"
+            initial={{opacity: 0}}
+            animate={{opacity: 1}}
+            exit={{opacity: 0}}
+          >
             <motion.div
               initial={{y: '-100%'}}
               animate={{y: '1px'}}
@@ -507,7 +562,7 @@ function MobileFilt({children}) {
             >
               <div className="sort-container">{children}</div>
             </motion.div>
-          </div>
+          </motion.div>
         )}
       </AnimatePresence>
     </button>
@@ -522,6 +577,7 @@ function FilterInput({
   removeFilter,
   isSort,
   term,
+  close,
 }) {
   const [hovered, setHovered] = useState(false);
   return (
@@ -532,6 +588,7 @@ function FilterInput({
           e.stopPropagation();
           if (!isChecked(value)) addFilter(value);
           else removeFilter(value);
+          close();
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}

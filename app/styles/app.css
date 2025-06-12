@@ -309,7 +309,8 @@ button.reset:hover:not(:has(> *)) {
 }
 .header-menu-mobile:hover > .header-menu-item,
 .footer-menu > a:hover,
-.cart-badge > span:hover {
+.cart-badge > span:hover,
+.country-option:hover {
   color: #999999;
 }
 .header-menu-item:hover {
@@ -395,9 +396,6 @@ button.header-menu-item-aux:hover > svg > path {
 .country-option:first-of-type {
   color: #256eff;
   margin-bottom: 1rem;
-}
-.country-option:hover {
-  opacity: 0.8;
 }
 .header-ctas {
   align-items: center;
@@ -2131,16 +2129,16 @@ MEDIA QUIERIES
   .sort-overflow-hidden-container {
     width: 100vw;
     left: calc(-100% - 1px);
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.2);
   }
   .sort-overflow-filter-hidden-container {
     width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.2);
   }
   .padded-filter-div.inline-border.filter-input {
     font-size: 17px;
-  }
-  #sort-filter-indicator,
-  #sort-hover-indicator {
-    background: transparent !important;
   }
   .sort-container {
     padding: 24px;
