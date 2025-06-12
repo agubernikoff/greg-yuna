@@ -1983,7 +1983,7 @@ MEDIA QUIERIES
     align-items: center;
     padding: 1rem;
     /* z-index: 1000; */
-    flex-direction: row-reverse;
+    /* flex-direction: row-reverse; */
   }
   .header a:has(svg) {
     /* width: 32.74px !important;
