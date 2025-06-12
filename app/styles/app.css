@@ -1897,6 +1897,9 @@ MEDIA QUIERIES
   body {
     background-color: white;
   }
+  #shopify-pc__banner {
+    left: calc(50%) !important;
+  }
   .overlay:has(aside#cart),
   .overlay:has(aside#mobile) {
     opacity: 1;
