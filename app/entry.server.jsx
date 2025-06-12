@@ -31,14 +31,27 @@ export default async function handleRequest(
       'engaged-orca-warm.ngrok-free.app',
       'wss://kitten-composed-notably.ngrok-free.app:*',
       'https://www.powr.io',
+      'https://greg-yuna-store.myshopify.com',
+      'https://greg-yuna-store.myshopify.com/*',
+      'https://greg-yuna-store.com',
+      'https://greg-yuna-store.com/*',
+      'http://localhost:3000',
     ],
     imgSrc: [
       'https://cdn.shopify.com', // ✅ Allow Shopify images
       'https://www.powrcdn.com', // Allow Powr.io image resources
       'http://localhost:*',
+      'https://klaviyo.com',
+      'https://*.klaviyo.com',
+      'https://fonts.googleapis.com',
     ],
     frameSrc: [
       'https://www.powr.io', // ✅ Allow framing from powr.io
+      'https://klaviyo.com',
+      'https://*.klaviyo.com',
+      'https://cdn.shopify.com',
+      'http://localhost:3000',
+      'https://*.klaviyo.com/*',
     ],
   });
 
