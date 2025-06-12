@@ -3,28 +3,42 @@ import React, {useState, useEffect} from 'react';
 
 function GridPlaceholder({products}) {
   const [columns, setColumns] = useState(null);
-  const {width} = useWindowSize();
+  const {width, height} = useWindowSize();
 
   useEffect(() => {
     if (width < 768) {
-      setColumns(2); // mobile
+      setColumns(2);
     } else {
-      setColumns(4); // desktop
+      setColumns(4);
     }
   }, [width]);
 
-  const placeholders =
-    columns !== null ? (columns - (products.length % columns)) % columns : 0;
+  if (!columns || !Array.isArray(products) || height <= 0) return null;
+
+  const itemHeight = 300;
+  const totalItems = products.length;
+  const currentRows = Math.ceil(totalItems / columns);
+  const estimatedRows = Math.ceil(height / itemHeight);
+  const missingRows = Math.max(estimatedRows - currentRows, 0);
+
+  const emptyTilesInLastRow = (columns - (totalItems % columns)) % columns;
+  const viewportFillTiles = missingRows * columns;
+
+  const totalPlaceholders = emptyTilesInLastRow + viewportFillTiles;
+
   return (
     <>
-      {columns !== null &&
-        [...Array(placeholders)].map((_, i) => (
-          <div
-            key={`placeholder-${i}`}
-            className="placeholder-tile product-item"
-            style={{background: 'white'}}
-          />
-        ))}
+      {[...Array(totalPlaceholders)].map((_, i) => (
+        <div
+          key={`placeholder-${i}`}
+          className="placeholder-tile product-item"
+          style={{
+            aspectRatio: '1 / 1',
+            width: '100%',
+            background: '#fff',
+          }}
+        />
+      ))}
     </>
   );
 }

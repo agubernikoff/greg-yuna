@@ -98,6 +98,7 @@ export default function Collection() {
       <div className="filter-placeholder" />
       <Filter title={collection.title} filters={collection.products.filters} />
       <PaginatedResourceSection
+        key={JSON.stringify(collection.products.nodes.map((p) => p.id))}
         connection={collection.products}
         resourcesClassName="products-grid"
       >
@@ -134,28 +135,35 @@ export function Filter({title, filters, shopAll, term}) {
     setSearchParams(
       (prev) => {
         prev.set('filter', input);
+        prev.delete('cursor');
+        prev.delete('direction');
         return prev;
       },
       {preventScrollReset: true},
     );
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function removeFilter(input) {
     setSearchParams(
       (prev) => {
-        const newParams = new URLSearchParams(prev); // Clone to avoid mutation
-        const filters = newParams.getAll('filter'); // Get all filter values
-        newParams.delete('filter'); // Remove all instances
+        const newParams = new URLSearchParams(prev);
+        const filters = newParams.getAll('filter');
+        newParams.delete('filter');
 
         // Re-add only the filters that are NOT being removed
         filters
           .filter((f) => f !== input)
           .forEach((f) => newParams.append('filter', f));
 
+        newParams.delete('cursor');
+        newParams.delete('direction');
+
         return newParams;
       },
       {preventScrollReset: true},
     );
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function isChecked(input) {
@@ -167,11 +175,14 @@ export function Filter({title, filters, shopAll, term}) {
     setSearchParams(
       (prev) => {
         const newParams = new URLSearchParams(prev);
-        newParams.delete('filter'); // Remove all `filter` parameters
+        newParams.delete('filter');
+        newParams.delete('cursor');
+        newParams.delete('direction');
         return newParams;
       },
       {preventScrollReset: true},
     );
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function addSort(input) {
@@ -180,6 +191,8 @@ export function Filter({title, filters, shopAll, term}) {
       (prev) => {
         prev.set('reverse', Boolean(parsed.reverse));
         prev.set('sortKey', parsed.sortKey);
+        prev.delete('cursor');
+        prev.delete('direction');
         return prev;
       },
       {preventScrollReset: true},

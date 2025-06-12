@@ -1180,6 +1180,12 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .product-item:hover {
   text-decoration: none;
 }
+.placeholder-tile.product-item {
+  aspect-ratio: 1 / 1;
+  width: 100%;
+  height: auto;
+  background: #fff;
+}
 .product-item-details {
   position: absolute;
   bottom: 1rem;
@@ -1587,7 +1593,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .account-orders-grid > a,
 .account-orders-grid > p,
 .order-item-money {
-  padding: 0.4rem;
+  padding: 8px 30px 8px 10px;
   line-height: 1.4;
   /* height: fit-content; */
   background-color: white;
