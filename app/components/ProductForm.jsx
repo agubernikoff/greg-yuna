@@ -410,7 +410,6 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                   {option.optionValues.map((value) => {
                     const {
                       name,
-                      handle,
                       variant,
                       swatch,
                       selected,
@@ -431,7 +430,7 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                         ? name.replace(/"/g, '')
                         : name;
 
-                    const hovered = handle === hoverVariant;
+                    const hovered = name === hoverVariant;
 
                     if (isDifferentProduct) {
                       return (
@@ -453,6 +452,8 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                           style={styles}
                           disabled={!exists}
                           onClick={() => handleClick(variant, name)}
+                          onMouseEnter={() => setHoverVariant(name)}
+                          onMouseLeave={() => setHoverVariant()}
                         >
                           <ProductOptionSwatch
                             swatch={swatch}
@@ -460,7 +461,7 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                             isColorOption={isColorOption}
                             productImage={variantImage}
                           />
-                          {hovered && !selected && (
+                          {hovered && (
                             <motion.div
                               layoutId={`hovered-${option.name}-${clicked.handle}`}
                               id={`${option.name}`}
