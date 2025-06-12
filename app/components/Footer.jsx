@@ -50,7 +50,7 @@ function Newsletter() {
   function subscribe(e) {
     e.preventDefault();
     if (!email) {
-      setError('please enter a valid email');
+      setError('Please enter a valid email');
       setTimeout(() => {
         setError();
       }, 1500);
