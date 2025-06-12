@@ -307,7 +307,9 @@ button.reset:hover:not(:has(> *)) {
   flex-direction: column;
   grid-gap: 0.4rem;
 }
-.header-menu-mobile:hover > .header-menu-item {
+.header-menu-mobile:hover > .header-menu-item,
+.footer-menu > a,
+.cart-badge > span {
   color: #999999;
 }
 .header-menu-item:hover {
