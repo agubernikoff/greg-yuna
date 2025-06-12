@@ -383,6 +383,8 @@ button.header-menu-item-aux:hover > svg > path {
 }
 .location-form {
   padding: 0.5rem 1rem;
+  max-height: 50dvh;
+  overflow: scroll;
 }
 .location-form > p:hover {
   cursor: pointer;
