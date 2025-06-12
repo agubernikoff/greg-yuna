@@ -484,17 +484,13 @@ function HeaderCtas({isLoggedIn, cart}) {
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <a
-        className="header-menu-item-aux"
-        href="https://shopify.com/55369465958/account"
-        style={activeLinkStyle}
-      >
+      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
         <Suspense fallback="Sign in">
           <Await resolve={isLoggedIn} errorElement="Sign in">
             {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
           </Await>
         </Suspense>
-      </a>
+      </NavLink>
       <SearchToggle />
       <CartToggle cart={cart} />
     </nav>
