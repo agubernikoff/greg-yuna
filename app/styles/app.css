@@ -52,7 +52,7 @@ button:hover {
 aside {
   background: var(--color-light);
   /* box-shadow: 0 0 50px rgba(0, 0, 0, 0.3); */
-  height: 100vh;
+  height: 100dvh;
   max-width: var(--aside-width);
   min-width: var(--aside-width);
   position: fixed;
@@ -229,7 +229,7 @@ aside li {
   transform: translateX(0);
 }
 .overlay.expanded aside#cart.taller {
-  max-height: 100vh;
+  max-height: 100dvh;
 }
 .overlay.expanded aside#cart.wider {
   transform: translateX(0);
@@ -275,7 +275,7 @@ button.reset:hover:not(:has(> *)) {
   top: 0;
   z-index: 10;
   flex-direction: column;
-  height: 100vh;
+  height: 100dvh;
   justify-content: space-between;
   align-items: center;
   padding-block: 2rem;
@@ -342,7 +342,7 @@ button.reset:hover:not(:has(> *)) {
 .header-menu-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 6rem);
+  height: calc(100dvh - 6rem);
   justify-content: space-between;
 }
 
@@ -558,8 +558,8 @@ button.header-menu-item-aux:hover > svg > path {
 */
 .cart-main {
   height: 100%;
-  min-height: calc(100vh - var(--cart-aside-summary-height));
-  max-height: calc(100vh - var(--cart-aside-summary-height));
+  min-height: calc(100dvh - var(--cart-aside-summary-height));
+  max-height: calc(100dvh - var(--cart-aside-summary-height));
   overflow-y: auto;
   width: auto;
 }
@@ -572,7 +572,7 @@ button.header-menu-item-aux:hover > svg > path {
 }
 
 .cart-main.with-discount {
-  max-height: calc(100vh - var(--cart-aside-summary-height-with-discount));
+  max-height: calc(100dvh - var(--cart-aside-summary-height-with-discount));
 }
 
 .cart-line {
@@ -755,7 +755,7 @@ button.header-menu-item-aux:hover > svg > path {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 70vh !important;
+  height: 70dvh !important;
 }
 
 .empty-cart-message {
@@ -770,7 +770,7 @@ button.header-menu-item-aux:hover > svg > path {
 */
 
 .predictive-search {
-  height: calc(100vh - var(--header-height) - 40px);
+  height: calc(100dvh - var(--header-height) - 40px);
   overflow-y: auto;
   font-family: 'regular';
 }
@@ -890,7 +890,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   display: block;
   position: relative;
   grid-column: 1/5;
-  height: 100vh;
+  height: 100dvh;
   padding-bottom: 1px;
 }
 
@@ -905,7 +905,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 
 .featured-collection img {
   height: 100%;
-  max-height: 100vh;
+  max-height: 100dvh;
   max-width: calc(100vw - var(--header-width));
   width: calc(100vw - var(--header-width)) !important;
   object-fit: cover;
@@ -976,7 +976,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .flagship-left,
 .flagship-right {
   grid-column: span 2;
-  height: 100vh;
+  height: 100dvh;
 }
 
 .flagship-left {
@@ -1122,7 +1122,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   left: -1px;
   width: calc(100% + 2px);
   overflow: hidden;
-  height: 50vh;
+  height: 50dvh;
 }
 .sort-container {
   background: white;
@@ -1217,7 +1217,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   grid-column: span 2;
   position: sticky;
   top: 0;
-  height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -1289,11 +1289,11 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .product-image img {
   height: auto;
   width: 100%;
-  min-height: 50vh;
+  min-height: 50dvh;
   object-fit: cover;
 }
 .product-image:only-child img {
-  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .product-price-on-sale {
@@ -1476,7 +1476,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   grid-template-rows: min-content;
   background: white;
   grid-column: 1/5;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding-bottom: 8rem;
 }
 .account-logout {
@@ -1740,7 +1740,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: 100vh;
+  height: 100dvh;
   grid-column: 3/5;
 }
 
@@ -1784,7 +1784,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   grid-column: 1 / -1;
   margin: auto;
   background: white;
-  min-height: calc(100vh - 10rem);
+  min-height: calc(100dvh - 10rem);
 }
 #powrIframeLoader {
   display: none;
@@ -1862,7 +1862,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100dvh;
   background: white;
 }
 .route-error > h2 {
@@ -1921,7 +1921,7 @@ MEDIA QUIERIES
   }
   .overlay.expanded .add-a-chain-pop-up {
     overflow: scroll;
-    max-height: 100vh;
+    max-height: 100dvh;
   }
   .add-a-chain-header + img {
     width: 80%;
@@ -1941,7 +1941,7 @@ MEDIA QUIERIES
   }
   aside#mobile {
     left: -100vw;
-    height: calc(100vh - var(--header-height));
+    height: calc(100dvh - var(--header-height));
   }
   aside#mobile,
   aside#cart {
@@ -1953,8 +1953,8 @@ MEDIA QUIERIES
   aside#cart {
     top: 0;
     right: calc(-100vw - 2px);
-    max-height: 100vh;
-    min-height: 100vh;
+    max-height: 100dvh;
+    min-height: 100dvh;
     transition: all 200ms ease-in-out;
   }
   aside#cart header {
@@ -2132,12 +2132,12 @@ MEDIA QUIERIES
   .sort-overflow-hidden-container {
     width: 100vw;
     left: calc(-100% - 1px);
-    height: 100vh;
+    height: 100dvh;
     background: rgba(0, 0, 0, 0.2);
   }
   .sort-overflow-filter-hidden-container {
     width: 100vw;
-    height: 100vh;
+    height: 100dvh;
     background: rgba(0, 0, 0, 0.2);
   }
   .padded-filter-div.inline-border.filter-input {
@@ -2156,7 +2156,7 @@ MEDIA QUIERIES
     display: none;
   }
   .flagship-right {
-    height: 70vh;
+    height: 70dvh;
   }
   .flagship-subimage {
     width: 50%;
@@ -2188,7 +2188,7 @@ MEDIA QUIERIES
     width: 100%;
   }
   .header-menu-container {
-    height: calc(100vh - var(--header-height) - 6rem);
+    height: calc(100dvh - var(--header-height) - 6rem);
   }
   .predictive-search-form > input {
     width: 100%;
@@ -2206,7 +2206,7 @@ MEDIA QUIERIES
     height: auto;
     margin-right: 0;
     width: 100%;
-    /* height: 69vh; */
+    /* height: 69dvh; */
     position: relative;
     flex-direction: row;
     overflow: scroll;
@@ -2296,7 +2296,7 @@ MEDIA QUIERIES
   .bespoke-image-container {
     grid-row: 2;
     grid-column: 1;
-    height: 60vh;
+    height: 60dvh;
     display: block;
   }
 
@@ -2314,7 +2314,7 @@ MEDIA QUIERIES
   }
 
   .cart-summary-aside {
-    height: 20vh;
+    height: 20dvh;
     margin-bottom: 1.5rem;
     position: absolute;
     bottom: 0;
