@@ -54,133 +54,144 @@ export function ProductForm({
   };
   return (
     <div className="product-form">
-      {productOptions.map((option) => {
-        if (option.optionValues.length === 0) return null;
+      {productOptions
+        .slice()
+        .sort((a, b) => {
+          const nameA = a.name.toLowerCase();
+          const nameB = b.name.toLowerCase();
+          if (nameA === 'material') return -1;
+          if (nameB === 'material') return 1;
+          if (nameA === 'size') return 1;
+          if (nameB === 'size') return -1;
+          return 0;
+        })
+        .map((option) => {
+          if (option.optionValues.length === 0) return null;
 
-        const isColorOption =
-          option.name.toLowerCase() === 'material' ||
-          option.name.toLowerCase() === 'color';
+          const isColorOption =
+            option.name.toLowerCase() === 'material' ||
+            option.name.toLowerCase() === 'color';
 
-        return (
-          <div className="product-options" key={option.name}>
-            <p>
-              <span style={{color: '#999999'}}>{option.name}:</span>{' '}
-              <AnimatePresence mode="popLayout">
-                <motion.span
-                  key={`${option.optionValues.find((v) => v.selected)?.name}`}
-                  initial={{opacity: 1}}
-                  animate={{opacity: 1}}
-                  exit={{opacity: 0}}
-                  style={{display: 'inline-block', width: '10rem'}}
-                  transition={{ease: 'easeInOut', duration: 0.15}}
-                >
-                  {option.optionValues.find((v) => v.selected)?.name || ''}
-                </motion.span>
-              </AnimatePresence>
-            </p>
-            <div className="product-options-grid">
-              {option.optionValues.map((value) => {
-                const {
-                  name,
-                  handle,
-                  variantUriQuery,
-                  selected,
-                  available,
-                  exists,
-                  isDifferentProduct,
-                  swatch,
-                  variant,
-                } = value;
-                const variantImage = isColorOption ? variant?.image : null;
-                const styles = itemStyle(selected, available, isColorOption);
-                const hovered = name === hoverVariant;
+          return (
+            <div className="product-options" key={option.name}>
+              <p>
+                <span style={{color: '#999999'}}>{option.name}:</span>{' '}
+                <AnimatePresence mode="popLayout">
+                  <motion.span
+                    key={`${option.optionValues.find((v) => v.selected)?.name}`}
+                    initial={{opacity: 1}}
+                    animate={{opacity: 1}}
+                    exit={{opacity: 0}}
+                    style={{display: 'inline-block', width: '10rem'}}
+                    transition={{ease: 'easeInOut', duration: 0.15}}
+                  >
+                    {option.optionValues.find((v) => v.selected)?.name || ''}
+                  </motion.span>
+                </AnimatePresence>
+              </p>
+              <div className="product-options-grid">
+                {option.optionValues.map((value) => {
+                  const {
+                    name,
+                    handle,
+                    variantUriQuery,
+                    selected,
+                    available,
+                    exists,
+                    isDifferentProduct,
+                    swatch,
+                    variant,
+                  } = value;
+                  const variantImage = isColorOption ? variant?.image : null;
+                  const styles = itemStyle(selected, available, isColorOption);
+                  const hovered = name === hoverVariant;
 
-                if (isDifferentProduct) {
-                  return (
-                    <Link
-                      className="product-options-item"
-                      key={option.name + name}
-                      prefetch="intent"
-                      preventScrollReset
-                      replace
-                      to={`/products/${handle}?${variantUriQuery}`}
-                      style={styles}
-                      state={location.state}
-                    >
-                      <ProductOptionSwatch
-                        swatch={swatch}
-                        name={name}
-                        isColorOption={isColorOption}
-                        productImage={variantImage}
-                      />
-                    </Link>
-                  );
-                } else {
-                  return (
-                    <button
-                      type="button"
-                      className={`product-options-item${
-                        exists && !selected ? ' link' : ''
-                      }`}
-                      key={option.name + name}
-                      style={styles}
-                      disabled={!exists}
-                      onClick={() => {
-                        if (!selected) {
-                          navigate(`?${variantUriQuery}`, {
-                            replace: true,
-                            preventScrollReset: true,
-                            state: location.state,
-                          });
-                        }
-                      }}
-                      onMouseEnter={() => setHoverVariant(name)}
-                      onMouseLeave={() => setHoverVariant()}
-                    >
-                      <ProductOptionSwatch
-                        swatch={swatch}
-                        name={name}
-                        isColorOption={isColorOption}
-                        productImage={variantImage}
-                      />
-                      {hovered && (
-                        <motion.div
-                          layoutId={`hovered-${option.name}-${selectedVariant.product.handle}`}
-                          id={`${option.name}`}
-                          transition={{ease: 'easeInOut', duration: 0.15}}
-                          style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            left: '-1px',
-                            right: '-1px',
-                            height: '2px',
-                            background: '#999999',
-                          }}
+                  if (isDifferentProduct) {
+                    return (
+                      <Link
+                        className="product-options-item"
+                        key={option.name + name}
+                        prefetch="intent"
+                        preventScrollReset
+                        replace
+                        to={`/products/${handle}?${variantUriQuery}`}
+                        style={styles}
+                        state={location.state}
+                      >
+                        <ProductOptionSwatch
+                          swatch={swatch}
+                          name={name}
+                          isColorOption={isColorOption}
+                          productImage={variantImage}
                         />
-                      )}
-                      {selected && (
-                        <motion.div
-                          layoutId={`${option.name}-${selectedVariant.product.handle}`}
-                          id={`${option.name}`}
-                          transition={{ease: 'easeInOut', duration: 0.15}}
-                          style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            left: '-1px',
-                            right: '-1px',
-                            height: '2px',
-                            background: 'black',
-                          }}
+                      </Link>
+                    );
+                  } else {
+                    return (
+                      <button
+                        type="button"
+                        className={`product-options-item${
+                          exists && !selected ? ' link' : ''
+                        }`}
+                        key={option.name + name}
+                        style={styles}
+                        disabled={!exists}
+                        onClick={() => {
+                          if (!selected) {
+                            navigate(`?${variantUriQuery}`, {
+                              replace: true,
+                              preventScrollReset: true,
+                              state: location.state,
+                            });
+                          }
+                        }}
+                        onMouseEnter={() => setHoverVariant(name)}
+                        onMouseLeave={() => setHoverVariant()}
+                      >
+                        <ProductOptionSwatch
+                          swatch={swatch}
+                          name={name}
+                          isColorOption={isColorOption}
+                          productImage={variantImage}
                         />
-                      )}
-                    </button>
-                  );
-                }
-              })}
+                        {hovered && (
+                          <motion.div
+                            layoutId={`hovered-${option.name}-${selectedVariant.product.handle}`}
+                            id={`${option.name}`}
+                            transition={{ease: 'easeInOut', duration: 0.15}}
+                            style={{
+                              position: 'absolute',
+                              bottom: 0,
+                              left: '-1px',
+                              right: '-1px',
+                              height: '2px',
+                              background: '#999999',
+                            }}
+                          />
+                        )}
+                        {selected && (
+                          <motion.div
+                            layoutId={`${option.name}-${selectedVariant.product.handle}`}
+                            id={`${option.name}`}
+                            transition={{ease: 'easeInOut', duration: 0.15}}
+                            style={{
+                              position: 'absolute',
+                              bottom: 0,
+                              left: '-1px',
+                              right: '-1px',
+                              height: '2px',
+                              background: 'black',
+                            }}
+                          />
+                        )}
+                      </button>
+                    );
+                  }
+                })}
+              </div>
             </div>
-          </div>
-        );
-      })}
+          );
+        })}
       {compliments.productRecommendations.length > 0 ? (
         <Comps
           compliments={compliments.productRecommendations}
