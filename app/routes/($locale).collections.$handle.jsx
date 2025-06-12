@@ -580,6 +580,7 @@ function FilterInput({
   close,
 }) {
   const [hovered, setHovered] = useState(false);
+  console.log(typeof close === 'function');
   return (
     <>
       <button
@@ -588,7 +589,7 @@ function FilterInput({
           e.stopPropagation();
           if (!isChecked(value)) addFilter(value);
           else removeFilter(value);
-          close();
+          if (typeof close === 'function') close();
         }}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
@@ -602,7 +603,7 @@ function FilterInput({
               animate={{opacity: 1}}
               exit={{opacity: 0}}
               // layoutId={`${isSort ? 'sort-' : ''}hover-indicator`}
-              id={`${isSort ? 'sort-' : ''}hover-indicator`}
+              key={`${isSort ? 'sort-' : ''}hover-indicator`}
               style={{
                 right: isSort ? 'auto' : 0,
                 left: 0,
@@ -621,7 +622,7 @@ function FilterInput({
               animate={{opacity: 1}}
               exit={{opacity: 0}}
               // layoutId={`${isSort ? 'sort-' : ''}filter-indicator`}
-              id={`${isSort ? 'sort-' : ''}filter-indicator`}
+              key={`${isSort ? 'sort-' : ''}filter-indicator`}
               style={{
                 right: isSort ? 'auto' : 0,
                 left: 0,
