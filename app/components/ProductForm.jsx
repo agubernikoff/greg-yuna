@@ -525,7 +525,7 @@ function Compliment({compliment, setClicked, chain}) {
         <Image data={compliment.images.nodes[0]} width={200} height={200} />
         {hovered && chain?.product?.title !== compliment.title && (
           <motion.div
-            layoutId={`${option.name}-${selectedVariant.product.handle}`}
+            layoutId={`hovered-chain-indicator`}
             id={`${option.name}`}
             transition={{ease: 'easeInOut', duration: 0.15}}
             style={{
