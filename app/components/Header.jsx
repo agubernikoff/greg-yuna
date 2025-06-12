@@ -16,7 +16,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   const [t, setT] = useState(true);
   useEffect(() => {
     setTimeout(() => {
-      u(false); // setT(false)
+      setT(false);
     }, 1000);
 
     setTimeout(() => {
