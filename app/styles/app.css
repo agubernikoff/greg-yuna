@@ -308,8 +308,8 @@ button.reset:hover:not(:has(> *)) {
   grid-gap: 0.4rem;
 }
 .header-menu-mobile:hover > .header-menu-item,
-.footer-menu > a,
-.cart-badge > span {
+.footer-menu > a:hover,
+.cart-badge > span:hover {
   color: #999999;
 }
 .header-menu-item:hover {
