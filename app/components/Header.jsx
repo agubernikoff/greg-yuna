@@ -356,17 +356,13 @@ export function HeaderMenu({
         })}
       </nav>
       <nav className="header-menu-bottom-container">
-        <NavLink
+        <a
           className="header-menu-item-aux"
-          end
-          onClick={close}
-          prefetch="intent"
+          href="https://shopify.com/55369465958/account"
           style={activeLinkStyle}
-          to="/https://shopify.com/55369465958/account
-"
         >
           Account
-        </NavLink>
+        </a>
         <NavLink
           className="header-menu-item-aux"
           end
