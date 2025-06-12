@@ -135,7 +135,9 @@ export function ProductForm({
                       <button
                         type="button"
                         className={`product-options-item ${
-                          option.name.toLowerCase() === 'size'
+                          ['size', 'initial'].includes(
+                            option.name.toLowerCase(),
+                          )
                             ? 'fixed-width'
                             : ''
                         }${exists && !selected ? ' link' : ''}`}
