@@ -464,7 +464,10 @@ function Filt({
 
   return (
     <>
-      <div style={{display: 'flex'}} className="desktop-filter">
+      <div
+        style={{display: 'flex', flexDirection: 'row-reverse'}}
+        className="desktop-filter"
+      >
         <FilterInput
           label={'View All'}
           value={'viewAll'}
