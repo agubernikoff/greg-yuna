@@ -18,12 +18,8 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     setTimeout(() => {
       setT(false);
     }, 1000);
-
     setTimeout(() => {
-      const banner = document.querySelector('#shopify-pc__banner');
-      if (banner) {
-        banner.style.opacity = 1;
-      }
+      document.querySelector('#shopify-pc__banner').style.opacity = 1;
     }, 2000);
   }, []);
   const {close} = useAside();
