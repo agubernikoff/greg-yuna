@@ -1305,6 +1305,13 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   opacity: 0.5;
 }
 
+.fixed-width {
+  width: 50px;
+  justify-content: left;
+  text-align: left;
+  padding: 10px 6px !important;
+}
+
 .product-options-grid {
   display: flex;
   flex-wrap: wrap;

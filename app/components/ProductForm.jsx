@@ -89,7 +89,11 @@ export function ProductForm({
                   </motion.span>
                 </AnimatePresence>
               </p>
-              <div className="product-options-grid">
+              <div
+                className={`product-options-grid ${
+                  option.name.toLowerCase() === 'size' ? 'size-grid' : ''
+                }`}
+              >
                 {option.optionValues.map((value) => {
                   const {
                     name,
@@ -130,9 +134,11 @@ export function ProductForm({
                     return (
                       <button
                         type="button"
-                        className={`product-options-item${
-                          exists && !selected ? ' link' : ''
-                        }`}
+                        className={`product-options-item ${
+                          option.name.toLowerCase() === 'size'
+                            ? 'fixed-width'
+                            : ''
+                        }${exists && !selected ? ' link' : ''}`}
                         key={option.name + name}
                         style={styles}
                         disabled={!exists}
@@ -417,7 +423,11 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                   </AnimatePresence>
                 </p>
 
-                <div className="product-options-grid">
+                <div
+                  className={`product-options-grid ${
+                    option.name.toLowerCase() === 'size' ? 'size-grid' : ''
+                  }`}
+                >
                   {option.optionValues.map((value) => {
                     const {
                       name,
@@ -458,7 +468,11 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                       return (
                         <button
                           type="button"
-                          className={`product-options-item${exists && !selected ? ' link' : ''}`}
+                          className={`product-options-item ${
+                            option.name.toLowerCase() === 'size'
+                              ? 'fixed-width'
+                              : ''
+                          }${exists && !selected ? ' link' : ''}`}
                           key={option.name + name}
                           style={styles}
                           disabled={!exists}
