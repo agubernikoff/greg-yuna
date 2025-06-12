@@ -1070,6 +1070,10 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   z-index: 2;
   height: var(--filter-height);
 }
+.desktop-filter {
+  max-width: 60vw;
+  overflow-x: scroll;
+}
 .mobile-filter {
   display: none !important;
 }
@@ -1983,7 +1987,7 @@ MEDIA QUIERIES
     align-items: center;
     padding: 1rem;
     /* z-index: 1000; */
-    /* flex-direction: row-reverse; */
+    flex-direction: row-reverse;
   }
   .header a:has(svg) {
     /* width: 32.74px !important;

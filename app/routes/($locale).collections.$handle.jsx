@@ -464,17 +464,7 @@ function Filt({
 
   return (
     <>
-      <div
-        style={{display: 'flex', flexDirection: 'row-reverse'}}
-        className="desktop-filter"
-      >
-        <FilterInput
-          label={'View All'}
-          value={'viewAll'}
-          addFilter={clearFilter}
-          isChecked={isChecked}
-          removeFilter={clearFilter}
-        />
+      <div style={{display: 'flex'}} className="desktop-filter">
         {filter &&
           sortByStoredOrder(filter)?.map((v) => (
             <FilterInput
@@ -486,17 +476,15 @@ function Filt({
               removeFilter={removeFilter}
             />
           ))}
-      </div>
-      <MobileFilt isOpen={isOpen} toggleIsOpen={toggleIsOpen}>
         <FilterInput
           label={'View All'}
           value={'viewAll'}
           addFilter={clearFilter}
           isChecked={isChecked}
           removeFilter={clearFilter}
-          isSort={true}
-          close={toggleIsOpen}
         />
+      </div>
+      <MobileFilt isOpen={isOpen} toggleIsOpen={toggleIsOpen}>
         {filter &&
           sortByStoredOrder(filter).map((v) => (
             <FilterInput
@@ -510,6 +498,15 @@ function Filt({
               close={toggleIsOpen}
             />
           ))}
+        <FilterInput
+          label={'View All'}
+          value={'viewAll'}
+          addFilter={clearFilter}
+          isChecked={isChecked}
+          removeFilter={clearFilter}
+          isSort={true}
+          close={toggleIsOpen}
+        />
       </MobileFilt>
     </>
   );
@@ -598,38 +595,46 @@ function FilterInput({
         disabled={term ? true : false}
       >
         {label}
-        {hovered && (
-          <motion.div
-            // layoutId={`${isSort ? 'sort-' : ''}hover-indicator`}
-            id={`${isSort ? 'sort-' : ''}hover-indicator`}
-            style={{
-              right: isSort ? 'auto' : 0,
-              left: 0,
-              height: isSort ? '3px' : '3px',
-              width: isSort ? '100%' : '100%',
-              position: 'absolute',
-              bottom: 0,
-              background: '#999999',
-            }}
-            transition={{ease: 'easeInOut', duration: 0.15}}
-          />
-        )}
-        {isChecked(value) && (
-          <motion.div
-            // layoutId={`${isSort ? 'sort-' : ''}filter-indicator`}
-            id={`${isSort ? 'sort-' : ''}filter-indicator`}
-            style={{
-              right: isSort ? 'auto' : 0,
-              left: 0,
-              height: isSort ? '3px' : '3px',
-              width: isSort ? '100%' : '100%',
-              position: 'absolute',
-              bottom: 0,
-              background: 'black',
-            }}
-            transition={{ease: 'easeInOut', duration: 0.15}}
-          />
-        )}
+        <AnimatePresence mode="popLayout">
+          {hovered && (
+            <motion.div
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              exit={{opacity: 0}}
+              // layoutId={`${isSort ? 'sort-' : ''}hover-indicator`}
+              id={`${isSort ? 'sort-' : ''}hover-indicator`}
+              style={{
+                right: isSort ? 'auto' : 0,
+                left: 0,
+                height: isSort ? '3px' : '3px',
+                width: isSort ? '100%' : '100%',
+                position: 'absolute',
+                bottom: 0,
+                background: '#999999',
+              }}
+              transition={{ease: 'easeInOut', duration: 0.15}}
+            />
+          )}
+          {isChecked(value) && (
+            <motion.div
+              initial={{opacity: 0}}
+              animate={{opacity: 1}}
+              exit={{opacity: 0}}
+              // layoutId={`${isSort ? 'sort-' : ''}filter-indicator`}
+              id={`${isSort ? 'sort-' : ''}filter-indicator`}
+              style={{
+                right: isSort ? 'auto' : 0,
+                left: 0,
+                height: isSort ? '3px' : '3px',
+                width: isSort ? '100%' : '100%',
+                position: 'absolute',
+                bottom: 0,
+                background: 'black',
+              }}
+              transition={{ease: 'easeInOut', duration: 0.15}}
+            />
+          )}
+        </AnimatePresence>
       </button>
     </>
   );
