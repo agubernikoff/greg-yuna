@@ -1306,10 +1306,10 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 }
 
 .fixed-width {
-  width: 50px;
+  width: 60px;
   justify-content: left;
   text-align: left;
-  padding: 10px 6px !important;
+  padding: 8px 30px 8px 10px !important;
 }
 
 .product-options-grid {
