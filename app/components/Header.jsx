@@ -358,7 +358,7 @@ export function HeaderMenu({
       <nav className="header-menu-bottom-container">
         <a
           className="header-menu-item-aux"
-          href="https://shopify.com/55369465958/account"
+          href="https://gregyuna.com/account"
           // target="_blank"
           rel="noopener noreferrer"
           // style={activeLinkStyle}
