@@ -356,16 +356,14 @@ export function HeaderMenu({
         })}
       </nav>
       <nav className="header-menu-bottom-container">
-        <NavLink
+        <a
           className="header-menu-item-aux"
-          end
+          href="https://shopify.com/55369465958/account"
           onClick={close}
-          prefetch="intent"
           style={activeLinkStyle}
-          to="/account"
         >
           Account
-        </NavLink>
+        </a>
         <NavLink
           className="header-menu-item-aux"
           end
@@ -486,13 +484,17 @@ function HeaderCtas({isLoggedIn, cart}) {
   return (
     <nav className="header-ctas" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
+      <a
+        className="header-menu-item-aux"
+        href="https://shopify.com/55369465958/account"
+        style={activeLinkStyle}
+      >
         <Suspense fallback="Sign in">
           <Await resolve={isLoggedIn} errorElement="Sign in">
             {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
           </Await>
         </Suspense>
-      </NavLink>
+      </a>
       <SearchToggle />
       <CartToggle cart={cart} />
     </nav>
