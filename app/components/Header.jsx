@@ -356,22 +356,15 @@ export function HeaderMenu({
         })}
       </nav>
       <nav className="header-menu-bottom-container">
-        <Suspense fallback={<span>Loading...</span>}>
-          <Await resolve={isLoggedIn}>
-            {(loggedIn) => (
-              <a
-                className="header-menu-item-aux"
-                href="https://shopify.com/55369465958/account"
-                style={activeLinkStyle}
-                target="_self"
-                rel="noopener noreferrer"
-              >
-                {loggedIn ? 'Account' : 'Account'}
-              </a>
-            )}
-          </Await>
-        </Suspense>
-
+        <a
+          className="header-menu-item-aux"
+          href="https://shopify.com/55369465958/account"
+          // target="_blank"
+          rel="noopener noreferrer"
+          // style={activeLinkStyle}
+        >
+          Account
+        </a>
         <NavLink
           className="header-menu-item-aux"
           end
