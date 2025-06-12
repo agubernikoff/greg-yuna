@@ -1,6 +1,6 @@
 import {getShopAnalytics} from '@shopify/hydrogen';
 import {Outlet, useRouteError, isRouteErrorResponse} from '@remix-run/react';
-import favicon from '~/assets/favicon.svg';
+import favicon from '~/assets/favicon.jpg';
 import {FOOTER_QUERY, HEADER_QUERY, COUNTRIES_QUERY} from '~/lib/fragments';
 
 /**
@@ -42,7 +42,7 @@ export function links() {
       rel: 'preconnect',
       href: 'https://shop.app',
     },
-    {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    {rel: 'icon', type: 'image/jpg', href: favicon},
   ];
 }
 

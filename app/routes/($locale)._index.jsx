@@ -4,12 +4,17 @@ import {Image, Money} from '@shopify/hydrogen';
 import ProductGridItem from '~/components/ProductGridItem';
 import {motion} from 'motion/react';
 import NavLink from '~/components/NavLink';
+import mobileIcon from '~/assets/Social-Sharing.jpg';
 
 /**
  * @type {MetaFunction}
  */
 export const meta = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [
+    {title: 'Greg Ÿuna'},
+    {name: 'og:title', property: 'Greg Ÿuna'},
+    {property: 'og:image', content: mobileIcon},
+  ];
 };
 
 /**

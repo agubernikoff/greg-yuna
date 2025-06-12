@@ -10,7 +10,7 @@ export function Footer({footer: footerPromise, header, publicStoreDomain}) {
     <footer className="footer">
       <div className="footer-left">
         <p>
-          Greg Yuna New York is an American jewelry brand known for intricate
+          Greg Ÿuna New York is an American jewelry brand known for intricate
           craftsmanship that seamlessly blends high-end jewelry with streetwise
           sophistication. Everything we make is inspired by the city we call
           home. Worn by the people we call family.
@@ -34,7 +34,7 @@ export function Footer({footer: footerPromise, header, publicStoreDomain}) {
             </Await>
           </Suspense>
           <p className="site-credit">
-            © 2025 GREG YUNA, ALL RIGHTS RESERVED / <a>Site Credit</a>
+            © 2025 GREG ŸUNA, ALL RIGHTS RESERVED / <a>Site Credit</a>
           </p>
         </div>
       </div>
