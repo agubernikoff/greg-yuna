@@ -93,7 +93,7 @@ export function ProductForm({
                 } = value;
                 const variantImage = isColorOption ? variant?.image : null;
                 const styles = itemStyle(selected, available, isColorOption);
-                const hovered = handle === hoverVariant;
+                const hovered = name === hoverVariant;
 
                 if (isDifferentProduct) {
                   return (
@@ -134,7 +134,7 @@ export function ProductForm({
                           });
                         }
                       }}
-                      onMouseEnter={() => setHoverVariant(handle)}
+                      onMouseEnter={() => setHoverVariant(name)}
                       onMouseLeave={() => setHoverVariant()}
                     >
                       <ProductOptionSwatch
@@ -143,9 +143,9 @@ export function ProductForm({
                         isColorOption={isColorOption}
                         productImage={variantImage}
                       />
-                      {hovered && !selected && (
+                      {hovered && (
                         <motion.div
-                          layoutId={`${option.name}-${selectedVariant.product.handle}`}
+                          layoutId={`hovered-${option.name}-${selectedVariant.product.handle}`}
                           id={`${option.name}`}
                           transition={{ease: 'easeInOut', duration: 0.15}}
                           style={{
@@ -526,7 +526,7 @@ function Compliment({compliment, setClicked, chain}) {
         {hovered && chain?.product?.title !== compliment.title && (
           <motion.div
             layoutId={`hovered-chain-indicator`}
-            id={`${option.name}`}
+            id={`hovered-chain-indicator`}
             transition={{ease: 'easeInOut', duration: 0.15}}
             style={{
               position: 'absolute',
