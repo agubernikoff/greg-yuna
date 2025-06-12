@@ -1232,7 +1232,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .product-image {
   display: flex;
   flex-direction: column;
-  margin-bottom: 1px;
+  /* margin-bottom: 1px; */
   border-bottom: 1px solid #e9e9e9;
 }
 .product-image:last-of-type {
