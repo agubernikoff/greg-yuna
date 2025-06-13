@@ -867,7 +867,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 }
 
 .search-result {
-  margin-bottom: 1.5rem;
+  /* margin-bottom: 1.5rem; */
 }
 
 .search-results-item {
