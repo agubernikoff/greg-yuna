@@ -6,7 +6,7 @@ import {motion} from 'motion/react';
 import {useNavigationContext} from '~/context/NavigationContext';
 import {useEffect} from 'react';
 
-function ProductGridItem({product, loading}) {
+function ProductGridItem({product, loading, index, total}) {
   const variantUrl = useVariantUrl(product.handle);
   const {pathname} = useLocation();
 
@@ -55,7 +55,13 @@ function ProductGridItem({product, loading}) {
 
   return (
     <Link
-      className={`product-item ${hasMultipleImages ? 'has-multiple-images' : ''}`}
+      className={`product-item ${hasMultipleImages ? 'has-multiple-images' : ''} ${
+        typeof window !== 'undefined' &&
+        window.location.pathname.includes('/collections') &&
+        (window.innerWidth < 768 ? index >= total - 2 : index >= total - 4)
+          ? 'no-margin-bottom'
+          : ''
+      }`}
       to={variantUrl}
       prefetch="intent"
       onClick={() => setLastCollectionPath(pathname)}
