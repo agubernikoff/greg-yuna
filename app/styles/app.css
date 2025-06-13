@@ -1982,7 +1982,15 @@ MEDIA QUIERIES
   }
 }
 
+.animation {
+  bottom: 0;
+  pointer-events: none;
+}
+
 @media (max-width: 768px) {
+  .animation {
+    right: 0 !important;
+  }
   body > main {
     min-height: unset;
   }

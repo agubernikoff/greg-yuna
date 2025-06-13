@@ -7,6 +7,7 @@ import {useState, useEffect} from 'react';
 import {SearchFormPredictive} from './SearchFormPredictive';
 import NavLink from './NavLink';
 import {LocationForm} from './PageLayout';
+import LoaderAnimation from './LoaderAnimation';
 
 /**
  * @param {HeaderProps}
@@ -38,13 +39,27 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   //   mediaQuery.addEventListener('change', handleChange);
   //   return () => mediaQuery.removeEventListener('change', handleChange);
   // }, []);
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+
+  useEffect(() => {
+    // Check if animation has already run in this session
+    const hasAnimationRun = sessionStorage.getItem('loader-animation-run');
+
+    if (!hasAnimationRun) {
+      setShouldAnimate(true);
+      // Mark animation as run in session storage
+      sessionStorage.setItem('loader-animation-run', 'true');
+    }
+  }, []);
 
   useEffect(() => {
     if (type === 'cart') setZindex(9);
     else setTimeout(() => setZindex(10), 150);
   }, [type]);
+
   return (
     <>
+      {shouldAnimate && <LoaderAnimation />}
       <motion.header
         className="header"
         // initial={
