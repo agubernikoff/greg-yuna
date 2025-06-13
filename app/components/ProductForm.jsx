@@ -76,18 +76,9 @@ export function ProductForm({
             <div className="product-options" key={option.name}>
               <p>
                 <span style={{color: '#999999'}}>{option.name}:</span>{' '}
-                <AnimatePresence mode="popLayout">
-                  <motion.span
-                    key={`${option.optionValues.find((v) => v.selected)?.name}`}
-                    initial={{opacity: 1}}
-                    animate={{opacity: 1}}
-                    exit={{opacity: 0}}
-                    style={{display: 'inline-block', width: '10rem'}}
-                    transition={{ease: 'easeInOut', duration: 0.15}}
-                  >
-                    {option.optionValues.find((v) => v.selected)?.name || ''}
-                  </motion.span>
-                </AnimatePresence>
+                <span style={{display: 'inline-block', width: '10rem'}}>
+                  {option.optionValues.find((v) => v.selected)?.name || ''}
+                </span>
               </p>
               <div
                 className={`product-options-grid ${

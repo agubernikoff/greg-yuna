@@ -189,6 +189,21 @@ function MenuToggle({}) {
   );
 }
 function Logo({isMobile}) {
+  console.log('Rendering Logo component');
+  const [shouldAnimate, setShouldAnimate] = useState(false);
+  useEffect(() => {
+    console.log('Checking localStorage for hasAnimatedLogo');
+    const hasAnimatedLogo = localStorage.getItem('hasAnimatedLogo');
+    console.log('hasAnimatedLogo:', hasAnimatedLogo);
+    if (!hasAnimatedLogo) {
+      console.log('First load detected — setting animation flag');
+      localStorage.setItem('hasAnimatedLogo', 'true');
+      setShouldAnimate(true);
+    } else {
+      console.log('Animation already played — skipping');
+      setShouldAnimate(false);
+    }
+  }, []);
   return (
     <motion.svg
       initial={
