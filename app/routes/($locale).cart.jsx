@@ -7,7 +7,7 @@ import {CartMain} from '~/components/CartMain';
  * @type {MetaFunction}
  */
 export const meta = () => {
-  return [{title: `Greg Ÿuna | Cart`}];
+  return [{title: `Greg Yüna | Cart`}];
 };
 
 /**

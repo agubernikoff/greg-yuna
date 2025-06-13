@@ -16,7 +16,7 @@ import {AnimatePresence, motion} from 'motion/react';
  * @type {MetaFunction<typeof loader>}
  */
 export const meta = ({data}) => {
-  return [{title: `Greg Ÿuna | ${data?.collection.title ?? ''} Collection`}];
+  return [{title: `Greg Yüna | ${data?.collection.title ?? ''} Collection`}];
 };
 
 /**
@@ -141,7 +141,7 @@ export function Filter({title, filters, shopAll, term}) {
       },
       {preventScrollReset: true},
     );
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   function removeFilter(input) {
@@ -163,7 +163,7 @@ export function Filter({title, filters, shopAll, term}) {
       },
       {preventScrollReset: true},
     );
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   function isChecked(input) {
@@ -182,7 +182,7 @@ export function Filter({title, filters, shopAll, term}) {
       },
       {preventScrollReset: true},
     );
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   function addSort(input) {

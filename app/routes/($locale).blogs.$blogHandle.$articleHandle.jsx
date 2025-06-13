@@ -5,7 +5,7 @@ import {Image} from '@shopify/hydrogen';
  * @type {MetaFunction<typeof loader>}
  */
 export const meta = ({data}) => {
-  return [{title: `Greg Ÿuna | ${data?.article.title ?? ''} article`}];
+  return [{title: `Greg Yüna | ${data?.article.title ?? ''} article`}];
 };
 
 /**
