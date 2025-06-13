@@ -45,7 +45,6 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   }, [type]);
   return (
     <>
-      <CartToggle cart={cart} />
       <motion.header
         className="header"
         initial={
@@ -62,7 +61,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
           justifyContent: t ? 'center' : 'space-between',
           alignItems: !isMobile ? 'center' : t ? 'center' : 'flex-start',
           position: 'fixed',
-          zIndex,
+          // zIndex,
         }}
         transition={
           !isMobile
@@ -72,6 +71,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
         layoutRoot
         layoutScroll
       >
+        <CartToggle cart={cart} />
         <motion.div
           layout
           initial={{opacity: 0}}
