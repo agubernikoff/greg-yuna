@@ -29,6 +29,22 @@ a:active {
   font-weight: normal !important;
 }
 
+html,
+body {
+  overscroll-behavior: none; /* For modern browsers (Chrome, Edge, Firefox) */
+  height: 100%;
+  overflow-y: scroll;
+}
+
+/* Specifically targets Safari and other WebKit browsers */
+@supports (-webkit-overflow-scrolling: touch) {
+  html,
+  body {
+    overscroll-behavior: none;
+    overflow-y: auto;
+    overscroll-behavior-y: none;
+  }
+}
 /*
 * --------------------------------------------------
 * Non anchor links
