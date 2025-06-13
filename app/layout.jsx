@@ -16,14 +16,6 @@ export default function Layout() {
   const nonce = useNonce();
   const data = useRouteLoaderData('root');
 
-  console.log('Analytics consent prop:', data?.consent);
-  console.log('Analytics full data payload:', data);
-
-  const isResolved = (value) => value && typeof value.then !== 'function';
-
-  const canRenderAnalytics =
-    data && isResolved(data.cart) && isResolved(data.shop) && data.consent;
-
   return (
     <html lang="en">
       <head>
@@ -33,18 +25,17 @@ export default function Layout() {
           name="og:description"
           content="Jewelry that makes a statement. Crafted with precision, designed to last a lifetime."
         />
-        <link rel="stylesheet" href={resetStyles} />
-        <link rel="stylesheet" href={appStyles} />
+        <link rel="stylesheet" href={resetStyles}></link>
+        <link rel="stylesheet" href={appStyles}></link>
         <Meta />
         <Links />
       </head>
       <body>
-        {canRenderAnalytics ? (
+        {data ? (
           <Analytics.Provider
             cart={data.cart}
             shop={data.shop}
             consent={data.consent}
-            storefrontAnalytics={data.shop}
           >
             <PageLayout {...data}>
               <NavigationProvider>
