@@ -26,9 +26,9 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
       }
     }, 2000);
   }, []);
-  const {close} = useAside();
+  const {close, type} = useAside();
   const [isMobile, setIsMobile] = useState(false);
-
+  const [zIndex, setZindex] = useState(10);
   // Detect mobile screen
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 768px)');
@@ -38,6 +38,11 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
+
+  useEffect(() => {
+    if (type === 'cart') setZindex(9);
+    else setTimeout(() => setZindex(10), 150);
+  }, [type]);
   return (
     <>
       <CartToggle cart={cart} />
@@ -57,6 +62,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
           justifyContent: t ? 'center' : 'space-between',
           alignItems: !isMobile ? 'center' : t ? 'center' : 'flex-start',
           position: 'fixed',
+          zIndex,
         }}
         transition={
           !isMobile
