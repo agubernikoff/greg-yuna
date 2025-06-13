@@ -25,6 +25,7 @@ export default async function handleRequest(
     scriptSrc: [
       'https://www.powr.io',
       'https://cdn.shopify.com',
+      'https://cdn.shopifycloud.com',
       'http://localhost:*',
     ],
     connectSrc: [
