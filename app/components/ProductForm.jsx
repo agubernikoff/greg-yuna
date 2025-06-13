@@ -155,7 +155,7 @@ export function ProductForm({
                         />
                         {hovered && (
                           <motion.div
-                            layoutId={`hovered-${option.name}-${selectedVariant.product.handle}`}
+                            // layoutId={`hovered-${option.name}-${selectedVariant.product.handle}`}
                             id={`${option.name}`}
                             transition={{ease: 'easeInOut', duration: 0.15}}
                             style={{
@@ -486,7 +486,7 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                           />
                           {hovered && (
                             <motion.div
-                              layoutId={`hovered-${option.name}-${clicked.handle}`}
+                              // layoutId={`hovered-${option.name}-${clicked.handle}`}
                               id={`${option.name}`}
                               transition={{ease: 'easeInOut', duration: 0.15}}
                               style={{
@@ -552,7 +552,7 @@ function Compliment({compliment, setClicked, chain}) {
         <Image data={compliment.images.nodes[0]} width={200} height={200} />
         {hovered && chain?.product?.title !== compliment.title && (
           <motion.div
-            layoutId={`hovered-chain-indicator`}
+            // layoutId={`hovered-chain-indicator`}
             id={`hovered-chain-indicator`}
             transition={{ease: 'easeInOut', duration: 0.15}}
             style={{
@@ -567,7 +567,7 @@ function Compliment({compliment, setClicked, chain}) {
         )}
         {chain?.product?.title === compliment.title && (
           <motion.div
-            layoutId={`chain-indicator`}
+            // layoutId={`chain-indicator`}
             id={`chain-indicator`}
             transition={{ease: 'easeInOut', duration: 0.15}}
             style={{
