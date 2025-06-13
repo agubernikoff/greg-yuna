@@ -43,6 +43,8 @@ export default async function handleRequest(
       'https://cdn.shopify.com',
       'https://*.klaviyo.com/*',
       'https://gregyuna.com',
+      'https://greg-yuna-store.myshopify.com/api/unstable/graphql.json',
+      'https://cdn.shopifycloud.com',
     ],
     imgSrc: [
       'https://cdn.shopify.com', // ✅ Allow Shopify images
