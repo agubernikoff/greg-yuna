@@ -477,25 +477,27 @@ function Filt({
 
   return (
     <>
-      <div style={{display: 'flex'}} className="desktop-filter">
-        {filter &&
-          sortByStoredOrder(filter)?.map((v) => (
-            <FilterInput
-              key={v.id}
-              label={v.label}
-              value={v.input}
-              addFilter={addFilter}
-              isChecked={isChecked}
-              removeFilter={removeFilter}
-            />
-          ))}
-        <FilterInput
-          label={'View All'}
-          value={'viewAll'}
-          addFilter={clearFilter}
-          isChecked={isChecked}
-          removeFilter={clearFilter}
-        />
+      <div className="desktop-filter-wrapper">
+        <div style={{display: 'flex'}} className="desktop-filter">
+          {filter &&
+            sortByStoredOrder(filter)?.map((v) => (
+              <FilterInput
+                key={v.id}
+                label={v.label}
+                value={v.input}
+                addFilter={addFilter}
+                isChecked={isChecked}
+                removeFilter={removeFilter}
+              />
+            ))}
+          <FilterInput
+            label={'View All'}
+            value={'viewAll'}
+            addFilter={clearFilter}
+            isChecked={isChecked}
+            removeFilter={clearFilter}
+          />
+        </div>
       </div>
       <MobileFilt isOpen={isOpen} toggleIsOpen={toggleIsOpen}>
         {filter &&

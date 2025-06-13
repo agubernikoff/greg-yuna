@@ -1076,8 +1076,25 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   height: var(--filter-height);
 }
 .desktop-filter {
-  max-width: 60vw;
+  max-width: 65vw;
   overflow-x: scroll;
+}
+.desktop-filter-wrapper {
+  position: relative;
+  overflow: hidden; /* keep gradient overlay from pushing layout */
+  border-left: 1px solid #e9e9e9;
+  display: flex;
+}
+
+.desktop-filter-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(to left, #e9e9e9, white);
+  pointer-events: none;
 }
 .mobile-filter {
   display: none !important;
@@ -1088,12 +1105,25 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   cursor: pointer;
   position: relative;
 }
+
 .padded-filter-div {
   padding: 8px 30px 8px 10px;
+  max-height: 40px;
+  min-width: 130px;
+}
+.desktop-filter {
+  overflow-x: auto;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.desktop-filter::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
 }
 .filter-space-between {
   display: flex;
   justify-content: space-between;
+  align-items: stretch;
 }
 .full-border {
   border: 1px solid #e9e9e9;
@@ -1979,6 +2009,15 @@ MEDIA QUIERIES
   }
   .product-item:nth-last-child(-n + 4) {
     margin-bottom: 0 !important;
+  }
+  .collection
+    > .filter-container
+    > .filter-space-between.bottom-border.filter-second-row
+    > .desktop-filter {
+    border-left: 1px solid #e9e9e9;
+  }
+  .desktop-filter > button:first-of-type {
+    border-left: none !important;
   }
 }
 
