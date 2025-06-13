@@ -1,10 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {useVariantUrl} from '~/lib/variants';
 import {Link, useLocation} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {motion} from 'motion/react';
 import {useNavigationContext} from '~/context/NavigationContext';
-import {useEffect} from 'react';
 
 function ProductGridItem({product, loading, index, total}) {
   const variantUrl = useVariantUrl(product.handle);
@@ -20,6 +19,10 @@ function ProductGridItem({product, loading, index, total}) {
   }
 
   const hasMultipleImages = product.images.nodes.length > 1;
+
+  useEffect(() => {
+    setImageIndex(0);
+  }, []);
 
   const mappedIndicators =
     product.images.nodes.length > 1

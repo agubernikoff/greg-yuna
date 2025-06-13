@@ -1922,7 +1922,13 @@ MEDIA QUIERIES
   .recommended-products-grid .product-item:nth-last-child(-n + 4) {
     margin-bottom: 0 !important;
   }
+  .products-grid .product-item:nth-last-child(-n + 4) {
+    margin-bottom: 0 !important;
+  }
   .collection .products-grid .product-item:nth-last-child(-n + 4) {
+    margin-bottom: 0 !important;
+  }
+  .product-item:nth-last-child(-n + 4) {
     margin-bottom: 0 !important;
   }
 }
@@ -2115,17 +2121,20 @@ MEDIA QUIERIES
     display: flex;
   }
   .collections-container {
-    width: 100%;
     overflow-x: auto;
-    display: flex;
+    overflow-y: hidden;
+    overscroll-behavior-x: none; /* stronger than 'contain' for preventing bounce */
     scroll-snap-type: x mandatory;
     -webkit-overflow-scrolling: touch;
-    background-color: #e9e9e9;
-    gap: 1px;
-    border-bottom: 1px solid #e9e9e9;
 
-    scrollbar-width: none;
-    -ms-overflow-style: none;
+    /* Prevent padding/margin leaks */
+    padding: 0;
+    margin: 0;
+
+    /* No extra space past content */
+    white-space: nowrap;
+    max-width: 100vw;
+    box-sizing: border-box;
   }
 
   .collections-container::-webkit-scrollbar {
