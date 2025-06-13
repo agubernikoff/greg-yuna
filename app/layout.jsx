@@ -1,4 +1,5 @@
 import {useNonce, Analytics} from '@shopify/hydrogen';
+import {useEffect} from 'react';
 import {
   Links,
   Meta,
@@ -15,6 +16,24 @@ import {NavigationProvider} from './context/NavigationContext';
 export default function Layout() {
   const nonce = useNonce();
   const data = useRouteLoaderData('root');
+
+  useEffect(() => {
+    function hasConsentCookie() {
+      return document.cookie.includes('_tracking_consent');
+    }
+
+    function waitForShopifyConsent() {
+      if (window.Shopify?.customerPrivacy?.showBanner) {
+        if (!hasConsentCookie()) {
+          Shopify.customerPrivacy.showBanner();
+        }
+      } else {
+        setTimeout(waitForShopifyConsent, 100);
+      }
+    }
+
+    waitForShopifyConsent();
+  }, []);
 
   return (
     <html lang="en">
