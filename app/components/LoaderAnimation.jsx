@@ -54,9 +54,9 @@ function LoaderAnimation() {
             }
       }
       transition={{
-        bottom: {delay: 1.5, duration: 0.8},
-        right: {delay: 1.5, duration: 1},
-        opacity: {delay: 2.5, duration: 0.3},
+        bottom: {delay: 1.5, duration: 0.4},
+        right: {delay: 1.5, duration: 0.5},
+        opacity: {delay: 2, duration: 0.3},
       }}
     >
       <motion.div layout transition={{layout: {duration: 0.4}}}>
