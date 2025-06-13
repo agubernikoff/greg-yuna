@@ -24,17 +24,21 @@ function GridPlaceholder({products}) {
   const emptyTilesInLastRow = (columns - (totalItems % columns)) % columns;
   const viewportFillTiles = missingRows * columns;
 
-  const totalPlaceholders = emptyTilesInLastRow + viewportFillTiles;
+  let totalPlaceholders = emptyTilesInLastRow + viewportFillTiles;
+  if (width < 768) {
+    const isSingleRow = currentRows === 1;
+    const hasLoneItem = totalItems % columns === 1;
+    totalPlaceholders = isSingleRow && hasLoneItem ? 1 : 0;
+  }
 
   return (
     <>
       {[...Array(totalPlaceholders)].map((_, i) => (
         <div
           key={`placeholder-${i}`}
-          className="placeholder-tile product-item"
+          className="placeholder-tile product-item placeholder-tile-responsive"
           style={{
             aspectRatio: '1 / 1',
-            width: '100%',
             background: '#fff',
           }}
         />

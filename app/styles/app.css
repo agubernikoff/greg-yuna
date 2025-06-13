@@ -1917,6 +1917,9 @@ MEDIA QUIERIES
 }
 
 @media (max-width: 768px) {
+  body > main {
+    min-height: unset;
+  }
   html,
   main,
   body {
@@ -2266,6 +2269,15 @@ MEDIA QUIERIES
   .product-image:only-child img {
     min-height: auto;
   }
+  .placeholder-tile.product-item {
+    width: calc(50% - 0.5px) !important;
+    height: auto !important;
+    background: white !important;
+    display: inline-block;
+    aspect-ratio: auto !important;
+    min-height: 269px;
+  }
+
   .mapped-indicators {
     display: flex;
     flex-direction: row;
