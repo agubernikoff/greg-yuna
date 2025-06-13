@@ -225,11 +225,11 @@ export default function Product() {
 
             {to && (
               <>
-                <NavLink className="crumb" to={to}>
-                  {to.includes('new-arrivals')
-                    ? 'New Arrivals'
+                {to.includes('new-arrivals')
+                  ? 'New Arrivals'
+                  : to.includes('best-sellers')
+                    ? 'Best Sellers'
                     : capitalizeFirstLetter(to.split('/collections/')[1])}
-                </NavLink>
                 <span className="crumb-dash">{' → '}</span>
               </>
             )}
