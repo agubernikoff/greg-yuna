@@ -34,7 +34,10 @@ export function Footer({footer: footerPromise, header, publicStoreDomain}) {
             </Await>
           </Suspense>
           <p className="site-credit">
-            © 2025 GREG Yüna, ALL RIGHTS RESERVED / <a>Site Credit</a>
+            © 2025 GREG Yüna, ALL RIGHTS RESERVED /{' '}
+            <a href="https://www.swallstudios.com/" target="_blank">
+              Site Credit
+            </a>
           </p>
         </div>
       </div>
