@@ -13,31 +13,31 @@ import {LocationForm} from './PageLayout';
  */
 export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   const {shop, menu} = header;
-  const [t, setT] = useState(true);
-  useEffect(() => {
-    setTimeout(() => {
-      setT(false);
-    }, 1000);
+  // const [t, setT] = useState(true);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setT(false);
+  //   }, 1000);
 
-    setTimeout(() => {
-      const banner = document.querySelector('#shopify-pc__banner');
-      if (banner) {
-        banner.style.opacity = 1;
-      }
-    }, 2000);
-  }, []);
+  //   setTimeout(() => {
+  //     const banner = document.querySelector('#shopify-pc__banner');
+  //     if (banner) {
+  //       banner.style.opacity = 1;
+  //     }
+  //   }, 2000);
+  // }, []);
   const {close, type} = useAside();
   const [isMobile, setIsMobile] = useState(false);
   const [zIndex, setZindex] = useState(10);
   // Detect mobile screen
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(max-width: 768px)');
-    const handleChange = (e) => setIsMobile(e.matches);
+  // useEffect(() => {
+  //   const mediaQuery = window.matchMedia('(max-width: 768px)');
+  //   const handleChange = (e) => setIsMobile(e.matches);
 
-    handleChange(mediaQuery);
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+  //   handleChange(mediaQuery);
+  //   mediaQuery.addEventListener('change', handleChange);
+  //   return () => mediaQuery.removeEventListener('change', handleChange);
+  // }, []);
 
   useEffect(() => {
     if (type === 'cart') setZindex(9);
@@ -47,36 +47,36 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     <>
       <motion.header
         className="header"
-        initial={
-          !isMobile
-            ? {width: '100vw', height: '100vh'}
-            : {width: '100vw', height: '100vh'}
-        }
-        animate={
-          !isMobile
-            ? {width: 'var(--header-width)', height: '100vh'}
-            : {width: '100vw', height: 'var(--header-height)'}
-        }
-        style={{
-          justifyContent: t ? 'center' : 'space-between',
-          alignItems: !isMobile ? 'center' : t ? 'center' : 'flex-start',
-          position: 'fixed',
-          // zIndex,
-        }}
-        transition={
-          !isMobile
-            ? {width: {delay: 1.5, duration: 0.5}}
-            : {height: {delay: 1.5, duration: 0.5}}
-        }
+        // initial={
+        //   !isMobile
+        //     ? {width: '100vw', height: '100vh'}
+        //     : {width: '100vw', height: '100vh'}
+        // }
+        // animate={
+        //   !isMobile
+        //     ? {width: 'var(--header-width)', height: '100vh'}
+        //     : {width: '100vw', height: 'var(--header-height)'}
+        // }
+        // style={{
+        //   justifyContent: t ? 'center' : 'space-between',
+        //   alignItems: !isMobile ? 'center' : t ? 'center' : 'flex-start',
+        //   position: 'fixed',
+        //   // zIndex,
+        // }}
+        // transition={
+        //   !isMobile
+        //     ? {width: {delay: 1.5, duration: 0.5}}
+        //     : {height: {delay: 1.5, duration: 0.5}}
+        // }
         layoutRoot
         layoutScroll
       >
         <CartToggle cart={cart} />
         <motion.div
           layout
-          initial={{opacity: 0}}
-          animate={{opacity: 1}}
-          transition={{opacity: {duration: 1}, layout: {duration: 0.5}}}
+          // initial={{opacity: 0}}
+          // animate={{opacity: 1}}
+          // transition={{opacity: {duration: 1}, layout: {duration: 0.5}}}
         >
           <NavLink
             prefetch="intent"
@@ -116,19 +116,9 @@ function MenuToggle({}) {
   }
   return (
     <motion.button
-      // style={{
-      //   position: 'absolute',
-      //   left: 'calc(57px * .5)',
-      //   bottom: '1rem',
-      //   transform: 'translateX(-50%)',
-      //   border: 'none',
-      //   background: 'transparent',
-      //   padding: 0,
-      //   cursor: 'pointer',
-      // }}
-      initial={{opacity: 0}}
-      animate={{opacity: 1}}
-      transition={{delay: 2, duration: 0.5}}
+      // initial={{opacity: 0}}
+      // animate={{opacity: 1}}
+      // transition={{delay: 2, duration: 0.5}}
       onClick={handleClick}
     >
       <svg
@@ -189,37 +179,32 @@ function MenuToggle({}) {
   );
 }
 function Logo({isMobile}) {
-  console.log('Rendering Logo component');
-  const [shouldAnimate, setShouldAnimate] = useState(false);
-  useEffect(() => {
-    console.log('Checking localStorage for hasAnimatedLogo');
-    const hasAnimatedLogo = localStorage.getItem('hasAnimatedLogo');
-    console.log('hasAnimatedLogo:', hasAnimatedLogo);
-    if (!hasAnimatedLogo) {
-      console.log('First load detected — setting animation flag');
-      localStorage.setItem('hasAnimatedLogo', 'true');
-      setShouldAnimate(true);
-    } else {
-      console.log('Animation already played — skipping');
-      setShouldAnimate(false);
-    }
-  }, []);
   return (
     <motion.svg
+      // initial={
+      //   !isMobile
+      //     ? {width: '351px', height: '362px'}
+      //     : {width: '274px', height: '282px'}
+      // }
+      // animate={
+      //   !isMobile
+      //     ? {width: '32px', height: '32px'}
+      //     : {width: '32px', height: '32px'}
+      // }
+      // transition={{
+      //   width: {delay: 1, duration: 0.5},
+      //   height: {delay: 1, duration: 0.5},
+      // }}
       initial={
         !isMobile
-          ? {width: '351px', height: '362px'}
-          : {width: '274px', height: '282px'}
+          ? {width: '32px', height: '32px'}
+          : {width: '32px', height: '32px'}
       }
       animate={
         !isMobile
           ? {width: '32px', height: '32px'}
           : {width: '32px', height: '32px'}
       }
-      transition={{
-        width: {delay: 1, duration: 0.5},
-        height: {delay: 1, duration: 0.5},
-      }}
       width="351"
       height="362"
       viewBox="0 0 351 362"
@@ -563,9 +548,9 @@ function CartBadge({count}) {
 
   return (
     <motion.a
-      initial={{opacity: 0}}
-      animate={{opacity: 1}}
-      transition={{delay: 2, duration: 0.5}}
+      // initial={{opacity: 0}}
+      // animate={{opacity: 1}}
+      // transition={{delay: 2, duration: 0.5}}
       href="/cart"
       onClick={(e) => {
         e.preventDefault();
