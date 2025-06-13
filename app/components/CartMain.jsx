@@ -42,8 +42,9 @@ export function CartMain({layout, cart: originalCart}) {
   // }, []);
 
   const cart = useOptimisticCart(originalCart);
-  const linesExist = cart?.lines?.nodes?.length > 0;
-  const linesCount = Boolean(cart?.lines?.nodes?.length || 0);
+  const linesExist =
+    Array.isArray(cart?.lines?.nodes) && cart?.lines?.nodes?.length > 0;
+  const linesCount = cart?.lines?.nodes?.length || 0;
   const withDiscount =
     cart &&
     Boolean(cart?.discountCodes?.filter((code) => code.applicable)?.length);

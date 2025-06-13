@@ -33,7 +33,9 @@ export function CartSummary({cart, layout}) {
 
         <p>Taxes and shipping calcuated at checkout.</p>
         <button onClick={() => setOpen(true)}>
-          {cart.note.length > 0 ? 'Edit an order note' : 'Submit an order note'}
+          {cart.note && cart.note.length > 0
+            ? 'Edit an order note'
+            : 'Submit an order note'}
         </button>
       </div>
       <CartCheckoutActions checkoutUrl={cart.checkoutUrl} />
