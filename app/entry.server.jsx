@@ -27,6 +27,8 @@ export default async function handleRequest(
       'https://cdn.shopify.com',
       'https://cdn.shopifycloud.com',
       'http://localhost:*',
+      "'self'",
+      "'unsafe-eval'",
     ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
