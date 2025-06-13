@@ -67,6 +67,10 @@ export default function Layout() {
         />
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
+        <script
+          src="https://cdn.shopify.com/shopifycloud/privacy-banner/v1/en.js"
+          async
+        ></script>
         <Meta />
         <Links />
       </head>
