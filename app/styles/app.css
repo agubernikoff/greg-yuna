@@ -1866,7 +1866,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   width: 22vw;
   left: calc(var(--header-width) + 50%) !important;
   transform: translate(-50%, -50%) !important;
-  opacity: 0;
+  /* opacity: 0; */
   transition: opacity 300ms ease-in-out;
 }
 #shopify-pc__banner__btn-accept {
