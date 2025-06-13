@@ -554,6 +554,7 @@ button.header-menu-item-aux:hover > svg > path {
   font-family: 'regular';
   border: none;
   background: transparent;
+  color: black;
 }
 .subscribe-text:hover {
   color: #999999;
