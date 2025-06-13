@@ -19,18 +19,18 @@ function LoaderAnimation() {
       setT(false);
     }, 1100);
 
-    //   setTimeout(() => {
-    //     const banner = document.querySelector('#shopify-pc__banner');
-    //     if (banner) {
-    //       banner.style.opacity = 1;
-    //     }
-    //   }, 2000);
+    setTimeout(() => {
+      const banner = document.querySelector('#shopify-pc__banner');
+      if (banner) {
+        banner.style.opacity = 1;
+      }
+    }, 2000);
   }, []);
   return (
     <motion.div
       className="animation"
       style={{
-        zIndex: 100000,
+        zIndex: 2000001,
         position: 'absolute',
         inset: 0,
         background: 'white',
@@ -38,6 +38,7 @@ function LoaderAnimation() {
         alignItems: isMobile && !t ? 'flex-start' : 'center',
         display: 'flex',
         padding: '1rem',
+        minHeight: 'calc(var(--header-height) - 2rem)',
       }}
       initial={{right: 0, bottom: 0, opacity: 1}}
       animate={
@@ -93,6 +94,7 @@ function Logo({isMobile}) {
         width: {delay: 1, duration: 0.5},
         height: {delay: 1, duration: 0.5},
         y: {delay: 1, duration: 0.5},
+        opacity: {delay: 0.1},
       }}
       width="351"
       height="362"

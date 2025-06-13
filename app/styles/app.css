@@ -1933,7 +1933,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   width: 22vw;
   left: calc(var(--header-width) + 50%) !important;
   transform: translate(-50%, -50%) !important;
-  /* opacity: 0; */
+  opacity: 1;
   transition: opacity 300ms ease-in-out;
 }
 #shopify-pc__banner__btn-accept {
@@ -1945,6 +1945,14 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 }
 .shopify-pc__banner__btns {
   flex-direction: column-reverse !important;
+}
+@media only screen and (max-width: 480px) {
+  .shopify-pc__banner__btns {
+    flex-direction: column-reverse !important;
+  }
+  #shopify-pc__banner__btn-decline {
+    order: 3;
+  }
 }
 .shopify-pc__banner__dialog button {
   margin: 0 !important;
