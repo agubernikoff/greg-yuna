@@ -17,6 +17,7 @@ export default function Layout() {
   const data = useRouteLoaderData('root');
 
   console.log('Analytics consent prop:', data.consent);
+  console.log('Analytics full data payload:', data);
 
   return (
     <html lang="en">
