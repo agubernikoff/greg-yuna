@@ -24,23 +24,33 @@ export default function Layout() {
       return hasCookie;
     }
 
-    function waitForShopifyConsent() {
-      console.log('Waiting for Shopify.customerPrivacy...');
-      if (window.Shopify?.customerPrivacy?.showBanner) {
-        console.log('Shopify.customerPrivacy is available');
-        if (!hasConsentCookie()) {
-          console.log('Showing cookie banner...');
-          Shopify.customerPrivacy.showBanner();
-        } else {
-          console.log('Consent already given, not showing banner.');
-        }
-      } else {
-        console.log('Shopify.customerPrivacy not ready yet, retrying...');
-        setTimeout(waitForShopifyConsent, 100);
-      }
-    }
+    const script = document.createElement('script');
+    script.src = 'https://cdn.shopify.com/shopifycloud/privacy-banner/v1/en.js';
+    script.async = true;
 
-    waitForShopifyConsent();
+    script.onload = () => {
+      console.log('Shopify privacy script loaded');
+
+      function waitForShopifyConsent() {
+        console.log('Waiting for Shopify.customerPrivacy...');
+        if (window.Shopify?.customerPrivacy?.showBanner) {
+          console.log('Shopify.customerPrivacy is available');
+          if (!hasConsentCookie()) {
+            console.log('Showing cookie banner...');
+            Shopify.customerPrivacy.showBanner();
+          } else {
+            console.log('Consent already given, not showing banner.');
+          }
+        } else {
+          console.log('Shopify.customerPrivacy not ready yet, retrying...');
+          setTimeout(waitForShopifyConsent, 100);
+        }
+      }
+
+      waitForShopifyConsent();
+    };
+
+    document.body.appendChild(script);
   }, []);
 
   return (
