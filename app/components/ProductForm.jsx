@@ -86,10 +86,12 @@ export function ProductForm({
               </p>
               <div
                 className={`product-options-grid ${
-                  option.name.toLowerCase() === 'size' ? 'size-grid' : ''
+                  ['size', 'initial'].includes(option.name.toLowerCase())
+                    ? 'size-initial-grid'
+                    : ''
                 }`}
               >
-                {option.optionValues.map((value) => {
+                {option.optionValues.map((value, index) => {
                   const {
                     name,
                     handle,
@@ -102,8 +104,22 @@ export function ProductForm({
                     variant,
                   } = value;
                   const variantImage = isColorOption ? variant?.image : null;
-                  const styles = itemStyle(selected, available, isColorOption);
+                  // Border logic for size/initial grid (removed)
+                  let styles = itemStyle(selected, available, isColorOption);
                   const hovered = name === hoverVariant && available;
+
+                  // --- Begin border logic for incomplete last row ---
+                  const total = option.optionValues.length;
+                  const itemsPerRow = 4;
+                  const isLastItem = index === total - 1;
+                  const itemsInLastRow = total % itemsPerRow || itemsPerRow;
+                  const isIncompleteLastRow = itemsInLastRow < itemsPerRow;
+                  const needsRightBorder =
+                    isLastItem &&
+                    ['size', 'initial'].includes(option.name.toLowerCase()) &&
+                    isIncompleteLastRow;
+
+                  console.log(needsRightBorder, index, name);
 
                   if (isDifferentProduct) {
                     return (
@@ -137,7 +153,12 @@ export function ProductForm({
                             : ''
                         }${exists && !selected ? ' link' : ''}`}
                         key={option.name + name}
-                        style={styles}
+                        style={{
+                          ...styles,
+                          borderRight: needsRightBorder
+                            ? '1px solid #e9e9e9 !important'
+                            : styles.borderRight,
+                        }}
                         disabled={!exists}
                         onClick={() => {
                           if (!selected) {
@@ -165,8 +186,16 @@ export function ProductForm({
                             style={{
                               position: 'absolute',
                               bottom: 0,
-                              left: '-1px',
-                              right: '-1px',
+                              left: ['size', 'initial'].includes(
+                                option.name.toLowerCase(),
+                              )
+                                ? '0'
+                                : '-1px',
+                              right: ['size', 'initial'].includes(
+                                option.name.toLowerCase(),
+                              )
+                                ? '0'
+                                : '-1px',
                               height: '2px',
                               background: '#999999',
                             }}
@@ -183,8 +212,16 @@ export function ProductForm({
                             style={{
                               position: 'absolute',
                               bottom: 0,
-                              left: '-1px',
-                              right: '-1px',
+                              left: ['size', 'initial'].includes(
+                                option.name.toLowerCase(),
+                              )
+                                ? '0'
+                                : '-1px',
+                              right: ['size', 'initial'].includes(
+                                option.name.toLowerCase(),
+                              )
+                                ? '0'
+                                : '-1px',
                               height: '2px',
                               background: 'black',
                             }}
@@ -431,10 +468,12 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
 
                 <div
                   className={`product-options-grid ${
-                    option.name.toLowerCase() === 'size' ? 'size-grid' : ''
+                    ['size', 'initial'].includes(option.name.toLowerCase())
+                      ? 'size-initial-grid'
+                      : ''
                   }`}
                 >
-                  {option.optionValues.map((value) => {
+                  {option.optionValues.map((value, index) => {
                     const {
                       name,
                       variant,
@@ -446,11 +485,8 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                     } = value;
 
                     const variantImage = isColorOption ? variant?.image : null;
-                    const styles = itemStyle(
-                      selected,
-                      available,
-                      isColorOption,
-                    );
+                    // Border logic for size/initial grid (removed)
+                    let styles = itemStyle(selected, available, isColorOption);
 
                     const cleanLabel =
                       option.name.toLowerCase() === 'size'
@@ -458,6 +494,9 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                         : name;
 
                     const hovered = name === hoverVariant && available;
+
+                    const isLast = index === option.optionValues.length - 1;
+                    console.log(isLast);
 
                     if (isDifferentProduct) {
                       return (
@@ -502,8 +541,16 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                               style={{
                                 position: 'absolute',
                                 bottom: 0,
-                                left: '-1px',
-                                right: '-1px',
+                                left: ['size', 'initial'].includes(
+                                  option.name.toLowerCase(),
+                                )
+                                  ? '0'
+                                  : '-1px',
+                                right: ['size', 'initial'].includes(
+                                  option.name.toLowerCase(),
+                                )
+                                  ? '0'
+                                  : '-1px',
                                 height: '2px',
                                 background: '#999999',
                               }}
@@ -520,8 +567,16 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                               style={{
                                 position: 'absolute',
                                 bottom: 0,
-                                left: '-1px',
-                                right: '-1px',
+                                left: ['size', 'initial'].includes(
+                                  option.name.toLowerCase(),
+                                )
+                                  ? '0'
+                                  : '-1px',
+                                right: ['size', 'initial'].includes(
+                                  option.name.toLowerCase(),
+                                )
+                                  ? '0'
+                                  : '-1px',
                                 height: '2px',
                                 background: 'black',
                               }}
