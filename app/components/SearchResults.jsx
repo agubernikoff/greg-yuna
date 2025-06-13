@@ -17,7 +17,7 @@ export function SearchResults({term, result, children}) {
 }
 
 SearchResults.Products = SearchResultsProducts;
-SearchResults.Empty = SearchResultsEmpty;
+SearchResults.Empty = (props) => <SearchResultsEmpty {...props} />;
 
 /**
  * @param {PartialSearchResult<'products'>}
@@ -51,8 +51,24 @@ function SearchResultsProducts({term, products}) {
   );
 }
 
-function SearchResultsEmpty() {
-  return <p>No results, try a different search.</p>;
+function SearchResultsEmpty({term}) {
+  return (
+    <div
+      className="search-result"
+      style={{
+        height: '100vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        textAlign: 'center',
+        flexDirection: 'column',
+        background: 'white',
+        marginBottom: '0 !important',
+      }}
+    >
+      <p className="search-empty-heading">{`No results found for "${term}".`}</p>
+    </div>
+  );
 }
 
 /** @typedef {RegularSearchReturn['result']['items']} SearchItems */
