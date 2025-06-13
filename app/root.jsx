@@ -74,8 +74,8 @@ export async function loader(args) {
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
       withPrivacyBanner: true,
       // localize the privacy banner
-      country: args.context.storefront.i18n.country,
-      language: args.context.storefront.i18n.language,
+      // country: args.context.storefront.i18n.country,
+      // language: args.context.storefront.i18n.language,
     },
   };
 }
