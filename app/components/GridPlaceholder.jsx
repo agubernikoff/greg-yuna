@@ -26,9 +26,7 @@ function GridPlaceholder({products}) {
 
   let totalPlaceholders = emptyTilesInLastRow + viewportFillTiles;
   if (width < 768) {
-    const isSingleRow = currentRows === 1;
-    const hasLoneItem = totalItems % columns === 1;
-    totalPlaceholders = isSingleRow && hasLoneItem ? 1 : 0;
+    totalPlaceholders = emptyTilesInLastRow + viewportFillTiles;
   }
 
   return (
