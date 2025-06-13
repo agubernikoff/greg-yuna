@@ -11,8 +11,8 @@ import mobileIcon from '~/assets/Social-Sharing.jpg';
  */
 export const meta = () => {
   return [
-    {title: 'Greg YÜNA'},
-    {name: 'og:title', property: 'Greg YÜNA'},
+    {title: 'Greg Yüna'},
+    {name: 'og:title', property: 'Greg Yüna'},
     {property: 'og:image', content: mobileIcon},
   ];
 };

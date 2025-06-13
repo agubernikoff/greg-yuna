@@ -10,7 +10,7 @@ export function Footer({footer: footerPromise, header, publicStoreDomain}) {
     <footer className="footer">
       <div className="footer-left">
         <p>
-          Greg YÜNA New York is an American jewelry brand known for intricate
+          Greg Yüna New York is an American jewelry brand known for intricate
           craftsmanship that seamlessly blends high-end jewelry with streetwise
           sophistication. Everything we make is inspired by the city we call
           home. Worn by the people we call family.

@@ -16,7 +16,7 @@ import {AnimatePresence, motion} from 'motion/react';
  * @type {MetaFunction<typeof loader>}
  */
 export const meta = ({data}) => {
-  return [{title: `Greg YÜNA | ${data?.collection.title ?? ''} Collection`}];
+  return [{title: `Greg Yüna | ${data?.collection.title ?? ''} Collection`}];
 };
 
 /**
