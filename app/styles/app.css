@@ -1911,6 +1911,9 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 MEDIA QUIERIES
 */
 @media (min-width: 769px) {
+  .featured-collection {
+    padding-bottom: 0px;
+  }
   .product > .padded-filter-div.full-border.breadcrumbs {
     position: fixed;
     top: 1rem;
