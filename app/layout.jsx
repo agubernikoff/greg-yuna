@@ -18,6 +18,8 @@ export default function Layout() {
   const data = useRouteLoaderData('root');
 
   useEffect(() => {
+    console.log('Hydrogen layout mounted');
+
     function hasConsentCookie() {
       const hasCookie = document.cookie.includes('_tracking_consent');
       console.log('Consent cookie present:', hasCookie);
@@ -50,6 +52,7 @@ export default function Layout() {
       waitForShopifyConsent();
     };
 
+    console.log('Injecting privacy script...');
     document.body.appendChild(script);
   }, []);
 
