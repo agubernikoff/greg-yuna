@@ -27,12 +27,6 @@ export default function Layout() {
         />
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
-        {/* <script
-          id="usercentrics-cmp"
-          src="https://web.cmp.usercentrics.eu/ui/loader.js"
-          data-settings-id="7nMnkUWFOe1BGl"
-          async
-        ></script> */}
         <Meta />
         <Links />
       </head>

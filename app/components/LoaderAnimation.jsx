@@ -14,18 +14,18 @@ function LoaderAnimation() {
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, []);
 
-  useEffect(() => {
-    setTimeout(() => {
-      setT(false);
-    }, 1100);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setT(false);
+  //   }, 1100);
 
-    setTimeout(() => {
-      const banner = document.querySelector('#shopify-pc__banner');
-      if (banner) {
-        banner.style.opacity = 1;
-      }
-    }, 2000);
-  }, []);
+  //   setTimeout(() => {
+  //     const banner = document.querySelector('#shopify-pc__banner');
+  //     if (banner) {
+  //       banner.style.opacity = 1;
+  //     }
+  //   }, 2000);
+  // }, []);
   return (
     <motion.div
       className="animation"

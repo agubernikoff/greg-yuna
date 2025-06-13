@@ -29,7 +29,6 @@ export default async function handleRequest(
       'http://localhost:*',
       "'self'",
       "'unsafe-eval'",
-      'https://web.cmp.usercentrics.eu',
     ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
@@ -48,8 +47,6 @@ export default async function handleRequest(
       'https://gregyuna.com',
       'https://greg-yuna-store.myshopify.com/api/unstable/graphql.json',
       'https://cdn.shopifycloud.com',
-      'https://v1.api.service.cmp.usercentrics.eu',
-      'https://latest.cmp.usercentrics.eu',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
