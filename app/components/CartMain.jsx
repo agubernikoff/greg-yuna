@@ -3,7 +3,7 @@ import {Link} from '@remix-run/react';
 import {useAside} from '~/components/Aside';
 import {CartLineItem} from '~/components/CartLineItem';
 import {CartSummary} from './CartSummary';
-// import {SimplyWidget} from './SimplyWidget';
+
 import {useEffect, useRef, useState} from 'react';
 
 /**
@@ -14,32 +14,6 @@ import {useEffect, useRef, useState} from 'react';
 export function CartMain({layout, cart: originalCart}) {
   // The useOptimisticCart hook applies pending actions to the cart
   // so the user immediately sees feedback when they modify the cart.
-
-  // const [insurancePlan, setInsurancePlan] = useState({});
-  // const [SkipProduct, setSkipProduct] = useState({});
-
-  // useEffect(() => {
-  //   var myHeaders = new Headers();
-  //   myHeaders.append('shopname', 'greg-yuna-store.myshopify.com');
-
-  //   var requestOptions = {
-  //     method: 'GET',
-  //     headers: myHeaders,
-  //     redirect: 'follow',
-  //   };
-
-  //   fetch(
-  //     'https://greg-yuna-store.myshopify.com/apps/simplyinsurance/storefront-api/metafields/',
-  //     requestOptions,
-  //   )
-  //     .then((response) => response.json())
-  //     .then((result) => {
-  //       // setting state
-  //       setInsurancePlan(result.data.InsurancePlan);
-  //       setSkipProduct(result.data.SkipProduct);
-  //     })
-  //     .catch((error) => console.log('error', error));
-  // }, []);
 
   const cart = useOptimisticCart(originalCart);
   const linesExist =
@@ -62,16 +36,7 @@ export function CartMain({layout, cart: originalCart}) {
             ))}
           </ul>
         </div>
-        {/* {cartHasItems &&
-          insurancePlan &&
-          insurancePlan.planArray &&
-          SkipProduct && (
-            <SimplyWidget
-              cart={cart}
-              insurancePlan={insurancePlan}
-              SkipProduct={SkipProduct}
-            />
-          )} */}
+
         {cart?.totalQuantity > 0 && <CartSummary cart={cart} layout={layout} />}
       </div>
     </div>
