@@ -16,6 +16,8 @@ export default function Layout() {
   const nonce = useNonce();
   const data = useRouteLoaderData('root');
 
+  console.log('Analytics consent prop:', data.consent);
+
   return (
     <html lang="en">
       <head>
