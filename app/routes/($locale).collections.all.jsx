@@ -14,7 +14,7 @@ import ProductGridItem from '~/components/ProductGridItem';
  * @type {MetaFunction<typeof loader>}
  */
 export const meta = () => {
-  return [{title: `Greg Yüna | Products`}];
+  return [{title: `Greg YÜNA | Products`}];
 };
 
 /**

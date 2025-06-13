@@ -21,7 +21,7 @@ import {useNavigationContext} from '~/context/NavigationContext';
  */
 export const meta = ({data}) => {
   return [
-    {title: `Greg Yüna | ${data?.product.title ?? ''}`},
+    {title: `Greg YÜNA | ${data?.product.title ?? ''}`},
     {
       rel: 'canonical',
       href: `/products/${data?.product.handle}`,

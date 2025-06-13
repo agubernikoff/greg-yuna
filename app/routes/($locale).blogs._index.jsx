@@ -6,7 +6,7 @@ import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
  * @type {MetaFunction}
  */
 export const meta = () => {
-  return [{title: `Greg Yüna | Blogs`}];
+  return [{title: `Greg YÜNA | Blogs`}];
 };
 
 /**
