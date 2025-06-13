@@ -19,15 +19,23 @@ export default function Layout() {
 
   useEffect(() => {
     function hasConsentCookie() {
-      return document.cookie.includes('_tracking_consent');
+      const hasCookie = document.cookie.includes('_tracking_consent');
+      console.log('Consent cookie present:', hasCookie);
+      return hasCookie;
     }
 
     function waitForShopifyConsent() {
+      console.log('Waiting for Shopify.customerPrivacy...');
       if (window.Shopify?.customerPrivacy?.showBanner) {
+        console.log('Shopify.customerPrivacy is available');
         if (!hasConsentCookie()) {
+          console.log('Showing cookie banner...');
           Shopify.customerPrivacy.showBanner();
+        } else {
+          console.log('Consent already given, not showing banner.');
         }
       } else {
+        console.log('Shopify.customerPrivacy not ready yet, retrying...');
         setTimeout(waitForShopifyConsent, 100);
       }
     }
