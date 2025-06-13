@@ -41,7 +41,7 @@ export default function SearchPage() {
     <div className="search">
       {error && <p style={{color: 'red'}}>{error}</p>}
       {!term || !result?.total ? (
-        <SearchResults.Empty />
+        <SearchResults.Empty term={term} />
       ) : (
         <SearchResults result={result} term={term}>
           {({products, term}) => (
