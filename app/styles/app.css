@@ -2062,6 +2062,7 @@ MEDIA QUIERIES
     position: static;
     display: inline !important;
     border: none;
+    visibility: visible !important;
   }
   .cart-badge span {
     display: none;
@@ -2281,7 +2282,16 @@ MEDIA QUIERIES
     width: 100%;
   }
   .header-menu-container {
-    height: calc(100dvh - var(--header-height) - 6rem);
+    height: calc(100dvh - var(--header-height) - 4.5rem);
+  }
+  .header-menu-container > form {
+    margin-top: -1rem;
+  }
+  .header-menu-mobile {
+    display: flex;
+    flex-direction: column;
+    grid-gap: 0rem;
+    margin-top: -3rem;
   }
   .search-result {
     background-color: #e9e9e9;
