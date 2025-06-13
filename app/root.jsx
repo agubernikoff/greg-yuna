@@ -58,14 +58,6 @@ export async function loader(args) {
 
   const {storefront, env} = args.context;
 
-  console.log('Consent configuration:', {
-    checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
-    storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
-    withPrivacyBanner: true,
-    country: args.context.storefront.i18n.country,
-    language: args.context.storefront.i18n.language,
-  });
-
   return {
     ...deferredData,
     ...criticalData,
