@@ -924,11 +924,14 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   object-fit: cover;
 }
 
-.featured-collection h1 {
+.featured-collection p {
   position: absolute;
   bottom: 0;
   margin-left: 2rem;
   color: white;
+  font-size: 32px;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .recommended-products {
@@ -2079,6 +2082,11 @@ MEDIA QUIERIES
   .featured-collection-image {
     width: 100%;
     max-width: 100vw;
+  }
+  .featured-collection p {
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
   }
   .featured-collection-image img {
     max-width: 100%;
