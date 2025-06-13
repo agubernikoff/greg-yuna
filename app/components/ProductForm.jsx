@@ -179,9 +179,12 @@ export function ProductForm({
                         )}
                         {selected && (
                           <motion.div
-                            layoutId={`${option.name}-${selectedVariant.product.handle}`}
+                            key={`${option.name}-${selectedVariant.product.handle}`}
                             id={`${option.name}`}
-                            transition={{ease: 'easeInOut', duration: 0.15}}
+                            initial={{opacity: 0}}
+                            animate={{opacity: 1}}
+                            exit={{opacity: 0}}
+                            transition={{duration: 0.15}}
                             style={{
                               position: 'absolute',
                               bottom: 0,
@@ -507,9 +510,12 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                           )}
                           {selected && (
                             <motion.div
-                              layoutId={`${option.name}-${clicked.handle}`}
+                              key={`${option.name}-${clicked.handle}`}
                               id={`${option.name}`}
-                              transition={{ease: 'easeInOut', duration: 0.15}}
+                              initial={{opacity: 0}}
+                              animate={{opacity: 1}}
+                              exit={{opacity: 0}}
+                              transition={{duration: 0.15}}
                               style={{
                                 position: 'absolute',
                                 bottom: 0,
