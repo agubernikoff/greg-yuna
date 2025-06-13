@@ -38,6 +38,7 @@ export default function Layout() {
             cart={data.cart}
             shop={data.shop}
             consent={data.consent}
+            storefrontAnalytics={data.shop}
           >
             <PageLayout {...data}>
               <NavigationProvider>
