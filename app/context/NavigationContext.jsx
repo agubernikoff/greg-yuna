@@ -3,12 +3,12 @@ import {createContext, useContext, useState, useEffect} from 'react';
 const NavigationContext = createContext();
 
 export const NavigationProvider = ({children}) => {
-  const [lastCollectionPath, setLastCollectionPath] = useState(
-    () =>
-      (typeof window !== 'undefined' &&
-        localStorage.getItem('lastCollectionPath')) ||
-      null,
-  );
+  const [lastCollectionPath, setLastCollectionPath] = useState(null);
+
+  useEffect(() => {
+    const stored = localStorage.getItem('lastCollectionPath');
+    if (stored) setLastCollectionPath(stored);
+  }, []);
 
   useEffect(() => {
     if (lastCollectionPath) {
