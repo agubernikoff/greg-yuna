@@ -1374,17 +1374,26 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   width: 100%;
   border: none;
   padding: 1rem;
-  background: #e8e8e8;
+  background: #e9e9e9;
   font-size: 13px;
   cursor: pointer;
   transition:
     background-color 200ms ease-in-out,
     color 200ms ease-in-out;
 }
-
+/* .cart-button:disabled {
+  text-decoration: underline;
+  text-underline-offset: -0.3em; 
+  text-decoration-skip-ink: none;
+  color: #999999;
+} */
 .cart-button:hover {
   background: black;
   color: white;
+}
+.cart-button:disabled:hover {
+  background: #e9e9e9;
+  color: #999999;
 }
 
 .chain-title-container {

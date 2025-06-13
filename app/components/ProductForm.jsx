@@ -48,7 +48,11 @@ export function ProductForm({
 
   const itemStyle = (selected, available, isColorOption) => {
     return {
-      opacity: available ? 1 : 0.3,
+      // opacity: available ? 1 : 0.3,
+      color: available ? 'black' : '#e9e9e9',
+      textDecoration: available ? 'none' : 'underline',
+      textUnderlineOffset: '-0.3em',
+      textDecorationSkipInk: available ? 'auto' : 'none',
       padding: isColorOption ? 0 : null,
     };
   };
@@ -99,7 +103,7 @@ export function ProductForm({
                   } = value;
                   const variantImage = isColorOption ? variant?.image : null;
                   const styles = itemStyle(selected, available, isColorOption);
-                  const hovered = name === hoverVariant;
+                  const hovered = name === hoverVariant && available;
 
                   if (isDifferentProduct) {
                     return (
@@ -309,10 +313,16 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
     setSelectedVariant(variant);
   }
 
-  const itemStyle = (selected, available, isColorOption) => ({
-    opacity: available ? 1 : 0.3,
-    padding: isColorOption ? 0 : null,
-  });
+  const itemStyle = (selected, available, isColorOption) => {
+    return {
+      // opacity: available ? 1 : 0.3,
+      color: available ? 'black' : '#e9e9e9',
+      textDecoration: available ? 'none' : 'underline',
+      textUnderlineOffset: '-0.3em',
+      textDecorationSkipInk: available ? 'auto' : 'none',
+      padding: isColorOption ? 0 : null,
+    };
+  };
 
   const [isMobile, setIsMobile] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -447,7 +457,7 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                         ? name.replace(/"/g, '')
                         : name;
 
-                    const hovered = name === hoverVariant;
+                    const hovered = name === hoverVariant && available;
 
                     if (isDifferentProduct) {
                       return (
