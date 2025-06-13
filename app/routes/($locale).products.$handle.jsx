@@ -518,6 +518,10 @@ $language: LanguageCode
         amount
         currencyCode
       }
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
     }
   }
 }`;
@@ -570,6 +574,10 @@ $language: LanguageCode
     title
     priceRange {
       minVariantPrice {
+        amount
+        currencyCode
+      }
+      maxVariantPrice {
         amount
         currencyCode
       }

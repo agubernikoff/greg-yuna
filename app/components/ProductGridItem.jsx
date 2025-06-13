@@ -91,7 +91,14 @@ function ProductGridItem({product, loading, index, total}) {
       </div>
       <div className="product-item-details">
         <p>{product.title}</p>
-        <Money data={product.priceRange.minVariantPrice} />
+        {product.priceRange.minVariantPrice.amount !==
+        product.priceRange.maxVariantPrice.amount ? (
+          <>
+            From <Money data={product.priceRange.minVariantPrice} />
+          </>
+        ) : (
+          <Money data={product.priceRange.minVariantPrice} />
+        )}
       </div>
     </Link>
   );

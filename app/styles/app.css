@@ -1213,6 +1213,9 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   opacity: 0;
   transition: opacity 150ms ease-in-out;
 }
+.product-item-details > div {
+  display: inline-block;
+}
 .product-item:hover .product-item-details {
   opacity: 1;
 }

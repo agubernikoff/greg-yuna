@@ -216,6 +216,10 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
         amount
         currencyCode
       }
+      maxVariantPrice {
+        amount
+        currencyCode
+      }
     }
     images(first: 2) {
       nodes {
@@ -244,6 +248,10 @@ const PRODUCT_ITEM_FRAGMENT = `#graphql
     handle
     priceRange {
       minVariantPrice {
+        amount
+        currencyCode
+      }
+      maxVariantPrice {
         amount
         currencyCode
       }
