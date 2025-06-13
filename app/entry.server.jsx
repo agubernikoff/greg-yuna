@@ -36,6 +36,7 @@ export default async function handleRequest(
       'https://www.powr.io',
       'https://greg-yuna-store.myshopify.com',
       'https://greg-yuna-store.myshopify.com/*',
+      'https://checkout.greg-yuna-store.myshopify.com/*',
       'https://greg-yuna-store.com',
       'https://greg-yuna-store.com/*',
       'http://localhost:3000',
