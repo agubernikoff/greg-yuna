@@ -17,6 +17,17 @@ export default async function handleRequest(
   remixContext,
   context,
 ) {
+  // Intercept specific POST to suppress 405
+  if (
+    request.method === 'POST' &&
+    new URL(request.url).pathname === '/api/unstable/graphql.json'
+  ) {
+    return new Response(JSON.stringify({data: 'ok'}), {
+      status: 200,
+      headers: {'Content-Type': 'application/json'},
+    });
+  }
+
   const {nonce, header, NonceProvider} = createContentSecurityPolicy({
     shop: {
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
@@ -47,15 +58,15 @@ export default async function handleRequest(
       'https://cdn.shopifycloud.com',
     ],
     imgSrc: [
-      'https://cdn.shopify.com', // ✅ Allow Shopify images
-      'https://www.powrcdn.com', // Allow Powr.io image resources
+      'https://cdn.shopify.com',
+      'https://www.powrcdn.com',
       'http://localhost:*',
       'https://klaviyo.com',
       'https://*.klaviyo.com',
       'https://fonts.googleapis.com',
     ],
     frameSrc: [
-      'https://www.powr.io', // ✅ Allow framing from powr.io
+      'https://www.powr.io',
       'https://klaviyo.com',
       'https://*.klaviyo.com',
       'https://cdn.shopify.com',
