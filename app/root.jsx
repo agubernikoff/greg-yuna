@@ -149,17 +149,7 @@ function loadDeferredData({context}) {
 }
 
 export default function App() {
-  return (
-    <>
-      <head>
-        <script
-          src="https://cdn.shopify.com/shopifycloud/shopify_customer_privacy.js"
-          async
-        ></script>
-      </head>
-      <Outlet />
-    </>
-  );
+  return <Outlet />;
 }
 
 export function ErrorBoundary() {
