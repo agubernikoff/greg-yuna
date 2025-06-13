@@ -57,7 +57,7 @@ export function PageLayout({
         <motion.main
           initial={{opacity: 0}}
           animate={{opacity: 1}}
-          exit={{opacity: 0}}
+          exit={{opacity: 1}}
           transition={{ease: 'easeInOut', duration: 0.1}}
           key={state === 'loading' ? location?.pathname : pathname}
         >
