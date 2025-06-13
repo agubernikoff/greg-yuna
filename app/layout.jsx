@@ -1,5 +1,4 @@
 import {useNonce, Analytics} from '@shopify/hydrogen';
-import {useEffect} from 'react';
 import {
   Links,
   Meta,
@@ -17,45 +16,6 @@ export default function Layout() {
   const nonce = useNonce();
   const data = useRouteLoaderData('root');
 
-  useEffect(() => {
-    console.log('Hydrogen layout mounted');
-
-    function hasConsentCookie() {
-      const hasCookie = document.cookie.includes('_tracking_consent');
-      console.log('Consent cookie present:', hasCookie);
-      return hasCookie;
-    }
-
-    const script = document.createElement('script');
-    script.src = 'https://cdn.shopify.com/shopifycloud/privacy-banner/v1/en.js';
-    script.async = true;
-
-    script.onload = () => {
-      console.log('Shopify privacy script loaded');
-
-      function waitForShopifyConsent() {
-        console.log('Waiting for Shopify.customerPrivacy...');
-        if (window.Shopify?.customerPrivacy?.showBanner) {
-          console.log('Shopify.customerPrivacy is available');
-          if (!hasConsentCookie()) {
-            console.log('Showing cookie banner...');
-            Shopify.customerPrivacy.showBanner();
-          } else {
-            console.log('Consent already given, not showing banner.');
-          }
-        } else {
-          console.log('Shopify.customerPrivacy not ready yet, retrying...');
-          setTimeout(waitForShopifyConsent, 100);
-        }
-      }
-
-      waitForShopifyConsent();
-    };
-
-    console.log('Injecting privacy script...');
-    document.body.appendChild(script);
-  }, []);
-
   return (
     <html lang="en">
       <head>
@@ -67,10 +27,6 @@ export default function Layout() {
         />
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
-        <script
-          src="https://cdn.shopify.com/shopifycloud/privacy-banner/v1/en.js"
-          async
-        ></script>
         <Meta />
         <Links />
       </head>
