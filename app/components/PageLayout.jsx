@@ -69,12 +69,6 @@ export function PageLayout({
         header={header}
         publicStoreDomain={publicStoreDomain}
       />
-      <script
-        id="customer-privacy-api"
-        type="text/javascript"
-        src="https://cdn.shopifycloud.com/privacy-banner/storefront-banner.js"
-        data-shop-domain="greg-yuna-store.myshopify.com"
-      />
     </Aside.Provider>
   );
 }
