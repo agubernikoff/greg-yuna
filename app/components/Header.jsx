@@ -40,6 +40,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   }, []);
   return (
     <>
+      <CartToggle cart={cart} />
       <motion.header
         className="header"
         initial={
@@ -65,7 +66,6 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
         layoutRoot
         layoutScroll
       >
-        <CartToggle cart={cart} />
         <motion.div
           layout
           initial={{opacity: 0}}
