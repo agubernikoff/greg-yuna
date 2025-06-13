@@ -1882,7 +1882,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   background: black;
 }
 #shopify-pc__banner__body-policy-link {
-  display: none;
+  /* display: none; */
 }
 .shopify-pc__banner__btns {
   flex-direction: column-reverse !important;
