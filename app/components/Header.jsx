@@ -58,33 +58,6 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     else setTimeout(() => setZindex(10), 150);
   }, [type]);
 
-  useEffect(() => {
-    const headerElement = document.querySelector('header');
-
-    const interval = setInterval(() => {
-      const bannerVisible =
-        document
-          .querySelector('aside#usercentrics-cmp-ui')
-          ?.shadowRoot?.querySelector('.overlay') != null;
-
-      console.log('Polling. Cookie banner visible?', bannerVisible);
-
-      if (headerElement) {
-        if (bannerVisible) {
-          console.log('Adding lowered z-index class to header');
-          headerElement.classList.add('header--lowered');
-        } else {
-          console.log('Removing lowered z-index class from header');
-          headerElement.classList.remove('header--lowered');
-        }
-      }
-
-      if (!bannerVisible) clearInterval(interval);
-    }, 500);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <>
       {shouldAnimate && <LoaderAnimation />}
