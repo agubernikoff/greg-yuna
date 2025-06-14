@@ -2052,6 +2052,9 @@ MEDIA QUIERIES
   bottom: 0;
   pointer-events: none;
 }
+.header--lowered {
+  z-index: 0 !important;
+}
 
 @media (max-width: 768px) {
   .animation {

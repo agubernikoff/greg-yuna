@@ -69,15 +69,17 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
 
       console.log('Polling. Cookie banner visible?', bannerVisible);
 
-      if (bannerVisible) {
-        console.log('Setting header z-index to 0');
-        if (headerElement) headerElement.style.zIndex = '0';
-        clearInterval(interval);
-      } else {
-        console.log('Setting header z-index to 10');
-        if (headerElement) headerElement.style.zIndex = '10';
-        clearInterval(interval);
+      if (headerElement) {
+        if (bannerVisible) {
+          console.log('Adding lowered z-index class to header');
+          headerElement.classList.add('header--lowered');
+        } else {
+          console.log('Removing lowered z-index class from header');
+          headerElement.classList.remove('header--lowered');
+        }
       }
+
+      if (!bannerVisible) clearInterval(interval);
     }, 500);
 
     return () => clearInterval(interval);
