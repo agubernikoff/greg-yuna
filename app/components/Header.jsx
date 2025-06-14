@@ -59,32 +59,21 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   }, [type]);
 
   useEffect(() => {
-    const observer = new MutationObserver(() => {
-      const cookieBanner = document.querySelector('[class*="cmp-wrapper"]');
-      console.log(
-        'Mutation observed. Cookie banner present? test',
-        !!cookieBanner,
-      );
-      if (cookieBanner) {
+    const headerElement = document.querySelector('header');
+
+    const interval = setInterval(() => {
+      const bannerVisible = !!document.querySelector('[class*="cmp-wrapper"]');
+      console.log('Polling. Cookie banner visible?', bannerVisible);
+      if (bannerVisible) {
         setZindex(0);
+        if (headerElement) headerElement.style.zIndex = 0;
       } else {
         setZindex(10);
+        if (headerElement) headerElement.style.zIndex = 10;
       }
-    });
+    }, 500); // every 500ms
 
-    observer.observe(document.body, {
-      childList: true,
-      subtree: true,
-    });
-
-    // Initial check
-    const initialBanner = document.querySelector('[class*="cmp-wrapper"]');
-    console.log('Initial banner presence test:', !!initialBanner);
-    if (initialBanner) {
-      setZindex(0);
-    }
-
-    return () => observer.disconnect();
+    return () => clearInterval(interval);
   }, []);
 
   return (
