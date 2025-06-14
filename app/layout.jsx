@@ -11,20 +11,10 @@ import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import {PageLayout} from '~/components/PageLayout';
 import {NavigationProvider} from './context/NavigationContext';
-import {useEffect, useState} from 'react';
 
 export default function Layout() {
   const nonce = useNonce();
   const data = useRouteLoaderData('root');
-  const [hasConsent, setHasConsent] = useState(false);
-
-  useEffect(() => {
-    const consentCookie = document.cookie.match(/_tracking_consent=([^;]+)/);
-    const hasConsentCookie = consentCookie?.[1]?.includes('t_f_');
-    if (hasConsentCookie) {
-      setHasConsent(true);
-    }
-  }, []);
 
   return (
     <html lang="en">
@@ -41,7 +31,7 @@ export default function Layout() {
         <Links />
       </head>
       <body>
-        {data && hasConsent ? (
+        {data ? (
           <Analytics.Provider
             cart={data.cart}
             shop={data.shop}
@@ -54,11 +44,7 @@ export default function Layout() {
             </PageLayout>
           </Analytics.Provider>
         ) : (
-          <PageLayout {...data}>
-            <NavigationProvider>
-              <Outlet />
-            </NavigationProvider>
-          </PageLayout>
+          <Outlet />
         )}
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
