@@ -58,6 +58,30 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     else setTimeout(() => setZindex(10), 150);
   }, [type]);
 
+  useEffect(() => {
+    const observer = new MutationObserver(() => {
+      const cookieBanner = document.querySelector('aside#usercentrics-cmp-ui');
+      if (cookieBanner) {
+        setZindex(0);
+      } else {
+        setZindex(10);
+      }
+    });
+
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+    });
+
+    // Initial check
+    const initialBanner = document.querySelector('aside#usercentrics-cmp-ui');
+    if (initialBanner) {
+      setZindex(0);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <>
       {shouldAnimate && <LoaderAnimation />}
