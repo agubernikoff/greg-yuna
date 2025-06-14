@@ -65,16 +65,19 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
       const bannerVisible =
         document
           .querySelector('aside#usercentrics-cmp-ui')
-          ?.shadowRoot?.querySelector('#uc-overlay') != null;
+          ?.shadowRoot?.querySelector('.overlay') != null;
+
       console.log('Polling. Cookie banner visible?', bannerVisible);
+
       if (bannerVisible) {
         setZindex(0);
         if (headerElement) headerElement.style.zIndex = 0;
       } else {
         setZindex(10);
         if (headerElement) headerElement.style.zIndex = 10;
+        clearInterval(interval);
       }
-    }, 500); // every 500ms
+    }, 500);
 
     return () => clearInterval(interval);
   }, []);
