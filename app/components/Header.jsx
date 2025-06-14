@@ -70,11 +70,14 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
       console.log('Polling. Cookie banner visible?', bannerVisible);
 
       if (bannerVisible) {
-        setZindex(0);
-        if (headerElement) headerElement.style.zIndex = 0;
+        console.log('Setting header z-index to 0');
+        if (headerElement)
+          headerElement.style.setProperty('z-index', '0', 'important');
+        clearInterval(interval);
       } else {
-        setZindex(10);
-        if (headerElement) headerElement.style.zIndex = 10;
+        console.log('Setting header z-index to 10');
+        if (headerElement)
+          headerElement.style.setProperty('z-index', '10', 'important');
         clearInterval(interval);
       }
     }, 500);
