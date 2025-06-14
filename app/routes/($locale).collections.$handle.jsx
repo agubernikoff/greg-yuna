@@ -459,12 +459,19 @@ function Filt({
 
   function sortByStoredOrder(filters) {
     if (!filters) return [];
-    return filters?.slice().sort((a, b) => {
-      return (
-        (filterOrderRef.current.get(a.label) ?? Infinity) -
-        (filterOrderRef.current.get(b.label) ?? Infinity)
-      );
-    });
+
+    const sorted = filters
+      .slice()
+      .sort((a, b) => a.label.localeCompare(b.label));
+
+    const viewAll = sorted.find((f) => f.label === 'View All');
+    const withoutViewAll = sorted.filter((f) => f.label !== 'View All');
+
+    if (viewAll) {
+      withoutViewAll.push(viewAll);
+    }
+
+    return withoutViewAll;
   }
 
   useEffect(() => {
