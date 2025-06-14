@@ -17,7 +17,7 @@ export default async function handleRequest(
   remixContext,
   context,
 ) {
-  const {header, NonceProvider} = createContentSecurityPolicy({
+  const {header} = createContentSecurityPolicy({
     shop: {
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
@@ -51,6 +51,7 @@ export default async function handleRequest(
       'https://cdn.shopifycloud.com',
       'https://v1.api.service.cmp.usercentrics.eu',
       'https://latest.cmp.usercentrics.eu',
+      'https://consent-api.service.consent.usercentrics.eu',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
@@ -74,9 +75,7 @@ export default async function handleRequest(
   });
 
   const body = await renderToReadableStream(
-    <NonceProvider>
-      <RemixServer context={remixContext} url={request.url} />
-    </NonceProvider>,
+    <RemixServer context={remixContext} url={request.url} />,
     {
       signal: request.signal,
       onError(error) {
