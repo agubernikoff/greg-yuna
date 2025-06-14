@@ -57,50 +57,52 @@ function ProductGridItem({product, loading, index, total}) {
   const {setLastCollectionPath} = useNavigationContext();
 
   return (
-    <Link
-      className={`product-item ${hasMultipleImages ? 'has-multiple-images' : ''} ${
-        typeof window !== 'undefined' &&
-        window.location.pathname.includes('/collections') &&
-        (window.innerWidth < 768 ? index >= total - 2 : index >= total - 4)
-          ? 'no-margin-bottom'
-          : ''
-      }`}
-      to={variantUrl}
-      prefetch="intent"
-      onClick={() => setLastCollectionPath(pathname)}
-    >
-      <div style={{position: 'relative'}}>
-        <div
-          className="product-item-imgs-container"
-          onScroll={(e) =>
-            handleScroll(e.target.scrollWidth, e.target.scrollLeft)
-          }
-        >
-          {product.images.nodes.map((image) => (
-            <Image
-              key={image.id}
-              alt={image.altText || product.title}
-              aspectRatio="1/1"
-              data={image}
-              loading={'eager'}
-              sizes="(min-width: 45em) 400px, 100vw"
-            />
-          ))}
+    <div style={{display: 'flex'}} className="product-item-container">
+      <Link
+        className={`product-item ${hasMultipleImages ? 'has-multiple-images' : ''} ${
+          typeof window !== 'undefined' &&
+          window.location.pathname.includes('/collections') &&
+          (window.innerWidth < 768 ? index >= total - 2 : index >= total - 4)
+            ? 'no-margin-bottom'
+            : ''
+        }`}
+        to={variantUrl}
+        prefetch="intent"
+        onClick={() => setLastCollectionPath(pathname)}
+      >
+        <div style={{position: 'relative'}}>
+          <div
+            className="product-item-imgs-container"
+            onScroll={(e) =>
+              handleScroll(e.target.scrollWidth, e.target.scrollLeft)
+            }
+          >
+            {product.images.nodes.map((image) => (
+              <Image
+                key={image.id}
+                alt={image.altText || product.title}
+                aspectRatio="1/1"
+                data={image}
+                loading={'eager'}
+                sizes="(min-width: 45em) 400px, 100vw"
+              />
+            ))}
+          </div>
+          <div className="mapped-indicators">{mappedIndicators}</div>
         </div>
-        <div className="mapped-indicators">{mappedIndicators}</div>
-      </div>
-      <div className="product-item-details">
-        <p>{product.title}</p>
-        {product.priceRange.minVariantPrice.amount !==
-        product.priceRange.maxVariantPrice.amount ? (
-          <>
-            From <Money data={product.priceRange.minVariantPrice} />
-          </>
-        ) : (
-          <Money data={product.priceRange.minVariantPrice} />
-        )}
-      </div>
-    </Link>
+        <div className="product-item-details">
+          <p>{product.title}</p>
+          {product.priceRange.minVariantPrice.amount !==
+          product.priceRange.maxVariantPrice.amount ? (
+            <>
+              From <Money data={product.priceRange.minVariantPrice} />
+            </>
+          ) : (
+            <Money data={product.priceRange.minVariantPrice} />
+          )}
+        </div>
+      </Link>
+    </div>
   );
 }
 

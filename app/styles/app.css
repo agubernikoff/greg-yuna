@@ -948,6 +948,9 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   grid-template-columns: subgrid;
   grid-template-rows: min-content;
 }
+.recommended-products-grid {
+  row-gap: 1px;
+}
 
 .recommended-product img {
   height: auto;
@@ -1213,6 +1216,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   grid-column: 1/5;
   grid-template-columns: subgrid;
   grid-template-rows: min-content;
+  row-gap: 1px;
 }
 .product-item {
   position: relative;
@@ -1245,11 +1249,12 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .product-item-imgs-container img {
   height: auto;
   width: 100%;
-  position: absolute;
   transition: opacity 150ms ease-in-out;
 }
 .product-item-imgs-container img:nth-of-type(2) {
   opacity: 0;
+  position: absolute;
+  inset: 0;
 }
 .has-multiple-images:hover img:first-of-type {
   opacity: 0;
@@ -2229,14 +2234,13 @@ MEDIA QUIERIES
     column-gap: 1px;
     row-gap: 1px;
   }
-  .product-item {
+  .product-item-container {
     width: calc(50% - 0.5px);
+  }
+  .product-item {
     aspect-ratio: unset;
     background: white;
     margin-bottom: 0;
-  }
-  .collection .products-grid .product-item:nth-last-child(-n + 2) {
-    margin-bottom: 1px !important;
   }
   .product-item-details {
     opacity: 1 !important;
