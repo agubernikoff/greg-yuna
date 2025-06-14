@@ -83,6 +83,7 @@ export default async function handleRequest(
       'https://greg-yuna-store.myshopify.com/api/unstable/graphql.json',
       'https://cdn.shopifycloud.com',
       'https://v1.api.service.cmp.usercentrics.eu',
+      'https://consent-api.service.consent.usercentrics.eu',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
@@ -91,6 +92,9 @@ export default async function handleRequest(
       'https://klaviyo.com',
       'https://*.klaviyo.com',
       'https://fonts.googleapis.com',
+      'https://app.usercentrics.eu',
+      'https://uct.service.usercentrics.eu',
+      'data:',
     ],
     frameSrc: [
       'https://www.powr.io',
