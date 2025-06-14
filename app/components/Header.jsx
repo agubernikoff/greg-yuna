@@ -60,7 +60,9 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
-      const cookieBanner = document.querySelector('aside#usercentrics-cmp-ui');
+      const cookieBanner = document.querySelector(
+        'div.cmp-wrapper.cmp.first.center.desktop.zoom-lg',
+      );
       if (cookieBanner) {
         setZindex(0);
       } else {
@@ -74,7 +76,9 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     });
 
     // Initial check
-    const initialBanner = document.querySelector('aside#usercentrics-cmp-ui');
+    const initialBanner = document.querySelector(
+      'div.cmp-wrapper.cmp.first.center.desktop.zoom-lg',
+    );
     if (initialBanner) {
       setZindex(0);
     }
