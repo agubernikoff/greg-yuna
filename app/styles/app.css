@@ -2045,7 +2045,9 @@ MEDIA QUIERIES
     background-color: white !important;
   }
 }
-
+#uc-main-dialog {
+  border-radius: 0 !important;
+}
 .animation {
   bottom: 0;
   pointer-events: none;
