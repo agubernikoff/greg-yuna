@@ -252,6 +252,7 @@ export function Filter({title, filters, shopAll, term}) {
           open={openFilterSort}
           close={closeFilterSort}
         />
+
         <Sort
           addSort={addSort}
           removeSort={removeSort}
