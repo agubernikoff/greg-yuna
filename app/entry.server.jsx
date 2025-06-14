@@ -17,7 +17,7 @@ export default async function handleRequest(
   remixContext,
   context,
 ) {
-  const {nonce, header, NonceProvider} = createContentSecurityPolicy({
+  const {header, NonceProvider} = createContentSecurityPolicy({
     shop: {
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
@@ -29,8 +29,8 @@ export default async function handleRequest(
       'http://localhost:*',
       "'self'",
       "'unsafe-eval'",
+      "'unsafe-inline'",
       'https://web.cmp.usercentrics.eu',
-      `'nonce-${nonce}'`, // ensure nonce is interpolated if not already
     ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
@@ -75,10 +75,9 @@ export default async function handleRequest(
 
   const body = await renderToReadableStream(
     <NonceProvider>
-      <RemixServer context={remixContext} url={request.url} nonce={nonce} />
+      <RemixServer context={remixContext} url={request.url} />
     </NonceProvider>,
     {
-      nonce,
       signal: request.signal,
       onError(error) {
         console.error(error);
