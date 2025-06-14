@@ -1218,6 +1218,10 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   grid-template-rows: min-content;
   row-gap: 1px;
 }
+.product-item-container {
+  display: flex;
+  background: white;
+}
 .product-item {
   position: relative;
   margin-bottom: 1px;
@@ -2236,6 +2240,7 @@ MEDIA QUIERIES
   }
   .product-item-container {
     width: calc(50% - 0.5px);
+    display: block;
   }
   .product-item {
     aspect-ratio: unset;
@@ -2429,13 +2434,15 @@ MEDIA QUIERIES
     align-items: flex-end;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    overscroll-behavior: none;
   }
   .product-images::-webkit-scrollbar,
   .product-item-imgs-container::-webkit-scrollbar {
     display: none;
   }
   .product-image,
-  .product-item-imgs-container img {
+  .product-item-imgs-container img,
+  .product-item-imgs-container img:nth-of-type(2) {
     position: static;
     height: auto;
     scroll-snap-align: start;

@@ -57,7 +57,7 @@ function ProductGridItem({product, loading, index, total}) {
   const {setLastCollectionPath} = useNavigationContext();
 
   return (
-    <div style={{display: 'flex'}} className="product-item-container">
+    <div className="product-item-container">
       <Link
         className={`product-item ${hasMultipleImages ? 'has-multiple-images' : ''} ${
           typeof window !== 'undefined' &&
