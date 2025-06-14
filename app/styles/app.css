@@ -2041,6 +2041,9 @@ MEDIA QUIERIES
   .filter-space-between.sort-by-button {
     width: 285px;
   }
+  .sort-container > .padded-filter-div.inline-border.filter-input {
+    background-color: white !important;
+  }
 }
 
 .animation {
