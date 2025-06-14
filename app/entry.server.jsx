@@ -74,6 +74,11 @@ export default async function handleRequest(
     ],
   });
 
+  const headerWithoutNonce = header
+    .replace(/'nonce-[^']*'/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
   const body = await renderToReadableStream(
     <RemixServer context={remixContext} url={request.url} />,
     {
@@ -90,7 +95,7 @@ export default async function handleRequest(
   }
 
   responseHeaders.set('Content-Type', 'text/html');
-  responseHeaders.set('Content-Security-Policy', header);
+  responseHeaders.set('Content-Security-Policy', headerWithoutNonce);
 
   return new Response(body, {
     headers: responseHeaders,

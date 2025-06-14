@@ -36,7 +36,7 @@ function LoaderAnimation() {
         background: 'white',
         justifyContent: 'center',
         alignItems: isMobile && !t ? 'flex-start' : 'center',
-        display: 'none',
+        display: 'flex',
         padding: '1rem',
         minHeight: 'calc(var(--header-height) - 2rem)',
       }}
