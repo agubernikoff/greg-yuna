@@ -2010,7 +2010,7 @@ MEDIA QUIERIES
     position: fixed;
     top: 1rem;
     z-index: 1;
-    right: calc(1rem + var(--cart-badge-adjustment));
+    right: calc(1rem + var(--cart-badge-adjustment) + 1px);
     left: calc(50vw + var(--header-width) - 0.75rem);
     background-color: white;
   }
@@ -2039,7 +2039,7 @@ MEDIA QUIERIES
     background-color: rgb(246 246 246) !important;
   }
   .filter-space-between.sort-by-button {
-    width: 285px;
+    min-width: 185px;
   }
   .sort-container > .padded-filter-div.inline-border.filter-input {
     background-color: white !important;
