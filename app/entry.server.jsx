@@ -30,6 +30,7 @@ export default async function handleRequest(
       "'self'",
       "'unsafe-eval'",
       'https://web.cmp.usercentrics.eu',
+      `'nonce-${nonce}'`, // ensure nonce is interpolated if not already
     ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
@@ -58,6 +59,9 @@ export default async function handleRequest(
       'https://klaviyo.com',
       'https://*.klaviyo.com',
       'https://fonts.googleapis.com',
+      'https://app.usercentrics.eu',
+      'https://uct.service.usercentrics.eu',
+      'data:', // allows data URIs like inline SVGs
     ],
     frameSrc: [
       'https://www.powr.io',
