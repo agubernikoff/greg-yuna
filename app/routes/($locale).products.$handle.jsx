@@ -116,11 +116,7 @@ export default function Product() {
   });
 
   const filteredImages = product.images.edges.filter((i) => {
-    if (selectedVariant?.availableForSale || !i?.node?.altText)
-      return (
-        i?.node?.altText?.toLowerCase() ===
-        selectedVariant?.image?.altText?.toLowerCase()
-      );
+    if (!i?.node?.altText) return true;
     else
       return selectedVariant.title
         .toLowerCase()

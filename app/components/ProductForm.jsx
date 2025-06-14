@@ -119,8 +119,6 @@ export function ProductForm({
                     ['size', 'initial'].includes(option.name.toLowerCase()) &&
                     isIncompleteLastRow;
 
-                  console.log(needsRightBorder, index, name);
-
                   if (isDifferentProduct) {
                     return (
                       <Link
@@ -496,7 +494,6 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                     const hovered = name === hoverVariant && available;
 
                     const isLast = index === option.optionValues.length - 1;
-                    console.log(isLast);
 
                     if (isDifferentProduct) {
                       return (
