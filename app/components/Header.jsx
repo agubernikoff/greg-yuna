@@ -63,6 +63,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
       const cookieBanner = document.querySelector(
         'div.cmp-wrapper.cmp.first.center.desktop.zoom-lg',
       );
+      console.log('Mutation observed. Cookie banner present?', !!cookieBanner);
       if (cookieBanner) {
         setZindex(0);
       } else {
@@ -79,6 +80,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     const initialBanner = document.querySelector(
       'div.cmp-wrapper.cmp.first.center.desktop.zoom-lg',
     );
+    console.log('Initial banner presence:', !!initialBanner);
     if (initialBanner) {
       setZindex(0);
     }
