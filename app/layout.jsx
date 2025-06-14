@@ -30,8 +30,8 @@ export default function Layout() {
         <script src="https://web.cmp.usercentrics.eu/modules/autoblocker.js"></script>
         <script
           id="usercentrics-cmp"
-          src="https://web.cmp.usercentrics.eu/ui/loader.js"
           data-settings-id="ht1_dffaOq50p6"
+          src="https://app.usercentrics.eu/browser-ui/latest/loader.js"
           async
         ></script>
         <Meta />
