@@ -61,7 +61,10 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
   useEffect(() => {
     const observer = new MutationObserver(() => {
       const cookieBanner = document.querySelector('[class*="cmp-wrapper"]');
-      console.log('Mutation observed. Cookie banner present?', !!cookieBanner);
+      console.log(
+        'Mutation observed. Cookie banner present? test',
+        !!cookieBanner,
+      );
       if (cookieBanner) {
         setZindex(0);
       } else {
@@ -76,7 +79,7 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
 
     // Initial check
     const initialBanner = document.querySelector('[class*="cmp-wrapper"]');
-    console.log('Initial banner presence:', !!initialBanner);
+    console.log('Initial banner presence test:', !!initialBanner);
     if (initialBanner) {
       setZindex(0);
     }
