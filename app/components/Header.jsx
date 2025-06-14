@@ -71,13 +71,11 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
 
       if (bannerVisible) {
         console.log('Setting header z-index to 0');
-        if (headerElement)
-          headerElement.style.setProperty('z-index', '0', 'important');
+        if (headerElement) headerElement.style.zIndex = '0';
         clearInterval(interval);
       } else {
         console.log('Setting header z-index to 10');
-        if (headerElement)
-          headerElement.style.setProperty('z-index', '10', 'important');
+        if (headerElement) headerElement.style.zIndex = '10';
         clearInterval(interval);
       }
     }, 500);
