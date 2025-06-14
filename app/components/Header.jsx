@@ -62,7 +62,10 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
     const headerElement = document.querySelector('header');
 
     const interval = setInterval(() => {
-      const bannerVisible = !!document.querySelector('[class*="cmp-wrapper"]');
+      const bannerVisible =
+        document
+          .querySelector('aside#usercentrics-cmp-ui')
+          ?.shadowRoot?.querySelector('#uc-overlay') != null;
       console.log('Polling. Cookie banner visible?', bannerVisible);
       if (bannerVisible) {
         setZindex(0);
