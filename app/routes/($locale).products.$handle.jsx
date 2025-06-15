@@ -174,6 +174,15 @@ export default function Product() {
     return word.charAt(0).toUpperCase() + word.slice(1);
   }
 
+  function formatCollectionTitle(slug) {
+    if (!slug) return '';
+    const cleaned = slug.replace(/-1$/, '').replace(/-/g, ' ');
+    return cleaned
+      .split(' ')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+  }
+
   // Prefer a non-"New Arrivals" collection if available
   const notNewArrivalsCollection = product.collections.nodes.find(
     (col) => col.title !== 'New Arrivals',
@@ -226,7 +235,7 @@ export default function Product() {
                     ? 'New Arrivals'
                     : to.includes('best-sellers')
                       ? 'Best Sellers'
-                      : capitalizeFirstLetter(to.split('/collections/')[1])}
+                      : formatCollectionTitle(to.split('/collections/')[1])}
                 </NavLink>
                 <span className="crumb-dash">{' → '}</span>
               </>
