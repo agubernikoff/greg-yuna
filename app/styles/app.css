@@ -1230,6 +1230,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   margin-bottom: 1px;
   overflow: hidden;
   aspect-ratio: 1/1;
+  width: 100%;
 }
 .product-item:hover {
   text-decoration: none;
