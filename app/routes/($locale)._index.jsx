@@ -27,16 +27,21 @@ export async function loader(args) {
 }
 
 async function loadCriticalData({context}) {
-  const [newArrivals, {collections}, storeLocations] = await Promise.all([
-    context.storefront.query(NEW_ARRIVALS_QUERY),
-    context.storefront.query(FEATURED_COLLECTION_QUERY),
-    context.storefront.query(STORE_LOCATIONS_QUERY),
-  ]);
+  const [newArrivals, {collections}, storeLocations, {metaobjects}] =
+    await Promise.all([
+      context.storefront.query(NEW_ARRIVALS_QUERY),
+      context.storefront.query(FEATURED_COLLECTION_QUERY),
+      context.storefront.query(STORE_LOCATIONS_QUERY),
+      context.storefront.query(MOBILE_HERO_QUERY),
+    ]);
+
+  const mobileHero = metaobjects.nodes[0];
 
   return {
     featuredCollection: newArrivals.collection,
     collections,
     storeLocations,
+    mobileHero,
   };
 }
 
@@ -58,7 +63,10 @@ export default function Homepage() {
   const data = useLoaderData();
   return (
     <div className="home">
-      <FeaturedCollection collection={data.featuredCollection} />
+      <FeaturedCollection
+        collection={data.featuredCollection}
+        mobileHero={data.mobileHero}
+      />
       <RecommendedProducts products={data.featuredCollection} />
       <Collections collections={data.collections} />
       <FlagshipHome storeLocations={data.storeLocations} />
@@ -66,9 +74,11 @@ export default function Homepage() {
   );
 }
 
-function FeaturedCollection({collection}) {
+function FeaturedCollection({collection, mobileHero}) {
   if (!collection) return null;
   const image = collection?.image;
+  const mobileImage = mobileHero?.field?.reference?.image;
+
   return (
     <NavLink
       className="featured-collection"
@@ -84,6 +94,18 @@ function FeaturedCollection({collection}) {
           }}
         >
           <Image data={image} sizes="100vw" />
+        </div>
+      )}
+      {mobileImage && (
+        <div
+          className="mobile-featured-collection-image"
+          style={{
+            background: `url("${mobileImage.url}&width=100") center center`,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat',
+          }}
+        >
+          <Image data={mobileImage} sizes="100vw" />
         </div>
       )}
       <p>{collection.title.toUpperCase()}</p>
@@ -363,6 +385,28 @@ const NEW_ARRIVALS_QUERY = `#graphql
     }
   }
 `;
+
+const MOBILE_HERO_QUERY = `#graphql
+query MobileHero($country: CountryCode, $language: LanguageCode) @inContext(country: $country, language: $language) {
+  metaobjects(type: "mobile_hero", first: 1, sortKey: "created_at",reverse: true) {
+    nodes {
+      id
+      field(key:"image") {
+        reference {
+          ... on MediaImage {
+            id
+            image {
+              url
+              width
+              altText
+              height
+            }
+          }
+        }
+      }
+    }
+  }
+}`;
 
 /** @typedef {import('@shopify/remix-oxygen').LoaderFunctionArgs} LoaderFunctionArgs */
 /** @template T @typedef {import('@remix-run/react').MetaFunction<T>} MetaFunction */
