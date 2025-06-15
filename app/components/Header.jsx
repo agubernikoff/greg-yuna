@@ -284,6 +284,8 @@ export function HeaderMenu({
     setOpen(false);
   }
 
+  const {pathname} = useLocation();
+
   return (
     <div className="header-menu-container">
       <SearchFormPredictive>
@@ -352,13 +354,19 @@ export function HeaderMenu({
                   item.url.includes(primaryDomainUrl)
                     ? new URL(item.url).pathname
                     : item.url;
-
+                console.log(url, item.title, pathname);
                 return (
                   <NavLink
                     className="header-menu-item"
                     end
                     key={`${item.id}${item.resourceId}`}
-                    onClick={close}
+                    onClick={(e) => {
+                      if (url === '/collections/all' && url === pathname) {
+                        e.preventDefault();
+                        window.scrollTo(0, 0);
+                      }
+                      close();
+                    }}
                     prefetch="intent"
                     style={activeLinkStyle}
                     to={url}
