@@ -1,9 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {useVariantUrl} from '~/lib/variants';
-import {Link, useLocation} from '@remix-run/react';
+import {useLocation} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {motion} from 'motion/react';
 import {useNavigationContext} from '~/context/NavigationContext';
+import NavLink from './NavLink';
 
 function ProductGridItem({product, loading, index, total}) {
   const variantUrl = useVariantUrl(product.handle);
@@ -58,7 +59,7 @@ function ProductGridItem({product, loading, index, total}) {
 
   return (
     <div className="product-item-container">
-      <Link
+      <NavLink
         className={`product-item ${hasMultipleImages ? 'has-multiple-images' : ''} ${
           typeof window !== 'undefined' &&
           window.location.pathname.includes('/collections') &&
@@ -70,7 +71,7 @@ function ProductGridItem({product, loading, index, total}) {
         prefetch="intent"
         onClick={() => setLastCollectionPath(pathname)}
       >
-        <div style={{position: 'relative'}}>
+        <div style={{position: 'relative', height: '100%'}}>
           <div
             className="product-item-imgs-container"
             onScroll={(e) =>
@@ -101,7 +102,7 @@ function ProductGridItem({product, loading, index, total}) {
             <Money data={product.priceRange.minVariantPrice} />
           )}
         </div>
-      </Link>
+      </NavLink>
     </div>
   );
 }
