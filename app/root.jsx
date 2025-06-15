@@ -167,7 +167,7 @@ export default function App() {
     const waitForUC = setInterval(() => {
       const cmp = document.querySelector('#usercentrics-cmp-ui');
       if (cmp) {
-        cmp.style.zIndex = '999999';
+        cmp.style.zIndex = '9999999999999';
         clearInterval(waitForUC);
       }
     }, 50);
