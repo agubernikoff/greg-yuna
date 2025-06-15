@@ -2339,9 +2339,10 @@ MEDIA QUIERIES
     box-sizing: border-box;
     background: white;
     color: black;
+    padding-right: 0.5rem;
   }
   .filter-space-between.inline-border.sort-by-button.mobile-filter {
-    padding: 0;
+    /* padding: 0; */
     border-bottom: none;
   }
   .sort-overflow-hidden-container {
