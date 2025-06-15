@@ -1221,6 +1221,9 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 .product-item-container {
   display: flex;
   background: white;
+  aspect-ratio: 1/1;
+  overflow: hidden;
+  flex-wrap: wrap;
 }
 .product-item {
   position: relative;
