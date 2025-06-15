@@ -2019,7 +2019,8 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   background-color: #000 !important;
 }
 
-body .uwy .uai:focus-within {
+body .uwy .uai:focus-within,
+body .uwy .ulsti:focus-within {
   outline: 1px solid transparent !important;
 }
 
