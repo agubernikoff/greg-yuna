@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {useVariantUrl} from '~/lib/variants';
 import {useLocation} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
@@ -11,6 +11,7 @@ function ProductGridItem({product, loading, index, total}) {
   const {pathname} = useLocation();
 
   const [imageIndex, setImageIndex] = useState(0);
+  const containerRef = useRef(null);
 
   function handleScroll(scrollWidth, scrollLeft) {
     const widthOfAnImage = scrollWidth / product.images.nodes.length;
@@ -23,7 +24,24 @@ function ProductGridItem({product, loading, index, total}) {
 
   useEffect(() => {
     setImageIndex(0);
-  }, []);
+    const isMobile = window.innerWidth < 768;
+
+    if (containerRef.current && isMobile) {
+      const el = containerRef.current;
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          el.scrollLeft = 0;
+          console.log('After frame + delay: scrollLeft =', el.scrollLeft);
+          console.log(
+            'Container width:',
+            el.clientWidth,
+            'Total scroll width:',
+            el.scrollWidth,
+          );
+        }, 100); // You may even try 150–200ms if needed
+      });
+    }
+  }, [pathname]);
 
   const mappedIndicators =
     product.images.nodes.length > 1
@@ -74,6 +92,7 @@ function ProductGridItem({product, loading, index, total}) {
         <div style={{position: 'relative', height: '100%'}}>
           <div
             className="product-item-imgs-container"
+            ref={containerRef}
             onScroll={(e) =>
               handleScroll(e.target.scrollWidth, e.target.scrollLeft)
             }
