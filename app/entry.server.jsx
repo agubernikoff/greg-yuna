@@ -31,6 +31,7 @@ export default async function handleRequest(
       "'unsafe-eval'",
       "'unsafe-inline'",
       'https://web.cmp.usercentrics.eu',
+      'https://cdn.userway.org', // added
     ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
@@ -52,6 +53,8 @@ export default async function handleRequest(
       'https://v1.api.service.cmp.usercentrics.eu',
       'https://latest.cmp.usercentrics.eu',
       'https://consent-api.service.consent.usercentrics.eu',
+      'https://api.userway.org', // added
+      'https://cdn.userway.org', // added
     ],
     imgSrc: [
       'https://cdn.shopify.com',
@@ -63,6 +66,12 @@ export default async function handleRequest(
       'https://app.usercentrics.eu',
       'https://uct.service.usercentrics.eu',
       'data:', // allows data URIs like inline SVGs
+      'https://cdn.userway.org', // added
+      'https://engaged-orca-warm.ngrok-free.app', // allow local favicon during dev
+    ],
+    fontSrc: [
+      "'self'",
+      'https://cdn.userway.org', // allow widget fonts
     ],
     frameSrc: [
       'https://www.powr.io',
@@ -71,6 +80,14 @@ export default async function handleRequest(
       'https://cdn.shopify.com',
       'http://localhost:3000',
       'https://*.klaviyo.com/*',
+      'https://cdn.userway.org', // allow UserWay iframe
+    ],
+    styleSrc: [
+      "'self'",
+      "'unsafe-inline'",
+      'https://cdn.shopify.com',
+      'http://localhost:*',
+      'https://cdn.userway.org', // added
     ],
   });
 

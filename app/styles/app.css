@@ -2015,6 +2015,10 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   cursor: pointer;
 }
 
+.uiiw > img {
+  background-color: #000 !important;
+}
+
 /* 
 MEDIA QUIERIES
 */
