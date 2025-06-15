@@ -2438,7 +2438,6 @@ MEDIA QUIERIES
     scrollbar-width: none;
     -ms-overflow-style: none;
     overscroll-behavior: none;
-    gap: 1px;
   }
   .product-images::-webkit-scrollbar,
   .product-item-imgs-container::-webkit-scrollbar {
@@ -2453,7 +2452,6 @@ MEDIA QUIERIES
   }
   .product-item-imgs-container img {
     opacity: 1 !important;
-    width: calc(100% - 1px) !important;
   }
   .product-image img {
     width: 100vw !important;
