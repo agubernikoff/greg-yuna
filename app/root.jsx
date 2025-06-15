@@ -170,7 +170,7 @@ export default function App() {
         cmp.style.zIndex = '9999999999999';
         clearInterval(waitForUC);
       }
-    }, 50);
+    }, 1);
   }, []);
 
   return <Outlet />;
