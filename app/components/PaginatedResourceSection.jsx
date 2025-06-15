@@ -91,7 +91,7 @@ function PaginatedResourceSectionInner({
           >
             {hasPreviousPage && (
               <Link
-                to={cleanFilterUrl(previousPageUrl)}
+                to={previousPageUrl}
                 style={{
                   gridColumn: '1/-1',
                   borderBottom: '1px solid #e9e9e9',
