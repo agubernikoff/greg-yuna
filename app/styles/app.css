@@ -1220,7 +1220,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 }
 .product-item-container {
   display: flex;
-  background: white;
+  /* background: white; */
   aspect-ratio: 1/1;
   overflow: hidden;
   flex-wrap: wrap;
@@ -2249,6 +2249,7 @@ MEDIA QUIERIES
     width: calc(50% - 0.5px);
     display: block;
     aspect-ratio: auto;
+    background: white;
   }
   .product-item {
     aspect-ratio: unset;
