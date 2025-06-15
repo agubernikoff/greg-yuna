@@ -346,8 +346,9 @@ function Sort({
           >
             <motion.div
               initial={{y: '-100%'}}
-              animate={{y: '1px'}}
+              animate={{y: '0px'}}
               exit={{y: '-100%'}}
+              style={{borderTop: '1px solid #e9e9e9'}}
               transition={{ease: 'easeInOut', duration: 0.15}}
             >
               <div className="sort-container">
@@ -579,8 +580,9 @@ function MobileFilt({children, isOpen, toggleIsOpen}) {
           >
             <motion.div
               initial={{y: '-100%'}}
-              animate={{y: '1px'}}
+              animate={{y: '0px'}}
               exit={{y: '-100%'}}
+              style={{borderTop: '1px solid #e9e9e9'}}
               transition={{ease: 'easeInOut', duration: 0.15}}
             >
               <div className="sort-container">{children}</div>
