@@ -2249,12 +2249,13 @@ MEDIA QUIERIES
     width: calc(50% - 0.5px);
     display: block;
     aspect-ratio: auto;
-    height: fit-content;
   }
   .product-item {
     aspect-ratio: unset;
     background: white;
     margin-bottom: 0;
+    height: fit-content;
+    display: block;
   }
   .product-item-details {
     opacity: 1 !important;
