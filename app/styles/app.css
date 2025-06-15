@@ -920,7 +920,7 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   height: 100%;
   max-height: 100dvh;
   max-width: calc(100vw - var(--header-width));
-  width: calc(100vw - var(--header-width));
+  width: calc(100vw - var(--header-width)) !important;
   object-fit: cover;
 }
 
