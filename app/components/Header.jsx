@@ -354,7 +354,7 @@ export function HeaderMenu({
                   item.url.includes(primaryDomainUrl)
                     ? new URL(item.url).pathname
                     : item.url;
-                console.log(url, item.title, pathname);
+
                 return (
                   <NavLink
                     className="header-menu-item"
