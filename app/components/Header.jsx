@@ -197,7 +197,6 @@ function MenuToggle({}) {
 function Logo({isMobile}) {
   return (
     <svg
-      layout={false}
       // initial={
       //   !isMobile
       //     ? {width: '351px', height: '362px'}
