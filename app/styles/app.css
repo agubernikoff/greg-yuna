@@ -2248,6 +2248,8 @@ MEDIA QUIERIES
   .product-item-container {
     width: calc(50% - 0.5px);
     display: block;
+    aspect-ratio: auto;
+    height: fit-content;
   }
   .product-item {
     aspect-ratio: unset;
@@ -2488,6 +2490,11 @@ MEDIA QUIERIES
     position: absolute;
     background: #e9e9e9;
     overflow: hidden;
+  }
+  .product-item-container .mapped-indicators {
+    position: static;
+    margin-left: 1rem;
+    margin-block: 0.75rem;
   }
   .product-title-price {
     display: flex;
