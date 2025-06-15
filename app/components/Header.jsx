@@ -89,10 +89,10 @@ export function Header({header, isLoggedIn, cart, publicStoreDomain}) {
       >
         <CartToggle cart={cart} />
         <motion.div
-          layout
-          // initial={{opacity: 0}}
-          // animate={{opacity: 1}}
-          // transition={{opacity: {duration: 1}, layout: {duration: 0.5}}}
+        // layout
+        // initial={{opacity: 0}}
+        // animate={{opacity: 1}}
+        // transition={{opacity: {duration: 1}, layout: {duration: 0.5}}}
         >
           <NavLink
             prefetch="intent"
@@ -196,7 +196,8 @@ function MenuToggle({}) {
 }
 function Logo({isMobile}) {
   return (
-    <motion.svg
+    <svg
+      layout={false}
       // initial={
       //   !isMobile
       //     ? {width: '351px', height: '362px'}
@@ -229,6 +230,8 @@ function Logo({isMobile}) {
       style={{
         maxWidth:
           'calc(100vw - 2rem - var(--cart-badge-adjustment) - var(--cart-badge-adjustment))',
+        width: '32px',
+        height: '32px',
       }}
     >
       <g clipPath="url(#clip0_104_2698)">
@@ -250,7 +253,7 @@ function Logo({isMobile}) {
           <rect width="350.743" height="361.683" fill="white" />
         </clipPath>
       </defs>
-    </motion.svg>
+    </svg>
   );
 }
 
