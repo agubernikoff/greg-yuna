@@ -1,9 +1,16 @@
 import React, {useState, useEffect, useRef} from 'react';
 import {Pagination} from '@shopify/hydrogen';
-import {useNavigate, Link} from '@remix-run/react';
+import {useNavigate, Link, useLocation} from '@remix-run/react';
 import GridPlaceholder from './GridPlaceholder';
 
-export function PaginatedResourceSection({
+export function PaginatedResourceSection(props) {
+  const location = useLocation();
+  const key = location.pathname + location.search;
+
+  return <PaginatedResourceSectionInner key={key} {...props} />;
+}
+
+function PaginatedResourceSectionInner({
   connection,
   children,
   resourcesClassName,
