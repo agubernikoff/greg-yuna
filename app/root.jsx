@@ -163,7 +163,16 @@ export default function App() {
     script.src = 'https://cdn.userway.org/widget.js';
     script.async = true;
     (document.body || document.head).appendChild(script);
+
+    const waitForUC = setInterval(() => {
+      const cmp = document.querySelector('#usercentrics-cmp-ui');
+      if (cmp) {
+        cmp.style.zIndex = '999999';
+        clearInterval(waitForUC);
+      }
+    }, 250);
   }, []);
+
   return <Outlet />;
 }
 
