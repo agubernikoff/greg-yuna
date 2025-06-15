@@ -2238,6 +2238,9 @@ MEDIA QUIERIES
     column-gap: 1px;
     row-gap: 1px;
   }
+  .products-grid {
+    border-bottom: 1px solid #e9e9e9;
+  }
   .product-item-container {
     width: calc(50% - 0.5px);
     display: block;
