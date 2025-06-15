@@ -76,6 +76,13 @@ export function ProductForm({
             option.name.toLowerCase() === 'material' ||
             option.name.toLowerCase() === 'color';
 
+          // Add logic for size/initial grid with less than 4 values
+          const isSizeOrInitial = ['size', 'initial'].includes(
+            option.name.toLowerCase(),
+          );
+          const shouldShiftBorder =
+            isSizeOrInitial && option.optionValues.length < 4;
+
           return (
             <div className="product-options" key={option.name}>
               <p>
@@ -85,11 +92,8 @@ export function ProductForm({
                 </span>
               </p>
               <div
-                className={`product-options-grid ${
-                  ['size', 'initial'].includes(option.name.toLowerCase())
-                    ? 'size-initial-grid'
-                    : ''
-                }`}
+                className={`product-options-grid ${isSizeOrInitial ? 'size-initial-grid' : ''}`}
+                style={shouldShiftBorder ? {borderTop: 'none'} : {}}
               >
                 {option.optionValues.map((value, index) => {
                   const {
@@ -104,7 +108,6 @@ export function ProductForm({
                     variant,
                   } = value;
                   const variantImage = isColorOption ? variant?.image : null;
-                  // Border logic for size/initial grid (removed)
                   let styles = itemStyle(selected, available, isColorOption);
                   const hovered = name === hoverVariant && available;
 
@@ -115,9 +118,7 @@ export function ProductForm({
                   const itemsInLastRow = total % itemsPerRow || itemsPerRow;
                   const isIncompleteLastRow = itemsInLastRow < itemsPerRow;
                   const needsRightBorder =
-                    isLastItem &&
-                    ['size', 'initial'].includes(option.name.toLowerCase()) &&
-                    isIncompleteLastRow;
+                    isLastItem && isSizeOrInitial && isIncompleteLastRow;
 
                   if (isDifferentProduct) {
                     return (
@@ -144,11 +145,7 @@ export function ProductForm({
                       <button
                         type="button"
                         className={`product-options-item ${
-                          ['size', 'initial'].includes(
-                            option.name.toLowerCase(),
-                          )
-                            ? 'fixed-width'
-                            : ''
+                          isSizeOrInitial ? 'fixed-width' : ''
                         }${exists && !selected ? ' link' : ''}`}
                         key={option.name + name}
                         style={{
@@ -156,6 +153,9 @@ export function ProductForm({
                           borderRight: needsRightBorder
                             ? '1px solid #e9e9e9 !important'
                             : styles.borderRight,
+                          borderTop: shouldShiftBorder
+                            ? '1px solid #e9e9e9'
+                            : undefined,
                         }}
                         disabled={!exists}
                         onClick={() => {
@@ -184,16 +184,8 @@ export function ProductForm({
                             style={{
                               position: 'absolute',
                               bottom: 0,
-                              left: ['size', 'initial'].includes(
-                                option.name.toLowerCase(),
-                              )
-                                ? '0'
-                                : '-1px',
-                              right: ['size', 'initial'].includes(
-                                option.name.toLowerCase(),
-                              )
-                                ? '0'
-                                : '-1px',
+                              left: isSizeOrInitial ? '0' : '-1px',
+                              right: isSizeOrInitial ? '0' : '-1px',
                               height: '2px',
                               background: '#999999',
                             }}
@@ -210,16 +202,8 @@ export function ProductForm({
                             style={{
                               position: 'absolute',
                               bottom: 0,
-                              left: ['size', 'initial'].includes(
-                                option.name.toLowerCase(),
-                              )
-                                ? '0'
-                                : '-1px',
-                              right: ['size', 'initial'].includes(
-                                option.name.toLowerCase(),
-                              )
-                                ? '0'
-                                : '-1px',
+                              left: isSizeOrInitial ? '0' : '-1px',
+                              right: isSizeOrInitial ? '0' : '-1px',
                               height: '2px',
                               background: 'black',
                             }}
