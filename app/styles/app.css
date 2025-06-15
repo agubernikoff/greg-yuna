@@ -2369,7 +2369,8 @@ MEDIA QUIERIES
     color: black;
   }
   .flagship-container {
-    border-block: 1px solid #e9e9e9;
+    border-bottom: 1px solid #e9e9e9;
+    border-top: 0.75px solid #e9e9e9;
   }
   .flagship-left {
     display: none;

@@ -31,13 +31,6 @@ function ProductGridItem({product, loading, index, total}) {
       requestAnimationFrame(() => {
         setTimeout(() => {
           el.scrollLeft = 0;
-          console.log('After frame + delay: scrollLeft =', el.scrollLeft);
-          console.log(
-            'Container width:',
-            el.clientWidth,
-            'Total scroll width:',
-            el.scrollWidth,
-          );
         }, 100); // You may even try 150–200ms if needed
       });
     }
