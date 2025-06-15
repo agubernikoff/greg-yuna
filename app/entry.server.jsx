@@ -71,7 +71,8 @@ export default async function handleRequest(
     ],
     fontSrc: [
       "'self'",
-      'https://cdn.userway.org', // allow widget fonts
+      'https://cdn.userway.org',
+      'https://cdn.shopify.com', // added to restore production font
     ],
     frameSrc: [
       'https://www.powr.io',
