@@ -364,12 +364,6 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
     return false;
   });
 
-  const overlay = {
-    initial: {opacity: 0},
-    animate: {opacity: 1},
-    exit: {opacity: 0},
-  };
-
   const popup = {
     initial: {y: isMobile ? '100%' : 0},
     animate: {y: 0},
@@ -377,14 +371,7 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
   };
 
   return (
-    <motion.div
-      className={`popupoverlay overlay ${clicked ? 'expanded' : ''}`}
-      variants={overlay}
-      initial="initial"
-      animate="animate"
-      exit="exit"
-      key="popup"
-    >
+    <>
       <button
         onClick={closePopUp}
         style={{position: 'absolute', inset: 0, background: 'transparent'}}
@@ -597,7 +584,7 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
           ADD CHAIN
         </button>
       </motion.div>
-    </motion.div>
+    </>
   );
 }
 function Compliment({compliment, setClicked, chain}) {

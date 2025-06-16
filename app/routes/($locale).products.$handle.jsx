@@ -223,6 +223,12 @@ export default function Product() {
   function removeChain() {
     setChain();
   }
+
+  const overlay = {
+    initial: {opacity: 0},
+    animate: {opacity: 1},
+    exit: {opacity: 0},
+  };
   return (
     <>
       <div className="product">
@@ -336,11 +342,20 @@ export default function Product() {
       </div>
       <AnimatePresence mode="popLayout">
         {clicked && (
-          <AddAChainPopUp
-            clicked={clicked}
-            closePopUp={closePopUp}
-            addAChain={addAChain}
-          />
+          <motion.div
+            className={`popupoverlay overlay ${clicked ? 'expanded' : ''}`}
+            variants={overlay}
+            initial="initial"
+            animate="animate"
+            exit="exit"
+            key="popup"
+          >
+            <AddAChainPopUp
+              clicked={clicked}
+              closePopUp={closePopUp}
+              addAChain={addAChain}
+            />
+          </motion.div>
         )}
       </AnimatePresence>
       <YouMayAlsoLike recs={recs} />
