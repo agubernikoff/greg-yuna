@@ -518,6 +518,7 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                           />
                           {hovered && (
                             <motion.div
+                              className="add-a-chain-popup-variant-hovered-indicator"
                               // layoutId={`hovered-${option.name}-${clicked.handle}`}
                               id={`${option.name}`}
                               transition={{ease: 'easeInOut', duration: 0.15}}
