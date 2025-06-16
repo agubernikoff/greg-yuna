@@ -28,6 +28,7 @@ export function ProductForm({
   chain,
   addAChain,
   removeChain,
+  productImagesRef,
 }) {
   const location = useLocation();
   // useEffect(() => {
@@ -164,6 +165,11 @@ export function ProductForm({
                               replace: true,
                               preventScrollReset: true,
                               state: location.state,
+                            });
+                            productImagesRef.current.scrollTo({
+                              top: 0,
+                              left: 0,
+                              behavior: 'smooth',
                             });
                           }
                         }}

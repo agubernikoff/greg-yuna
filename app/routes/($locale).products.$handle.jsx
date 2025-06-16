@@ -1,5 +1,5 @@
 import {useLoaderData, NavLink, useLocation} from '@remix-run/react';
-import {useState, useEffect, Suspense} from 'react';
+import {useState, useEffect, useRef} from 'react';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -144,6 +144,9 @@ export default function Product() {
   const productImage = filteredImages.map((edge) => (
     <ProductImage key={edge.node.id} image={edge.node} />
   ));
+  const hiddenImages = product.images.edges.map((edge) => (
+    <ProductImage key={edge.node.id} image={edge.node} hidden={true} />
+  ));
 
   const [imageIndex, setImageIndex] = useState(0);
 
@@ -242,6 +245,8 @@ export default function Product() {
     animate: {opacity: 1},
     exit: {opacity: 0},
   };
+
+  const productImagesRef = useRef(null);
   return (
     <>
       <div className="product">
@@ -279,8 +284,10 @@ export default function Product() {
             onScroll={(e) =>
               handleScroll(e.target.scrollWidth, e.target.scrollLeft)
             }
+            ref={productImagesRef}
           >
             {productImage}
+            {hiddenImages}
           </div>
           <div className="mapped-indicators">{mappedIndicators}</div>
         </div>
@@ -318,6 +325,7 @@ export default function Product() {
                 chain={chain}
                 addAChain={addAChain}
                 removeChain={removeChain}
+                productImagesRef={productImagesRef}
               />
             </motion.div>
             <br />

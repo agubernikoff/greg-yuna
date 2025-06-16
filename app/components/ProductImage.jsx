@@ -5,12 +5,20 @@ import {Image} from '@shopify/hydrogen';
  *   image: ProductVariantFragment['image'];
  * }}
  */
-export function ProductImage({image}) {
+export function ProductImage({image, hidden}) {
   if (!image) {
     return <div className="product-image" />;
   }
   return (
-    <div className="product-image">
+    <div
+      className="product-image"
+      style={{
+        background: `center / cover no-repeat url("${image.url}&width=100")`,
+        position: hidden ? 'absolute' : 'static',
+        opacity: hidden ? 0 : 1,
+        top: 0,
+      }}
+    >
       <Image
         alt={image.altText || 'Product Image'}
         data={image}
