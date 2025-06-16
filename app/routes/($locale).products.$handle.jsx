@@ -1,4 +1,4 @@
-import {useLoaderData, NavLink, useLocation} from '@remix-run/react';
+import {useLoaderData, NavLink, redirect} from '@remix-run/react';
 import {useState, useEffect, useRef} from 'react';
 import {
   getSelectedProductOptions,
@@ -71,7 +71,7 @@ async function loadCriticalData({context, params, request}) {
   ]);
 
   if (!product?.id) {
-    return redirect('/404');
+    throw redirect('/404');
   }
 
   return {
