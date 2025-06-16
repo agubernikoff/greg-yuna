@@ -120,13 +120,27 @@ export default function Product() {
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
+  const isThereAMatchingImage = product.images.edges.find((img) =>
+    selectedVariant.title
+      .toLowerCase()
+      .includes(img?.node?.altText?.toLowerCase()),
+  );
+
   const filteredImages = product.images.edges.filter((i) => {
-    if (!i?.node?.altText) return true;
+    if (!isThereAMatchingImage || !i?.node?.altText) return true;
+    else if (
+      selectedVariant.selectedOptions.find((opt) => opt.name === 'Initial')
+    )
+      return (
+        selectedVariant.selectedOptions.find((opt) => opt.name === 'Initial')
+          .value === i.node.altText
+      );
     else
       return selectedVariant.title
         .toLowerCase()
         .includes(i?.node?.altText?.toLowerCase());
   });
+
   const productImage = filteredImages.map((edge) => (
     <ProductImage key={edge.node.id} image={edge.node} />
   ));
@@ -172,7 +186,6 @@ export default function Product() {
   const {title, descriptionHtml} = product;
 
   const {lastCollectionPath} = useNavigationContext();
-  console.log(lastCollectionPath);
 
   function capitalizeFirstLetter(word) {
     if (!word) return '';
@@ -473,7 +486,7 @@ const PRODUCT_FRAGMENT = `#graphql
       }
     }
     
-    images(first: 10) {
+    images(first: 100) {
       edges {
         node {
           id

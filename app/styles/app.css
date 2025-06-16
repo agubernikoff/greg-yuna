@@ -2490,7 +2490,7 @@ MEDIA QUIERIES
   .product-image img {
     width: 100vw !important;
     /* max-width: calc(999px * 0.5 + 2rem); */
-    aspect-ratio: auto !important;
+    aspect-ratio: 1/1 !important;
     height: auto !important;
   }
   .product-image:only-child img {
