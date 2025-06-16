@@ -1,7 +1,7 @@
 import {AddToCartButton} from './AddToCartButton';
 import {useAside} from './Aside';
 import React, {useEffect, useState} from 'react';
-import {Link, useNavigate, useLocation} from '@remix-run/react';
+import {Link, useNavigate, useLocation, useFetcher} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {AnimatePresence, motion} from 'motion/react';
 import {
@@ -318,6 +318,7 @@ function Comps({
 export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
   const [selectedVariant, setSelectedVariant] = useState();
   const [hoverVariant, setHoverVariant] = useState();
+  const fetcher = useFetcher();
 
   useEffect(() => {
     setSelectedVariant(clicked?.selectedOrFirstAvailableVariant);
@@ -328,9 +329,22 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
-  function handleClick(variant) {
-    setSelectedVariant(variant);
+  function handleClick(variant, name, optionName) {
+    const index = selectedVariant.selectedOptions.findIndex(
+      (sO) => sO.name === optionName,
+    );
+    const newSelectedOptions = [...selectedVariant.selectedOptions];
+    newSelectedOptions[index] = {name: optionName, value: name};
+    const params = new URLSearchParams();
+    newSelectedOptions.forEach((o) => params.set(o.name, o.value));
+
+    fetcher.load(`/products/${clicked.handle}?${params.toString()}`);
   }
+  useEffect(() => {
+    console.log(fetcher.data);
+    if (fetcher.data)
+      setSelectedVariant(fetcher.data.product.selectedOrFirstAvailableVariant);
+  }, [fetcher.data]);
 
   const itemStyle = (selected, available, isColorOption) => {
     return {
@@ -465,7 +479,6 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                       exists,
                       isDifferentProduct,
                     } = value;
-
                     const variantImage = isColorOption ? variant?.image : null;
                     // Border logic for size/initial grid (removed)
                     let styles = itemStyle(selected, available, isColorOption);
@@ -504,7 +517,9 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
                           key={option.name + name}
                           style={styles}
                           disabled={!exists}
-                          onClick={() => handleClick(variant, name)}
+                          onClick={() =>
+                            handleClick(variant, name, option.name)
+                          }
                           onMouseEnter={() => setHoverVariant(name)}
                           onMouseLeave={() => setHoverVariant()}
                         >

@@ -55,6 +55,11 @@ async function loadCriticalData({context, params, request}) {
     throw new Error('Expected product handle to be defined');
   }
 
+  console.log(
+    handle,
+    getSelectedProductOptions(request).map((o) => o.value),
+  );
+
   const [{product}, compliments] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
       variables: {handle, selectedOptions: getSelectedProductOptions(request)},
