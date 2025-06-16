@@ -71,7 +71,7 @@ async function loadCriticalData({context, params, request}) {
   ]);
 
   if (!product?.id) {
-    throw new Response(null, {status: 404});
+    return redirect('/404');
   }
 
   return {
