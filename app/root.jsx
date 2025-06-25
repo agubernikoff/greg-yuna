@@ -143,6 +143,20 @@ function loadDeferredData({context}) {
 
 export default function App() {
   useEffect(() => {
+    // Inject Shopify customer privacy script
+    const privacyScript = document.createElement('script');
+    privacyScript.setAttribute('id', 'customer-privacy-api');
+    privacyScript.type = 'text/javascript';
+    privacyScript.src =
+      'https://cdn.shopify.com/shopifycloud/privacy-banner/storefront-banner.js';
+    privacyScript.async = true;
+    document.body.appendChild(privacyScript);
+    privacyScript.addEventListener('load', () => {
+      const customerPrivacy = window.Shopify?.customerPrivacy;
+      console.log('Privacy loaded:', customerPrivacy);
+    });
+
+    // Inject UserWay script
     const script = document.createElement('script');
 
     // Optional customization attributes
