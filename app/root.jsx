@@ -157,22 +157,26 @@ export default function App() {
     (document.body || document.head).appendChild(script);
 
     // Wait for Usercentrics component and adjust z-index
-    const waitForUC = setInterval(() => {
-      const cmp = document.querySelector('#usercentrics-cmp-ui');
-      if (cmp) {
-        cmp.style.zIndex = '9999999999999';
-        clearInterval(waitForUC);
-      }
-    }, 1);
+    // const waitForUC = setInterval(() => {
+    //   const cmp = document.querySelector('#usercentrics-cmp-ui');
+    //   if (cmp) {
+    //     cmp.style.zIndex = '9999999999999';
+    //     clearInterval(waitForUC);
+    //   }
+    // }, 1);
 
-    // Shopify customer privacy region fallback
-    const cp = window.Shopify?.customerPrivacy;
-    if (cp && !cp.getRegion?.()) {
+    // Shopify customer privacy region fallback (wait until script loads)
+    const waitForPrivacy = setInterval(() => {
+      const cp = window.Shopify?.customerPrivacy;
+      if (!cp || cp.getRegion?.()) return; // already available or still undefined
+
       console.warn('[Privacy] Region not set — injecting fallback');
       cp.getRegion = () => 'USNY';
       cp.shouldShowBanner = () => true;
       cp.showBanner?.();
-    }
+
+      clearInterval(waitForPrivacy);
+    }, 250); // retry every 250ms until region is ready or replaced
   }, []);
 
   return <Outlet />;
