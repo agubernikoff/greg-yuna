@@ -164,13 +164,13 @@ export default function App() {
     script.async = true;
     (document.body || document.head).appendChild(script);
 
-    const waitForUC = setInterval(() => {
-      const cmp = document.querySelector('#usercentrics-cmp-ui');
-      if (cmp) {
-        cmp.style.zIndex = '9999999999999';
-        clearInterval(waitForUC);
-      }
-    }, 1);
+    // const waitForUC = setInterval(() => {
+    //   const cmp = document.querySelector('#usercentrics-cmp-ui');
+    //   if (cmp) {
+    //     cmp.style.zIndex = '9999999999999';
+    //     clearInterval(waitForUC);
+    //   }
+    // }, 1);
   }, []);
 
   return <Outlet />;
