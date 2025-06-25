@@ -34,7 +34,7 @@ export default function Layout() {
         document.querySelector('#shopify-pc__banner').style.display = 'block';
         document.querySelector('#shopify-pc__prefs__header-close').click();
         root.style.setProperty('--janky-cookie-display-fix', 1);
-      }, 210);
+      }, 300);
     }
   }, [privacyBanner]);
 
