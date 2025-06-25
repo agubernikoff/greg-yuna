@@ -17,7 +17,7 @@ export default async function handleRequest(
   remixContext,
   context,
 ) {
-  const {header} = createContentSecurityPolicy({
+  const {nonce, NonceProvider, header} = createContentSecurityPolicy({
     shop: {
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
@@ -92,14 +92,12 @@ export default async function handleRequest(
     ],
   });
 
-  const headerWithoutNonce = header
-    .replace(/'nonce-[^']*'/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-
   const body = await renderToReadableStream(
-    <RemixServer context={remixContext} url={request.url} />,
+    <NonceProvider>
+      <RemixServer context={remixContext} url={request.url} nonce={nonce} />
+    </NonceProvider>,
     {
+      nonce,
       signal: request.signal,
       onError(error) {
         console.error(error);
@@ -113,7 +111,7 @@ export default async function handleRequest(
   }
 
   responseHeaders.set('Content-Type', 'text/html');
-  responseHeaders.set('Content-Security-Policy', headerWithoutNonce);
+  responseHeaders.set('Content-Security-Policy', header);
 
   return new Response(body, {
     headers: responseHeaders,
