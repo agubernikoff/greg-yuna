@@ -92,6 +92,11 @@ export default async function handleRequest(
     ],
   });
 
+  // Debug logging for environment and CSP header
+  console.log('PUBLIC_STORE_DOMAIN:', context.env.PUBLIC_STORE_DOMAIN);
+  console.log('PUBLIC_CHECKOUT_DOMAIN:', context.env.PUBLIC_CHECKOUT_DOMAIN);
+  console.log('Generated CSP Header:', header);
+
   const body = await renderToReadableStream(
     <NonceProvider>
       <RemixServer context={remixContext} url={request.url} nonce={nonce} />
