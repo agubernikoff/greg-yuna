@@ -27,15 +27,9 @@ export default function Layout() {
   });
 
   useEffect(() => {
-    console.log(privacyBanner);
     const root = document.documentElement;
     if (privacyBanner) {
       privacyBanner.showPreferences();
-      // setTimeout(
-      //   () =>
-      //     document.querySelector('#shopify-pc__prefs__header-close').click(),
-      //   210,
-      // );
       setTimeout(() => {
         document.querySelector('#shopify-pc__banner').style.display = 'block';
         document.querySelector('#shopify-pc__prefs__header-close').click();
