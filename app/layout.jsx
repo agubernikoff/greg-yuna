@@ -26,16 +26,24 @@ export default function Layout() {
     },
   });
 
-  // useEffect(() => {
-  //   console.log(privacyBanner);
-  //   if (privacyBanner) {
-  //     privacyBanner.showPreferences();
-  //     console.log(document.querySelector('#shopify-pc__prefs__header-close'));
-  //     // document.querySelector('#shopify-pc__prefs__header-close').click();
-  //     // privacyBanner.loadBanner();
-  //     // document.querySelector('#shopify-pc__banner').style.display = 'block';
-  //   }
-  // }, [privacyBanner]);
+  useEffect(() => {
+    console.log(privacyBanner);
+    if (privacyBanner) {
+      privacyBanner.showPreferences();
+      setTimeout(
+        () =>
+          document.querySelector('#shopify-pc__prefs__header-close').click(),
+        300,
+      );
+      // document.querySelector('#shopify-pc__prefs__header-close').click();
+      setTimeout(
+        () =>
+          (document.querySelector('#shopify-pc__banner').style.display =
+            'block'),
+        333,
+      );
+    }
+  }, [privacyBanner]);
 
   return (
     <html lang="en">
