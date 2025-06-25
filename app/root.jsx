@@ -152,9 +152,24 @@ export default function App() {
     privacyScript.async = true;
     document.body.appendChild(privacyScript);
     privacyScript.addEventListener('load', () => {
-      const customerPrivacy = window.Shopify?.customerPrivacy;
-      console.log('Privacy loaded:', customerPrivacy);
+      waitForPrivacyRegion();
     });
+
+    function waitForPrivacyRegion(retries = 20) {
+      const interval = setInterval(() => {
+        const region = window.Shopify?.customerPrivacy?.getRegion?.();
+        if (region || retries <= 0) {
+          clearInterval(interval);
+          console.log('Privacy loaded:', window.Shopify?.customerPrivacy);
+          console.log('Region:', region);
+          console.log(
+            'Should show banner:',
+            window.Shopify?.customerPrivacy?.shouldShowBanner?.(),
+          );
+        }
+        retries--;
+      }, 200);
+    }
 
     // Inject UserWay script
     const script = document.createElement('script');
