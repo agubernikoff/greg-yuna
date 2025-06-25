@@ -28,20 +28,19 @@ export default function Layout() {
 
   useEffect(() => {
     console.log(privacyBanner);
+    const root = document.documentElement;
     if (privacyBanner) {
       privacyBanner.showPreferences();
-      setTimeout(
-        () =>
-          document.querySelector('#shopify-pc__prefs__header-close').click(),
-        300,
-      );
-      // document.querySelector('#shopify-pc__prefs__header-close').click();
-      setTimeout(
-        () =>
-          (document.querySelector('#shopify-pc__banner').style.display =
-            'block'),
-        333,
-      );
+      // setTimeout(
+      //   () =>
+      //     document.querySelector('#shopify-pc__prefs__header-close').click(),
+      //   210,
+      // );
+      setTimeout(() => {
+        document.querySelector('#shopify-pc__banner').style.display = 'block';
+        document.querySelector('#shopify-pc__prefs__header-close').click();
+        root.style.setProperty('--janky-cookie-display-fix', 1);
+      }, 210);
     }
   }, [privacyBanner]);
 

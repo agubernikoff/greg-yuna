@@ -9,6 +9,7 @@
   --filter-height: 67px;
   --header-width: 57px;
   --cart-badge-adjustment: 59px;
+  --janky-cookie-display-fix: 0;
 }
 
 @font-face {
@@ -1991,6 +1992,9 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   color: #333;
   padding: 10px 25px;
   text-decoration: none;
+}
+#shopify-pc__prefs {
+  opacity: var(--janky-cookie-display-fix);
 }
 
 .route-error {
