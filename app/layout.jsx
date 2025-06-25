@@ -11,12 +11,13 @@ import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import {PageLayout} from '~/components/PageLayout';
 import {NavigationProvider} from './context/NavigationContext';
+import {useEffect} from 'react';
 
 export default function Layout() {
   const nonce = useNonce();
   const data = useRouteLoaderData('root');
 
-  useCustomerPrivacy({
+  const {privacyBanner} = useCustomerPrivacy({
     storefrontAccessToken: data.consent.storefrontAccessToken,
     checkoutDomain: data.consent.checkoutDomain,
     withPrivacyBanner: true,
@@ -24,6 +25,16 @@ export default function Layout() {
       console.log('Visitor consent collected:', consent);
     },
   });
+
+  useEffect(() => {
+    console.log(privacyBanner);
+    if (privacyBanner) {
+      privacyBanner.showPreferences();
+      document.querySelector('#shopify-pc__prefs__header-close').click();
+      privacyBanner.loadBanner();
+      document.querySelector('#shopify-pc__banner').style.display = 'block';
+    }
+  }, [privacyBanner]);
 
   return (
     <html lang="en">
