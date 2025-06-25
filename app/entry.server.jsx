@@ -17,7 +17,7 @@ export default async function handleRequest(
   remixContext,
   context,
 ) {
-  const {nonce, NonceProvider, header} = createContentSecurityPolicy({
+  const {header} = createContentSecurityPolicy({
     shop: {
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
@@ -92,17 +92,14 @@ export default async function handleRequest(
     ],
   });
 
-  // Debug logging for environment and CSP header
-  console.log('PUBLIC_STORE_DOMAIN:', context.env.PUBLIC_STORE_DOMAIN);
-  console.log('PUBLIC_CHECKOUT_DOMAIN:', context.env.PUBLIC_CHECKOUT_DOMAIN);
-  console.log('Generated CSP Header:', header);
+  const headerWithoutNonce = header
+    .replace(/'nonce-[^']*'/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
 
   const body = await renderToReadableStream(
-    <NonceProvider>
-      <RemixServer context={remixContext} url={request.url} nonce={nonce} />
-    </NonceProvider>,
+    <RemixServer context={remixContext} url={request.url} />,
     {
-      nonce,
       signal: request.signal,
       onError(error) {
         console.error(error);
@@ -116,7 +113,7 @@ export default async function handleRequest(
   }
 
   responseHeaders.set('Content-Type', 'text/html');
-  responseHeaders.set('Content-Security-Policy', header);
+  responseHeaders.set('Content-Security-Policy', headerWithoutNonce);
 
   return new Response(body, {
     headers: responseHeaders,
