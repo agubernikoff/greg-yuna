@@ -1,4 +1,4 @@
-import {useNonce, Analytics} from '@shopify/hydrogen';
+import {useNonce, Analytics, useCustomerPrivacy} from '@shopify/hydrogen';
 import {
   Links,
   Meta,
@@ -15,6 +15,15 @@ import {NavigationProvider} from './context/NavigationContext';
 export default function Layout() {
   const nonce = useNonce();
   const data = useRouteLoaderData('root');
+
+  useCustomerPrivacy({
+    storefrontAccessToken: data.consent.storefrontAccessToken,
+    checkoutDomain: data.consent.checkoutDomain,
+    withPrivacyBanner: true,
+    onVisitorConsentCollected: (consent) => {
+      console.log('Visitor consent collected:', consent);
+    },
+  });
 
   return (
     <html lang="en">
