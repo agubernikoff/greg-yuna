@@ -34,6 +34,11 @@ export default function Layout() {
           data-settings-id="ht1_dffaOq50p6"
           async
         ></script> */}
+        <script
+          type="application/javascript"
+          src="https://cdn.shopify.com/shopifycloud/privacy-banner/banner.js"
+          data-shopify="true"
+        ></script>
         <Meta />
         <Links />
       </head>
