@@ -17,26 +17,26 @@ export default function Layout() {
   const nonce = useNonce();
   const data = useRouteLoaderData('root');
 
-  const {privacyBanner} = useCustomerPrivacy({
-    storefrontAccessToken: data.consent.storefrontAccessToken,
-    checkoutDomain: data.consent.checkoutDomain,
-    withPrivacyBanner: true,
-    onVisitorConsentCollected: (consent) => {
-      console.log('Visitor consent collected:', consent);
-    },
-  });
+  // const {privacyBanner} = useCustomerPrivacy({
+  //   storefrontAccessToken: data.consent.storefrontAccessToken,
+  //   checkoutDomain: data.consent.checkoutDomain,
+  //   withPrivacyBanner: true,
+  //   onVisitorConsentCollected: (consent) => {
+  //     console.log('Visitor consent collected:', consent);
+  //   },
+  // });
 
-  useEffect(() => {
-    const root = document.documentElement;
-    if (privacyBanner) {
-      privacyBanner.showPreferences();
-      setTimeout(() => {
-        document.querySelector('#shopify-pc__banner').style.display = 'block';
-        document.querySelector('#shopify-pc__prefs__header-close').click();
-        root.style.setProperty('--janky-cookie-display-fix', 1);
-      }, 750);
-    }
-  }, [privacyBanner]);
+  // useEffect(() => {
+  //   const root = document.documentElement;
+  //   if (privacyBanner) {
+  //     privacyBanner.showPreferences();
+  //     setTimeout(() => {
+  //       document.querySelector('#shopify-pc__banner').style.display = 'block';
+  //       document.querySelector('#shopify-pc__prefs__header-close').click();
+  //       root.style.setProperty('--janky-cookie-display-fix', 1);
+  //     }, 750);
+  //   }
+  // }, [privacyBanner]);
 
   return (
     <html lang="en">
