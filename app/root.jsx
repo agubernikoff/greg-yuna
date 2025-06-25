@@ -143,27 +143,20 @@ function loadDeferredData({context}) {
 
 export default function App() {
   useEffect(() => {
+    // Inject UserWay accessibility script
     const script = document.createElement('script');
-
-    // Optional customization attributes
-    script.setAttribute('data-position', '3'); // Override default position
-    script.setAttribute('data-size', 'small'); // small or large
-    // script.setAttribute('data-language', 'fr'); // e.g., fr, de, es, he, nl
-    script.setAttribute('data-color', '#000'); // Widget color
-    script.setAttribute('data-type', '3'); // 1=person, 2=chair, 3=eye, 4=text
-    // script.setAttribute('data-statement_text', 'Our Accessibility Statement');
-    // script.setAttribute('data-statement_url', 'http://www.example.com/accessibility');
-    script.setAttribute('data-mobile', 'true'); // Support on mobile
-    // script.setAttribute('data-trigger', 'triggerId'); // Custom trigger ID
-    // script.setAttribute('data-z-index', '10001'); // Widget z-index
-    // script.setAttribute('data-site-language', 'null'); // Live site translations
-
+    script.setAttribute('data-position', '3');
+    script.setAttribute('data-size', 'small');
+    script.setAttribute('data-color', '#000');
+    script.setAttribute('data-type', '3');
+    script.setAttribute('data-mobile', 'true');
     script.setAttribute('data-widget_layout', 'full');
     script.setAttribute('data-account', '8KH2VC1ULy');
     script.src = 'https://cdn.userway.org/widget.js';
     script.async = true;
     (document.body || document.head).appendChild(script);
 
+    // Wait for Usercentrics component and adjust z-index
     const waitForUC = setInterval(() => {
       const cmp = document.querySelector('#usercentrics-cmp-ui');
       if (cmp) {
@@ -171,6 +164,15 @@ export default function App() {
         clearInterval(waitForUC);
       }
     }, 1);
+
+    // Shopify customer privacy region fallback
+    const cp = window.Shopify?.customerPrivacy;
+    if (cp && !cp.getRegion?.()) {
+      console.warn('[Privacy] Region not set — injecting fallback');
+      cp.getRegion = () => 'USNY';
+      cp.shouldShowBanner = () => true;
+      cp.showBanner?.();
+    }
   }, []);
 
   return <Outlet />;
