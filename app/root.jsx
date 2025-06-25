@@ -157,13 +157,13 @@ export default function App() {
     (document.body || document.head).appendChild(script);
 
     // Wait for Usercentrics component and adjust z-index
-    // const waitForUC = setInterval(() => {
-    //   const cmp = document.querySelector('#usercentrics-cmp-ui');
-    //   if (cmp) {
-    //     cmp.style.zIndex = '9999999999999';
-    //     clearInterval(waitForUC);
-    //   }
-    // }, 1);
+    const waitForUC = setInterval(() => {
+      const cmp = document.querySelector('#usercentrics-cmp-ui');
+      if (cmp) {
+        cmp.style.zIndex = '9999999999999';
+        clearInterval(waitForUC);
+      }
+    }, 1);
 
     // Shopify customer privacy region fallback (wait until script loads)
     const waitForPrivacy = setInterval(() => {
