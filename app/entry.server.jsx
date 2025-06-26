@@ -51,11 +51,10 @@ export default async function handleRequest(
       'https://gregyuna.com',
       'https://greg-yuna-store.myshopify.com/api/unstable/graphql.json',
       'https://cdn.shopifycloud.com',
-      'https://v1.api.service.cmp.usercentrics.eu',
-      'https://latest.cmp.usercentrics.eu',
-      'https://consent-api.service.consent.usercentrics.eu',
       'https://api.userway.org', // added
       'https://cdn.userway.org', // added
+      'https://log.cookieyes.com',
+      'https://cdn-cookieyes.com',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
@@ -64,11 +63,10 @@ export default async function handleRequest(
       'https://klaviyo.com',
       'https://*.klaviyo.com',
       'https://fonts.googleapis.com',
-      'https://app.usercentrics.eu',
-      'https://uct.service.usercentrics.eu',
       'data:', // allows data URIs like inline SVGs
       'https://cdn.userway.org', // added
       'https://engaged-orca-warm.ngrok-free.app', // allow local favicon during dev
+      'https://cdn-cookieyes.com',
     ],
     fontSrc: [
       "'self'",
