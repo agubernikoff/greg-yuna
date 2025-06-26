@@ -32,6 +32,7 @@ export default async function handleRequest(
       "'unsafe-inline'",
       'https://web.cmp.usercentrics.eu',
       'https://cdn.userway.org', // added
+      'https://cdn-cookieyes.com',
     ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
