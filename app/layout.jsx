@@ -49,12 +49,10 @@ export default function Layout() {
         />
         <link rel="stylesheet" href={resetStyles}></link>
         <link rel="stylesheet" href={appStyles}></link>
-        <script src="https://web.cmp.usercentrics.eu/modules/autoblocker.js"></script>
         <script
-          id="usercentrics-cmp"
-          src="https://web.cmp.usercentrics.eu/ui/loader.js"
-          data-settings-id="ht1_dffaOq50p6"
-          async
+          id="cookieyes"
+          type="text/javascript"
+          src="https://cdn-cookieyes.com/client_data/8d6e12516798989988aceb72/script.js"
         ></script>
         <Meta />
         <Links />
