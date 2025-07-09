@@ -200,6 +200,7 @@ function FlagshipHome({storeLocations}) {
         <p className="flagship-address">215 Mulberry Street</p>
         <p className="flagship-address">New York, New York</p>
         <p className="flagship-address">Monday–Sunday, 12PM–7PM</p>
+        <p className="flagship-address">p. (917) 751-4774</p>
       </div>
     </div>
   );
