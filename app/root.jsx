@@ -156,14 +156,16 @@ export default function App() {
     script.async = true;
     (document.body || document.head).appendChild(script);
 
-    // Wait for Usercentrics component and adjust z-index
-    // const waitForUC = setInterval(() => {
-    //   const cmp = document.querySelector('#usercentrics-cmp-ui');
-    //   if (cmp) {
-    //     cmp.style.zIndex = '9999999999999';
-    //     clearInterval(waitForUC);
-    //   }
-    // }, 1);
+    // Klaviyo popup trigger: only run once per session
+    if (!sessionStorage.getItem('klaviyoPopupShown')) {
+      const klaviyoInterval = setInterval(() => {
+        if (window._klOnsite?.loaded) {
+          window._klOnsite.push(['openForm', 'RxEq4z']);
+          sessionStorage.setItem('klaviyoPopupShown', 'true');
+          clearInterval(klaviyoInterval);
+        }
+      }, 300);
+    }
 
     // Shopify customer privacy region fallback (wait until script loads)
     const waitForPrivacy = setInterval(() => {

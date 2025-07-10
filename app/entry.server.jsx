@@ -33,6 +33,9 @@ export default async function handleRequest(
       'https://web.cmp.usercentrics.eu',
       'https://cdn.userway.org', // added
       'https://cdn-cookieyes.com',
+      // Klaviyo entries
+      'https://static.klaviyo.com',
+      'https://static-tracking.klaviyo.com',
     ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
@@ -55,6 +58,10 @@ export default async function handleRequest(
       'https://cdn.userway.org', // added
       'https://log.cookieyes.com',
       'https://cdn-cookieyes.com',
+      'https://static.klaviyo.com',
+      'https://static-tracking.klaviyo.com',
+      'https://klaviyo.com',
+      'https://*.klaviyo.com',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
@@ -67,11 +74,13 @@ export default async function handleRequest(
       'https://cdn.userway.org', // added
       'https://engaged-orca-warm.ngrok-free.app', // allow local favicon during dev
       'https://cdn-cookieyes.com',
+      'https://d3k81ch9hvuctc.cloudfront.net',
     ],
     fontSrc: [
       "'self'",
       'https://cdn.userway.org',
       'https://cdn.shopify.com', // added to restore production font
+      'https://fonts.gstatic.com',
     ],
     frameSrc: [
       'https://www.powr.io',
@@ -88,6 +97,8 @@ export default async function handleRequest(
       'https://cdn.shopify.com',
       'http://localhost:*',
       'https://cdn.userway.org', // added
+      'https://fonts.googleapis.com',
+      'https://static.klaviyo.com',
     ],
   });
 

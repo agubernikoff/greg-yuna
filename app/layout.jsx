@@ -56,6 +56,11 @@ export default function Layout() {
         ></script>
         <Meta />
         <Links />
+        <script
+          async
+          type="text/javascript"
+          src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=TBMgC2"
+        ></script>
       </head>
       <body>
         {data ? (
