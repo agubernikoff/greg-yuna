@@ -2644,10 +2644,10 @@ MEDIA QUIERIES
     top: -80px;
     left: 0;
     right: 0;
-    height: 80px;
+    height: 140px;
     background: linear-gradient(to top, white, transparent);
     pointer-events: none;
-    z-index: 999;
+    z-index: -1;
     opacity: 1;
     transition: opacity 0.15s ease-in-out;
   }
