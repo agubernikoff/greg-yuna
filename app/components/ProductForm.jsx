@@ -390,7 +390,7 @@ export function AddAChainPopUp({clicked, closePopUp, addAChain}) {
     fetcher.load(`/products/${clicked.handle}?${params.toString()}`);
   }
   useEffect(() => {
-    console.log(fetcher.data);
+    // console.log(fetcher.data);
     if (fetcher.data)
       setSelectedVariant(fetcher.data.product.selectedOrFirstAvailableVariant);
   }, [fetcher.data]);

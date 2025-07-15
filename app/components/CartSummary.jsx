@@ -8,7 +8,7 @@ import {useState} from 'react';
 export function CartSummary({cart, layout}) {
   const className =
     layout === 'page' ? 'cart-summary-page' : 'cart-summary-aside';
-  console.log(cart);
+  // console.log(cart);
 
   const [open, setOpen] = useState(false);
   function close() {
