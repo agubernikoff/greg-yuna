@@ -25,14 +25,16 @@ export function AddToCartButton({
             type="hidden"
             value={JSON.stringify(analytics)}
           />
-          <button
-            className="cart-button"
-            type="submit"
-            onClick={onClick}
-            disabled={disabled ?? fetcher.state !== 'idle'}
-          >
-            {children}
-          </button>
+          <div className={`cart-button-sticky-wrapper`}>
+            <button
+              className="cart-button"
+              type="submit"
+              onClick={onClick}
+              disabled={disabled ?? fetcher.state !== 'idle'}
+            >
+              {children}
+            </button>
+          </div>
         </>
       )}
     </CartForm>

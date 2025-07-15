@@ -58,215 +58,219 @@ export function ProductForm({
     };
   };
   return (
-    <div className="product-form">
-      {productOptions
-        .slice()
-        .sort((a, b) => {
-          const nameA = a.name.toLowerCase();
-          const nameB = b.name.toLowerCase();
-          if (nameA === 'material') return -1;
-          if (nameB === 'material') return 1;
-          if (nameA === 'size') return 1;
-          if (nameB === 'size') return -1;
-          return 0;
-        })
-        .map((option) => {
-          if (option.optionValues.length === 0) return null;
+    <>
+      <div className="product-form">
+        {productOptions
+          .slice()
+          .sort((a, b) => {
+            const nameA = a.name.toLowerCase();
+            const nameB = b.name.toLowerCase();
+            if (nameA === 'material') return -1;
+            if (nameB === 'material') return 1;
+            if (nameA === 'size') return 1;
+            if (nameB === 'size') return -1;
+            return 0;
+          })
+          .map((option) => {
+            if (option.optionValues.length === 0) return null;
 
-          const isColorOption =
-            option.name.toLowerCase() === 'material' ||
-            option.name.toLowerCase() === 'color';
+            const isColorOption =
+              option.name.toLowerCase() === 'material' ||
+              option.name.toLowerCase() === 'color';
 
-          // Add logic for size/initial grid with less than 4 values
-          const isSizeOrInitial = ['size', 'initial'].includes(
-            option.name.toLowerCase(),
-          );
-          const shouldShiftBorder =
-            isSizeOrInitial && option.optionValues.length < 4;
+            // Add logic for size/initial grid with less than 4 values
+            const isSizeOrInitial = ['size', 'initial'].includes(
+              option.name.toLowerCase(),
+            );
+            const shouldShiftBorder =
+              isSizeOrInitial && option.optionValues.length < 4;
 
-          return (
-            <div className="product-options" key={option.name}>
-              <p>
-                <span style={{color: '#999999'}}>{option.name}:</span>{' '}
-                <span style={{display: 'inline-block', width: '10rem'}}>
-                  {option.optionValues.find((v) => v.selected)?.name || ''}
-                </span>
-              </p>
-              <div
-                className={`product-options-grid ${isSizeOrInitial ? 'size-initial-grid' : ''}`}
-                style={shouldShiftBorder ? {borderTop: 'none'} : {}}
-              >
-                {option.optionValues.map((value, index) => {
-                  const {
-                    name,
-                    handle,
-                    variantUriQuery,
-                    selected,
-                    available,
-                    exists,
-                    isDifferentProduct,
-                    swatch,
-                    variant,
-                  } = value;
-                  const variantImage = isColorOption ? variant?.image : null;
-                  let styles = itemStyle(selected, available, isColorOption);
-                  const hovered = name === hoverVariant && available;
+            return (
+              <div className="product-options" key={option.name}>
+                <p>
+                  <span style={{color: '#999999'}}>{option.name}:</span>{' '}
+                  <span style={{display: 'inline-block', width: '10rem'}}>
+                    {option.optionValues.find((v) => v.selected)?.name || ''}
+                  </span>
+                </p>
+                <div
+                  className={`product-options-grid ${isSizeOrInitial ? 'size-initial-grid' : ''}`}
+                  style={shouldShiftBorder ? {borderTop: 'none'} : {}}
+                >
+                  {option.optionValues.map((value, index) => {
+                    const {
+                      name,
+                      handle,
+                      variantUriQuery,
+                      selected,
+                      available,
+                      exists,
+                      isDifferentProduct,
+                      swatch,
+                      variant,
+                    } = value;
+                    const variantImage = isColorOption ? variant?.image : null;
+                    let styles = itemStyle(selected, available, isColorOption);
+                    const hovered = name === hoverVariant && available;
 
-                  // --- Begin border logic for incomplete last row ---
-                  const total = option.optionValues.length;
-                  const itemsPerRow = 4;
-                  const isLastItem = index === total - 1;
-                  const itemsInLastRow = total % itemsPerRow || itemsPerRow;
-                  const isIncompleteLastRow = itemsInLastRow < itemsPerRow;
-                  const needsRightBorder =
-                    isLastItem && isSizeOrInitial && isIncompleteLastRow;
+                    // --- Begin border logic for incomplete last row ---
+                    const total = option.optionValues.length;
+                    const itemsPerRow = 4;
+                    const isLastItem = index === total - 1;
+                    const itemsInLastRow = total % itemsPerRow || itemsPerRow;
+                    const isIncompleteLastRow = itemsInLastRow < itemsPerRow;
+                    const needsRightBorder =
+                      isLastItem && isSizeOrInitial && isIncompleteLastRow;
 
-                  if (isDifferentProduct) {
-                    return (
-                      <Link
-                        className="product-options-item"
-                        key={option.name + name}
-                        prefetch="intent"
-                        preventScrollReset
-                        replace
-                        to={`/products/${handle}?${variantUriQuery}`}
-                        style={styles}
-                        state={location.state}
-                      >
-                        <ProductOptionSwatch
-                          swatch={swatch}
-                          name={name}
-                          isColorOption={isColorOption}
-                          productImage={variantImage}
-                        />
-                      </Link>
-                    );
-                  } else {
-                    return (
-                      <button
-                        type="button"
-                        className={`product-options-item ${
-                          isSizeOrInitial ? 'fixed-width' : ''
-                        }${exists && !selected ? ' link' : ''}`}
-                        key={option.name + name}
-                        style={{
-                          ...styles,
-                          borderRight: needsRightBorder
-                            ? '1px solid #e9e9e9 !important'
-                            : styles.borderRight,
-                          borderTop: shouldShiftBorder
-                            ? '1px solid #e9e9e9'
-                            : undefined,
-                        }}
-                        disabled={!exists}
-                        onClick={() => {
-                          if (!selected) {
-                            navigate(`?${variantUriQuery}`, {
-                              replace: true,
-                              preventScrollReset: true,
-                              state: location.state,
-                            });
-                            productImagesRef.current.scrollTo({
-                              top: 0,
-                              left: 0,
-                              behavior: 'smooth',
-                            });
-                            window.scrollTo({
-                              top: 0,
-                              left: 0,
-                              behavior: 'smooth',
-                            });
-                          }
-                        }}
-                        onMouseEnter={() => setHoverVariant(name)}
-                        onMouseLeave={() => setHoverVariant()}
-                      >
-                        <ProductOptionSwatch
-                          swatch={swatch}
-                          name={name}
-                          isColorOption={isColorOption}
-                          productImage={variantImage}
-                        />
-                        {hovered && (
-                          <motion.div
-                            // layoutId={`hovered-${option.name}-${selectedVariant.product.handle}`}
-                            id={`${option.name}`}
-                            transition={{ease: 'easeInOut', duration: 0.15}}
-                            style={{
-                              position: 'absolute',
-                              bottom: 0,
-                              left: isSizeOrInitial ? '0' : '-1px',
-                              right: isSizeOrInitial ? '0' : '-1px',
-                              height: '2px',
-                              background: '#999999',
-                            }}
+                    if (isDifferentProduct) {
+                      return (
+                        <Link
+                          className="product-options-item"
+                          key={option.name + name}
+                          prefetch="intent"
+                          preventScrollReset
+                          replace
+                          to={`/products/${handle}?${variantUriQuery}`}
+                          style={styles}
+                          state={location.state}
+                        >
+                          <ProductOptionSwatch
+                            swatch={swatch}
+                            name={name}
+                            isColorOption={isColorOption}
+                            productImage={variantImage}
                           />
-                        )}
-                        {selected && (
-                          <motion.div
-                            key={`${option.name}-${selectedVariant.product.handle}`}
-                            id={`${option.name}`}
-                            initial={{opacity: 0}}
-                            animate={{opacity: 1}}
-                            exit={{opacity: 0}}
-                            transition={{duration: 0.15}}
-                            style={{
-                              position: 'absolute',
-                              bottom: 0,
-                              left: isSizeOrInitial ? '0' : '-1px',
-                              right: isSizeOrInitial ? '0' : '-1px',
-                              height: '2px',
-                              background: 'black',
-                            }}
+                        </Link>
+                      );
+                    } else {
+                      return (
+                        <button
+                          type="button"
+                          className={`product-options-item ${
+                            isSizeOrInitial ? 'fixed-width' : ''
+                          }${exists && !selected ? ' link' : ''}`}
+                          key={option.name + name}
+                          style={{
+                            ...styles,
+                            borderRight: needsRightBorder
+                              ? '1px solid #e9e9e9 !important'
+                              : styles.borderRight,
+                            borderTop: shouldShiftBorder
+                              ? '1px solid #e9e9e9'
+                              : undefined,
+                          }}
+                          disabled={!exists}
+                          onClick={() => {
+                            if (!selected) {
+                              navigate(`?${variantUriQuery}`, {
+                                replace: true,
+                                preventScrollReset: true,
+                                state: location.state,
+                              });
+                              productImagesRef.current.scrollTo({
+                                top: 0,
+                                left: 0,
+                                behavior: 'smooth',
+                              });
+                              window.scrollTo({
+                                top: 0,
+                                left: 0,
+                                behavior: 'smooth',
+                              });
+                            }
+                          }}
+                          onMouseEnter={() => setHoverVariant(name)}
+                          onMouseLeave={() => setHoverVariant()}
+                        >
+                          <ProductOptionSwatch
+                            swatch={swatch}
+                            name={name}
+                            isColorOption={isColorOption}
+                            productImage={variantImage}
                           />
-                        )}
-                      </button>
-                    );
-                  }
-                })}
+                          {hovered && (
+                            <motion.div
+                              // layoutId={`hovered-${option.name}-${selectedVariant.product.handle}`}
+                              id={`${option.name}`}
+                              transition={{ease: 'easeInOut', duration: 0.15}}
+                              style={{
+                                position: 'absolute',
+                                bottom: 0,
+                                left: isSizeOrInitial ? '0' : '-1px',
+                                right: isSizeOrInitial ? '0' : '-1px',
+                                height: '2px',
+                                background: '#999999',
+                              }}
+                            />
+                          )}
+                          {selected && (
+                            <motion.div
+                              key={`${option.name}-${selectedVariant.product.handle}`}
+                              id={`${option.name}`}
+                              initial={{opacity: 0}}
+                              animate={{opacity: 1}}
+                              exit={{opacity: 0}}
+                              transition={{duration: 0.15}}
+                              style={{
+                                position: 'absolute',
+                                bottom: 0,
+                                left: isSizeOrInitial ? '0' : '-1px',
+                                right: isSizeOrInitial ? '0' : '-1px',
+                                height: '2px',
+                                background: 'black',
+                              }}
+                            />
+                          )}
+                        </button>
+                      );
+                    }
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
-      {compliments.productRecommendations.length > 0 ? (
-        <Comps
-          compliments={compliments.productRecommendations}
-          openPopUp={openPopUp}
-          closePopUp={closePopUp}
-          chain={chain}
-          addAChain={addAChain}
-          removeChain={removeChain}
-        />
-      ) : null}
-      <AddToCartButton
-        disabled={!selectedVariant || !selectedVariant.availableForSale}
-        onClick={() => {
-          open('cart');
-        }}
-        lines={
-          selectedVariant
-            ? [
-                {
-                  merchandiseId: selectedVariant.id,
-                  quantity: 1,
-                  selectedVariant,
-                },
-                ...(chain
-                  ? [
-                      {
-                        merchandiseId: chain.id,
-                        quantity: 1,
-                        selectedVariant: chain,
-                      },
-                    ]
-                  : []),
-              ]
-            : []
-        }
-      >
-        {selectedVariant?.availableForSale ? 'ADD TO CART' : 'SOLD OUT'}
-      </AddToCartButton>
-    </div>
+            );
+          })}
+        {compliments.productRecommendations.length > 0 ? (
+          <Comps
+            compliments={compliments.productRecommendations}
+            openPopUp={openPopUp}
+            closePopUp={closePopUp}
+            chain={chain}
+            addAChain={addAChain}
+            removeChain={removeChain}
+          />
+        ) : null}
+      </div>
+      <div className="cart-button-sticky-wrapper">
+        <AddToCartButton
+          disabled={!selectedVariant || !selectedVariant.availableForSale}
+          onClick={() => {
+            open('cart');
+          }}
+          lines={
+            selectedVariant
+              ? [
+                  {
+                    merchandiseId: selectedVariant.id,
+                    quantity: 1,
+                    selectedVariant,
+                  },
+                  ...(chain
+                    ? [
+                        {
+                          merchandiseId: chain.id,
+                          quantity: 1,
+                          selectedVariant: chain,
+                        },
+                      ]
+                    : []),
+                ]
+              : []
+          }
+        >
+          {selectedVariant?.availableForSale ? 'ADD TO CART' : 'SOLD OUT'}
+        </AddToCartButton>
+      </div>
+    </>
   );
 }
 function Comps({
