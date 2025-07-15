@@ -25,7 +25,7 @@ export function AddToCartButton({
             type="hidden"
             value={JSON.stringify(analytics)}
           />
-          <div className={`cart-button-sticky-wrapper`}>
+          <div>
             <button
               className="cart-button"
               type="submit"

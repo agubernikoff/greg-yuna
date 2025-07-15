@@ -1,6 +1,6 @@
 import {AddToCartButton} from './AddToCartButton';
 import {useAside} from './Aside';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {Link, useNavigate, useLocation, useFetcher} from '@remix-run/react';
 import {Image, Money} from '@shopify/hydrogen';
 import {AnimatePresence, motion} from 'motion/react';
@@ -47,6 +47,34 @@ export function ProductForm({
 
   const [hoverVariant, setHoverVariant] = useState();
 
+  // Sticky cart button scroll-based logic
+  const sentinelRef = useRef(null);
+  const stickyRef = useRef(null);
+  const [isStuck, setIsStuck] = useState(false);
+
+  useEffect(() => {
+    if (!sentinelRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // When the sentinel is NOT intersecting (out of view), we want isStuck = true
+        setIsStuck(!entry.isIntersecting);
+      },
+      {
+        root: null,
+        threshold: 0,
+      },
+    );
+
+    observer.observe(sentinelRef.current);
+
+    return () => {
+      if (sentinelRef.current) {
+        observer.unobserve(sentinelRef.current);
+      }
+    };
+  }, []);
+
   const itemStyle = (selected, available, isColorOption) => {
     return {
       // opacity: available ? 1 : 0.3,
@@ -59,6 +87,7 @@ export function ProductForm({
   };
   return (
     <>
+      {console.log('isStuck:', isStuck)}
       <div className="product-form">
         {productOptions
           .slice()
@@ -240,7 +269,12 @@ export function ProductForm({
           />
         ) : null}
       </div>
-      <div className="cart-button-sticky-wrapper">
+      {/* Sentinel for sticky observer */}
+      <div ref={sentinelRef} style={{height: '1px'}} />
+      <div
+        ref={stickyRef}
+        className={`cart-button-sticky-wrapper ${isStuck ? '' : 'is-stuck'}`}
+      >
         <AddToCartButton
           disabled={!selectedVariant || !selectedVariant.availableForSale}
           onClick={() => {

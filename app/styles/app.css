@@ -2638,6 +2638,23 @@ MEDIA QUIERIES
     background: white;
     z-index: 1000;
   }
+  .cart-button-sticky-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -80px;
+    left: 0;
+    right: 0;
+    height: 80px;
+    background: linear-gradient(to top, white, transparent);
+    pointer-events: none;
+    z-index: 999;
+    opacity: 1;
+    transition: opacity 0.15s ease-in-out;
+  }
+  .cart-button-sticky-wrapper.is-stuck::before {
+    opacity: 0;
+  }
+
   .popupoverlay.overlay.expanded {
     z-index: 100000;
   }
