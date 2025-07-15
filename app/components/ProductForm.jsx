@@ -87,7 +87,6 @@ export function ProductForm({
   };
   return (
     <>
-      {console.log('isStuck:', isStuck)}
       <div className="product-form">
         {productOptions
           .slice()
