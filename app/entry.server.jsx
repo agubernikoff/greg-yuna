@@ -63,7 +63,7 @@ export default async function handleRequest(
       'https://klaviyo.com',
       'https://*.klaviyo.com',
       'https://directory.cookieyes.com/api/v1/ip',
-      'https://www.powr.io/powr.js?platform=shopify',
+      'https://www.powr.io/powr.js*',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
