@@ -36,7 +36,6 @@ export default async function handleRequest(
       // Klaviyo entries
       'https://static.klaviyo.com',
       'https://static-tracking.klaviyo.com',
-      'https://directory.cookieyes.com/api/v1/ip',
     ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
@@ -63,6 +62,7 @@ export default async function handleRequest(
       'https://static-tracking.klaviyo.com',
       'https://klaviyo.com',
       'https://*.klaviyo.com',
+      'https://directory.cookieyes.com/api/v1/ip',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
