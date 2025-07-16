@@ -100,6 +100,7 @@ export default async function handleRequest(
       'https://cdn.userway.org', // added
       'https://fonts.googleapis.com',
       'https://static.klaviyo.com',
+      'https://static-tracking.klaviyo.com/onsite/js*',
     ],
   });
 
