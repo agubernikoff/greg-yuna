@@ -36,6 +36,7 @@ export default async function handleRequest(
       // Klaviyo entries
       'https://static.klaviyo.com',
       'https://static-tracking.klaviyo.com',
+      'https://static.powr.io',
     ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
@@ -64,6 +65,7 @@ export default async function handleRequest(
       'https://*.klaviyo.com',
       'https://directory.cookieyes.com/api/v1/ip',
       'https://www.powr.io/powr.js*',
+      'https://static.powr.io',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
@@ -77,12 +79,14 @@ export default async function handleRequest(
       'https://engaged-orca-warm.ngrok-free.app', // allow local favicon during dev
       'https://cdn-cookieyes.com',
       'https://d3k81ch9hvuctc.cloudfront.net',
+      'https://static.powr.io',
     ],
     fontSrc: [
       "'self'",
       'https://cdn.userway.org',
       'https://cdn.shopify.com', // added to restore production font
       'https://fonts.gstatic.com',
+      'https://static.powr.io',
     ],
     frameSrc: [
       'https://www.powr.io',
@@ -92,6 +96,7 @@ export default async function handleRequest(
       'http://localhost:3000',
       'https://*.klaviyo.com/*',
       'https://cdn.userway.org', // allow UserWay iframe
+      'https://static.powr.io',
     ],
     styleSrc: [
       "'self'",
@@ -102,6 +107,7 @@ export default async function handleRequest(
       'https://fonts.googleapis.com',
       'https://static.klaviyo.com',
       'https://static-tracking.klaviyo.com/onsite/js*',
+      'https://static.powr.io',
     ],
   });
 
