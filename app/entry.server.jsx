@@ -62,6 +62,8 @@ export default async function handleRequest(
       'https://static-tracking.klaviyo.com',
       'https://klaviyo.com',
       'https://*.klaviyo.com',
+      'https://directory.cookieyes.com/api/v1/ip',
+      'https://www.powr.io/powr.js*',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
@@ -99,6 +101,7 @@ export default async function handleRequest(
       'https://cdn.userway.org', // added
       'https://fonts.googleapis.com',
       'https://static.klaviyo.com',
+      'https://static-tracking.klaviyo.com/onsite/js*',
     ],
   });
 
