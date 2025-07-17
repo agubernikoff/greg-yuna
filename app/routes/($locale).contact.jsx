@@ -69,7 +69,6 @@ export default function Contact() {
 
           <div id="form-embed">
             <div class="powr-form-builder" id="b41bdd2b_1749484866"></div>
-            <script src="https://www.powr.io/powr.js?platform=html"></script>
           </div>
 
           <p className="section-header-aux">APPOINTMENTS</p>
