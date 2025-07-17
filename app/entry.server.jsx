@@ -24,6 +24,9 @@ export default async function handleRequest(
     },
     scriptSrc: [
       'https://www.powr.io',
+      'https://static.powr.io',
+      'https://www.powr.io/powr.js',
+      'https://www.powr.io/powr.js?platform=html',
       'https://cdn.shopify.com',
       'https://cdn.shopifycloud.com',
       'http://localhost:*',
@@ -42,6 +45,8 @@ export default async function handleRequest(
       'engaged-orca-warm.ngrok-free.app',
       'wss://kitten-composed-notably.ngrok-free.app:*',
       'https://www.powr.io',
+      'https://www.powr.io/powr.js',
+      'https://www.powr.io/powr.js?platform=html',
       'https://greg-yuna-store.myshopify.com',
       'https://greg-yuna-store.myshopify.com/*',
       'https://greg-yuna-store.com',
@@ -70,6 +75,9 @@ export default async function handleRequest(
     imgSrc: [
       'https://cdn.shopify.com',
       'https://www.powrcdn.com',
+      'https://www.powr.io',
+      'https://www.powr.io/powr.js',
+      'https://www.powr.io/powr.js?platform=html',
       'http://localhost:*',
       'https://klaviyo.com',
       'https://*.klaviyo.com',
@@ -90,6 +98,8 @@ export default async function handleRequest(
     ],
     frameSrc: [
       'https://www.powr.io',
+      'https://www.powr.io/powr.js',
+      'https://www.powr.io/powr.js?platform=html',
       'https://klaviyo.com',
       'https://*.klaviyo.com',
       'https://cdn.shopify.com',
@@ -108,6 +118,9 @@ export default async function handleRequest(
       'https://static.klaviyo.com',
       'https://static-tracking.klaviyo.com/onsite/js*',
       'https://static.powr.io',
+      'https://www.powr.io',
+      'https://www.powr.io/powr.js',
+      'https://www.powr.io/powr.js?platform=html',
     ],
   });
 
