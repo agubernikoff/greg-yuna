@@ -68,7 +68,8 @@ export default function Contact() {
           <p className="header-aux-page">CONTACT</p>
 
           <div id="form-embed">
-            <div className="powr-form-builder" id="b41bdd2b_1749484866"></div>
+            <div class="powr-form-builder" id="b41bdd2b_1749484866"></div>
+            <script src="https://www.powr.io/powr.js?platform=html"></script>
           </div>
 
           <p className="section-header-aux">APPOINTMENTS</p>

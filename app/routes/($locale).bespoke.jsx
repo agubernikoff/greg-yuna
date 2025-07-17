@@ -101,7 +101,8 @@ export default function Bespoke() {
         </div>
       </div>
       <div className="bespoke-form-container">
-        <div className="powr-form-builder" id="ebdf6df2_1749490648"></div>
+        <div class="powr-form-builder" id="ebdf6df2_1749490648"></div>
+        <script src="https://www.powr.io/powr.js?platform=html"></script>
       </div>
       <div className="bespoke-image-container">
         {bespokeImages.map((img, index) => (
