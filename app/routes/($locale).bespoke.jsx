@@ -73,7 +73,7 @@ export default function Bespoke() {
     // Check if POWR is already loaded
     if (!window.POWR) {
       const script = document.createElement('script');
-      script.src = 'https://www.powr.io/powr.js?platform=html'; // ✅ Use platform=html for non-Shopify sites
+      script.src = '/powr.js';
       script.async = true;
       script.onload = () => {
         if (window.POWR) {
