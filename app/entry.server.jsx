@@ -38,6 +38,7 @@ export default async function handleRequest(
       'https://static.klaviyo.com',
       'https://static-tracking.klaviyo.com',
       'https://static.powr.io',
+      'https://www.googletagmanager.com',
     ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
@@ -66,6 +67,7 @@ export default async function handleRequest(
       'https://*.klaviyo.com',
       'https://directory.cookieyes.com/api/v1/ip',
       'https://static.powr.io',
+      'https://www.googletagmanager.com',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
