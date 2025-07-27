@@ -83,6 +83,8 @@ export default async function handleRequest(
       'https://cdn-cookieyes.com',
       'https://d3k81ch9hvuctc.cloudfront.net',
       'https://static.powr.io',
+      'https://fonts.gstatic.com',
+      'https://www.googletagmanager.com',
     ],
     fontSrc: [
       "'self'",
@@ -112,6 +114,7 @@ export default async function handleRequest(
       'https://static-tracking.klaviyo.com/onsite/js*',
       'https://static.powr.io',
       'https://www.powr.io',
+      'https://www.googletagmanager.com',
     ],
   });
 
