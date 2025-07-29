@@ -39,6 +39,8 @@ export default async function handleRequest(
       'https://static-tracking.klaviyo.com',
       'https://static.powr.io',
       'https://www.googletagmanager.com',
+      'https://googleads.g.doubleclick.net',
+      'https://www.google.com',
     ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
@@ -68,6 +70,9 @@ export default async function handleRequest(
       'https://directory.cookieyes.com/api/v1/ip',
       'https://static.powr.io',
       'https://www.googletagmanager.com',
+      'https://www.google.com',
+      'https://analytics.google.com',
+      'https://googleads.g.doubleclick.net',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
@@ -102,6 +107,8 @@ export default async function handleRequest(
       'https://*.klaviyo.com/*',
       'https://cdn.userway.org', // allow UserWay iframe
       'https://static.powr.io',
+      'https://www.googletagmanager.com',
+      'https://td.doubleclick.net',
     ],
     styleSrc: [
       "'self'",
