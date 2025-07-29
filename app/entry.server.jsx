@@ -73,6 +73,8 @@ export default async function handleRequest(
       'https://www.google.com',
       'https://analytics.google.com',
       'https://googleads.g.doubleclick.net',
+      'https://www.googleadservices.com',
+      'https://pagead2.googlesyndication.com',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
@@ -90,6 +92,9 @@ export default async function handleRequest(
       'https://static.powr.io',
       'https://fonts.gstatic.com',
       'https://www.googletagmanager.com',
+      'https://www.google.com',
+      'https://www.googleadservices.com',
+      'https://pagead2.googlesyndication.com',
     ],
     fontSrc: [
       "'self'",
