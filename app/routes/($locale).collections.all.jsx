@@ -1,4 +1,4 @@
-import {useLoaderData, Link} from '@remix-run/react';
+import {useLoaderData, Link, redirect} from '@remix-run/react';
 import {
   getPaginationVariables,
   Image,
@@ -21,23 +21,10 @@ export const meta = () => {
  * @param {LoaderFunctionArgs} args
  */
 export async function loader(args) {
-  // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
-  const criticalData = await loadCriticalData(args);
-
-  return {...deferredData, ...criticalData};
-}
-
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- * @param {LoaderFunctionArgs}
- */
-async function loadCriticalData({context, request}) {
-  const url = new URL(request.url);
-  const isHardRefresh = request.headers.get('sec-fetch-mode') === 'navigate';
+  const url = new URL(args.request.url);
+  const isHardRefresh =
+    args.request.method === 'GET' &&
+    args.request.headers.get('sec-fetch-dest') === 'document';
 
   if (isHardRefresh) {
     const paginationKeys = ['cursor', 'direction'];
@@ -54,7 +41,23 @@ async function loadCriticalData({context, request}) {
       return redirect(`${url.pathname}?${url.searchParams.toString()}`);
     }
   }
+  // Start fetching non-critical data without blocking time to first byte
+  const deferredData = loadDeferredData(args);
+
+  // Await the critical data required to render initial state of the page
+  const criticalData = await loadCriticalData(args);
+
+  return {...deferredData, ...criticalData};
+}
+
+/**
+ * Load data necessary for rendering content above the fold. This is the critical data
+ * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
+ * @param {LoaderFunctionArgs}
+ */
+async function loadCriticalData({context, request}) {
   const {storefront} = context;
+  const url = new URL(request.url);
   const searchParams = new URLSearchParams(url.search);
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 24,
