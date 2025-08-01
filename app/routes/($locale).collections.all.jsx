@@ -36,8 +36,25 @@ export async function loader(args) {
  * @param {LoaderFunctionArgs}
  */
 async function loadCriticalData({context, request}) {
-  const {storefront} = context;
   const url = new URL(request.url);
+  const isHardRefresh = request.headers.get('sec-fetch-mode') === 'navigate';
+
+  if (isHardRefresh) {
+    const paginationKeys = ['cursor', 'direction'];
+    let shouldRedirect = false;
+
+    for (const key of paginationKeys) {
+      if (url.searchParams.has(key)) {
+        url.searchParams.delete(key);
+        shouldRedirect = true;
+      }
+    }
+
+    if (shouldRedirect) {
+      return redirect(`${url.pathname}?${url.searchParams.toString()}`);
+    }
+  }
+  const {storefront} = context;
   const searchParams = new URLSearchParams(url.search);
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 24,
