@@ -38,6 +38,9 @@ export default async function handleRequest(
       'https://static.klaviyo.com',
       'https://static-tracking.klaviyo.com',
       'https://static.powr.io',
+      'https://www.googletagmanager.com',
+      'https://googleads.g.doubleclick.net',
+      'https://www.google.com',
     ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
@@ -66,6 +69,12 @@ export default async function handleRequest(
       'https://*.klaviyo.com',
       'https://directory.cookieyes.com/api/v1/ip',
       'https://static.powr.io',
+      'https://www.googletagmanager.com',
+      'https://www.google.com',
+      'https://analytics.google.com',
+      'https://googleads.g.doubleclick.net',
+      'https://www.googleadservices.com',
+      'https://pagead2.googlesyndication.com',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
@@ -81,6 +90,11 @@ export default async function handleRequest(
       'https://cdn-cookieyes.com',
       'https://d3k81ch9hvuctc.cloudfront.net',
       'https://static.powr.io',
+      'https://fonts.gstatic.com',
+      'https://www.googletagmanager.com',
+      'https://www.google.com',
+      'https://www.googleadservices.com',
+      'https://pagead2.googlesyndication.com',
     ],
     fontSrc: [
       "'self'",
@@ -98,6 +112,8 @@ export default async function handleRequest(
       'https://*.klaviyo.com/*',
       'https://cdn.userway.org', // allow UserWay iframe
       'https://static.powr.io',
+      'https://www.googletagmanager.com',
+      'https://td.doubleclick.net',
     ],
     styleSrc: [
       "'self'",
@@ -110,6 +126,7 @@ export default async function handleRequest(
       'https://static-tracking.klaviyo.com/onsite/js*',
       'https://static.powr.io',
       'https://www.powr.io',
+      'https://www.googletagmanager.com',
     ],
   });
 
