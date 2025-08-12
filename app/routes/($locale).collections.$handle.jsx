@@ -224,6 +224,8 @@ export function Filter({title, filters, shopAll, term}) {
       (prev) => {
         prev.delete('reverse');
         prev.delete('sortKey');
+        prev.delete('cursor');
+        prev.delete('direction');
         return prev;
       },
       {preventScrollReset: true},
