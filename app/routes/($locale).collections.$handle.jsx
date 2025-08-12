@@ -217,6 +217,7 @@ export function Filter({title, filters, shopAll, term}) {
       },
       {preventScrollReset: true},
     );
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   function removeSort() {
@@ -230,6 +231,7 @@ export function Filter({title, filters, shopAll, term}) {
       },
       {preventScrollReset: true},
     );
+    window.scrollTo({top: 0, behavior: 'smooth'});
   }
 
   function isSortChecked(input) {
