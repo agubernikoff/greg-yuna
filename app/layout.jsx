@@ -1,4 +1,9 @@
-import {useNonce, Analytics, useCustomerPrivacy} from '@shopify/hydrogen';
+import {
+  useNonce,
+  Analytics,
+  useCustomerPrivacy,
+  useAnalytics,
+} from '@shopify/hydrogen';
 import {
   Links,
   Meta,
@@ -12,6 +17,74 @@ import appStyles from '~/styles/app.css?url';
 import {PageLayout} from '~/components/PageLayout';
 import {NavigationProvider} from './context/NavigationContext';
 import {useEffect} from 'react';
+
+// Mirrors Hydrogen analytics events to GTM/Meta/GA4/Klaviyo.
+// Mount once inside <Analytics.Provider>.
+function ThirdPartyAnalyticsIntegration() {
+  const {subscribe, register} = useAnalytics();
+
+  useEffect(() => {
+    const {ready} = register('Third Party');
+    const unsubs = [];
+
+    function sub(eventName, handler) {
+      unsubs.push(subscribe(eventName, handler));
+    }
+
+    // PAGE VIEW
+    sub('page_viewed', (payload) => {
+      // GTM / dataLayer
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({event: 'page_viewed', ...payload});
+
+      // Meta, GA4, Klaviyo examples (safe-optional with optional chaining)
+      window.fbq?.('track', 'PageView', payload);
+      window.gtag?.('event', 'page_view', payload);
+      window._learnq?.push(['track', 'Viewed Page', payload]);
+    });
+
+    // PRODUCT VIEWED
+    sub('product_viewed', (payload) => {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({event: 'product_viewed', ...payload});
+      window.gtag?.('event', 'view_item', payload);
+      window.fbq?.('track', 'ViewContent', payload);
+      window._learnq?.push(['track', 'Viewed Product', payload]);
+    });
+
+    // CART UPDATED (fires often — dedupe on your side if needed)
+    sub('cart_updated', (payload) => {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({event: 'cart_updated', ...payload});
+      window.gtag?.('event', 'add_to_cart', payload);
+      window.fbq?.('track', 'AddToCart', payload);
+      window._learnq?.push(['track', 'Cart Updated', payload]);
+    });
+
+    // PRODUCT ADDED TO CART (if you emit custom events for this in routes)
+    sub('product_added_to_cart', (payload) => {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({event: 'product_added_to_cart', ...payload});
+      window.gtag?.('event', 'add_to_cart', payload);
+      window.fbq?.('track', 'AddToCart', payload);
+      window._learnq?.push(['track', 'Added to Cart', payload]);
+    });
+
+    // CHECKOUT STARTED (Hydrogen emits when checkout URL is generated)
+    sub('checkout_started', (payload) => {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({event: 'checkout_started', ...payload});
+      window.gtag?.('event', 'begin_checkout', payload);
+      window.fbq?.('track', 'InitiateCheckout', payload);
+      window._learnq?.push(['track', 'Started Checkout', payload]);
+    });
+
+    ready();
+    return () => unsubs.forEach((u) => u && u());
+  }, [register, subscribe]);
+
+  return null;
+}
 
 export default function Layout() {
   const nonce = useNonce();
@@ -87,6 +160,8 @@ export default function Layout() {
             shop={data.shop}
             consent={data.consent}
           >
+            <Analytics />
+            <ThirdPartyAnalyticsIntegration />
             <PageLayout {...data}>
               <NavigationProvider>
                 <Outlet />
