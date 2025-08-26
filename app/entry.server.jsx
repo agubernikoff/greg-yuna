@@ -41,6 +41,8 @@ export default async function handleRequest(
       'https://www.googletagmanager.com',
       'https://googleads.g.doubleclick.net',
       'https://www.google.com',
+      'https://connect.facebook.net',
+      'https://tagmanager.google.com',
     ],
     connectSrc: [
       'engaged-orca-warm.ngrok-free.app',
@@ -71,10 +73,19 @@ export default async function handleRequest(
       'https://static.powr.io',
       'https://www.googletagmanager.com',
       'https://www.google.com',
+      'https://google.com',
       'https://analytics.google.com',
       'https://googleads.g.doubleclick.net',
       'https://www.googleadservices.com',
       'https://pagead2.googlesyndication.com',
+      'http://localhost:*',
+      'ws://localhost:*',
+      'ws://127.0.0.1:*',
+      'https://www.google-analytics.com',
+      'https://region1.google-analytics.com',
+      'https://g.doubleclick.net',
+      'https://connect.facebook.net',
+      'https://www.facebook.com',
     ],
     imgSrc: [
       'https://cdn.shopify.com',
@@ -95,6 +106,9 @@ export default async function handleRequest(
       'https://www.google.com',
       'https://www.googleadservices.com',
       'https://pagead2.googlesyndication.com',
+      'https://www.google-analytics.com',
+      'https://connect.facebook.net',
+      'https://www.facebook.com',
     ],
     fontSrc: [
       "'self'",
@@ -114,6 +128,8 @@ export default async function handleRequest(
       'https://static.powr.io',
       'https://www.googletagmanager.com',
       'https://td.doubleclick.net',
+      'https://connect.facebook.net',
+      'https://www.facebook.com',
     ],
     styleSrc: [
       "'self'",
@@ -151,7 +167,14 @@ export default async function handleRequest(
   }
 
   responseHeaders.set('Content-Type', 'text/html');
-  responseHeaders.set('Content-Security-Policy', headerWithoutNonce);
+
+  const isProd =
+    process.env.NODE_ENV === 'production' ||
+    context?.env?.NODE_ENV === 'production';
+  responseHeaders.set(
+    isProd ? 'Content-Security-Policy' : 'Content-Security-Policy-Report-Only',
+    headerWithoutNonce,
+  );
 
   return new Response(body, {
     headers: responseHeaders,

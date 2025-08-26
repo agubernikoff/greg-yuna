@@ -6,12 +6,38 @@ import {
   useRouteLoaderData,
   ScrollRestoration,
   Outlet,
+  useLocation,
 } from '@remix-run/react';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import {PageLayout} from '~/components/PageLayout';
 import {NavigationProvider} from './context/NavigationContext';
 import {useEffect} from 'react';
+
+// Version-agnostic client-side pageview tracker for GTM/GA4/Meta/Klaviyo
+function ClientTracker() {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const payload = {
+      page_location: window.location.href,
+      page_path: location.pathname + location.search,
+      page_title: document?.title,
+    };
+
+    // GTM
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({event: 'page_view', ...payload});
+
+    // GA4 / Meta / Klaviyo (no-ops if not present)
+    window.gtag?.('event', 'page_view', payload);
+    window.fbq?.('track', 'PageView', payload);
+    window._learnq?.push(['track', 'Viewed Page', payload]);
+  }, [location.key]);
+
+  return null;
+}
 
 export default function Layout() {
   const nonce = useNonce();
@@ -87,6 +113,7 @@ export default function Layout() {
             shop={data.shop}
             consent={data.consent}
           >
+            <ClientTracker />
             <PageLayout {...data}>
               <NavigationProvider>
                 <Outlet />
