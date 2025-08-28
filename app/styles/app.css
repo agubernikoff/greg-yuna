@@ -2128,7 +2128,7 @@ MEDIA QUIERIES
     margin-inline: 10%;
   }
   .overlay:has(aside#cart) {
-    z-index: 11;
+    z-index: 1001;
   }
   .overlay.expanded:has(aside#cart) {
     background-color: rgba(0, 0, 0, 0.2);
