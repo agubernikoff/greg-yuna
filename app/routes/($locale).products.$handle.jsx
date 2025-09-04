@@ -114,6 +114,42 @@ export default function Product() {
   // only when no search params are set in the url
   useSelectedOptionInUrlParam(selectedVariant.selectedOptions);
 
+  // Dedup ViewContent in React StrictMode/dev
+  const viewContentKeyRef = useRef('');
+  // --- Meta: ViewContent on PDP ---
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const variant =
+      (typeof selectedVariant !== 'undefined' && selectedVariant) ||
+      product?.selectedOrFirstAvailableVariant ||
+      product?.variants?.nodes?.[0];
+
+    const variantId = variant?.id || product?.id;
+    const value =
+      Number(
+        variant?.price?.amount ??
+          product?.priceRange?.minVariantPrice?.amount ??
+          0,
+      ) || 0;
+
+    // Prevent double-fire in dev (React StrictMode) by deduping on product + variant + path
+    const key = `${product?.id || ''}|${variantId || ''}|${window.location.pathname}${window.location.search}`;
+    if (viewContentKeyRef.current === key) {
+      return; // already fired for this key
+    }
+    viewContentKeyRef.current = key;
+
+    if (product && variantId) {
+      window.gyTrack?.('view_item', {
+        content_ids: [variantId],
+        content_type: 'product',
+        value,
+        currency: 'USD',
+      });
+    }
+  }, [product?.id, selectedVariant?.id]);
+
   // Get the product options array
   const productOptions = getProductOptions({
     ...product,

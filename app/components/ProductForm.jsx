@@ -277,6 +277,33 @@ export function ProductForm({
         <AddToCartButton
           disabled={!selectedVariant || !selectedVariant.availableForSale}
           onClick={() => {
+            // Track main product add to cart
+            const variant = selectedVariant;
+            const qty = 1;
+            const unit = variant?.price?.amount
+              ? Number(variant.price.amount)
+              : 0;
+            window.gyTrack?.('add_to_cart', {
+              content_ids: [variant.id],
+              content_type: 'product',
+              value: unit * qty,
+              currency: 'USD',
+              quantity: qty,
+            });
+            // Track chain upsell add to cart if present
+            if (chain) {
+              const cqty = 1;
+              const cunit = chain?.price?.amount
+                ? Number(chain.price.amount)
+                : 0;
+              window.gyTrack?.('add_to_cart', {
+                content_ids: [chain.id],
+                content_type: 'product',
+                value: cunit * cqty,
+                currency: 'USD',
+                quantity: cqty,
+              });
+            }
             open('cart');
           }}
           lines={

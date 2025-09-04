@@ -36,6 +36,45 @@ function ClientTracker() {
     window._learnq?.push(['track', 'Viewed Page', payload]);
   }, [location.key]);
 
+  // Meta/ViewContent & AddToCart tracking via GTM dataLayer + Meta fbq
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    // helper to normalize params and fire to both GTM and Meta
+    function gyTrack(type, params = {}) {
+      const payload = {
+        content_type: params.content_type ?? 'product',
+        currency: params.currency ?? 'USD',
+        ...params,
+      };
+
+      // Ensure dataLayer exists
+      window.dataLayer = window.dataLayer || [];
+
+      if (type === 'view_item') {
+        window.dataLayer.push({event: 'view_item', ...payload});
+        window.fbq?.('track', 'ViewContent', payload);
+      } else if (type === 'add_to_cart') {
+        window.dataLayer.push({event: 'add_to_cart', ...payload});
+        window.fbq?.('track', 'AddToCart', payload);
+      }
+    }
+
+    // expose globally so any component can use it
+    window.gyTrack = gyTrack;
+
+    // also allow CustomEvent usage
+    const handler = (e) => gyTrack(e.type.replace('gy:', ''), e.detail || {});
+    window.addEventListener('gy:view_item', handler);
+    window.addEventListener('gy:add_to_cart', handler);
+
+    return () => {
+      window.removeEventListener('gy:view_item', handler);
+      window.removeEventListener('gy:add_to_cart', handler);
+      if (window.gyTrack === gyTrack) delete window.gyTrack;
+    };
+  }, []);
+
   return null;
 }
 
