@@ -166,32 +166,6 @@ export default function App() {
         }
       }, 300);
     }
-
-    // Shopify customer privacy region fallback (wait until script loads)
-    const waitForPrivacy = setInterval(() => {
-      const cp = window.Shopify?.customerPrivacy;
-      if (!cp) return; // keep waiting until Shopify privacy API is available
-
-      // If region is missing or returns a falsy value, provide a fallback — but don't force the banner
-      try {
-        const region =
-          typeof cp.getRegion === 'function' ? cp.getRegion() : null;
-        if (!region) {
-          console.warn('[Privacy] Region not set — injecting fallback');
-          cp.getRegion = () => 'USNY';
-        }
-      } catch {
-        console.warn('[Privacy] getRegion threw — injecting fallback');
-        cp.getRegion = () => 'USNY';
-      }
-
-      // Respect Shopify's own logic about whether to show the banner
-      if (typeof cp.shouldShowBanner === 'function' && cp.shouldShowBanner()) {
-        cp.showBanner?.();
-      }
-
-      clearInterval(waitForPrivacy);
-    }, 250);
   }, []);
 
   return <Outlet />;
