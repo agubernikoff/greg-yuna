@@ -601,7 +601,7 @@ function CartBadge({count}) {
       }}
       className="cart-badge"
     >
-      <span>{`Bag [${count === null ? <span>&nbsp;</span> : count}]`}</span>
+      <span>{`Bag [${count === null ? 0 : count}]`}</span>
       <svg
         width="25"
         height="21"
