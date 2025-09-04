@@ -560,6 +560,7 @@ function SearchToggle() {
  * @param {{count: number | null}}
  */
 function CartBadge({count}) {
+  console.log('count: ', count);
   const {open, close, type} = useAside();
   const [isOpen, setIsOpen] = useState(false);
 
