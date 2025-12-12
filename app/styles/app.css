@@ -1296,10 +1296,10 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
 }
 .product-images {
   grid-column: span 2;
-  position: sticky;
+  /* position: sticky;
   top: 0;
   height: 100dvh;
-  overflow-y: auto;
+  overflow-y: auto; */
   scrollbar-width: none;
   -ms-overflow-style: none;
   margin-right: 0.5px;
@@ -1325,6 +1325,10 @@ aside#mobile .predictive-search-form:has(input:focus-visible) > button {
   padding: 1rem;
   margin-left: 0.5px;
   background-color: white;
+  height: 100vh;
+  overflow: auto;
+  position: sticky;
+  top: 0;
 }
 
 .breadcrumbs,
@@ -2519,6 +2523,11 @@ MEDIA QUIERIES
     position: absolute;
     background: #e9e9e9;
     overflow: hidden;
+  }
+  .product-main {
+    height: auto;
+    position: relative;
+    overflow: visible;
   }
   .product-item-container .mapped-indicators {
     position: static;

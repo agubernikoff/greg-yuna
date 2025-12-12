@@ -100,7 +100,8 @@ export function ProductForm({
             return 0;
           })
           .map((option) => {
-            if (option.optionValues.length === 0) return null;
+            if (option.optionValues.length === 0 || option.name === 'Title')
+              return null;
 
             const isColorOption =
               option.name.toLowerCase() === 'material' ||

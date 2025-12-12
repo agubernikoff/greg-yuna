@@ -138,9 +138,10 @@ function RecommendedProducts({products}) {
 }
 
 function Collections({collections}) {
-  const mapped = collections.nodes.map((node) => (
-    <CollectionGridItem key={node.id} node={node} />
-  ));
+  const mapped = collections.nodes
+    .filter((n) => n.image)
+    .slice(0, 4)
+    .map((node) => <CollectionGridItem key={node.id} node={node} />);
   return <div className="collections-container">{mapped}</div>;
 }
 
@@ -221,7 +222,7 @@ const FEATURED_COLLECTION_QUERY = `#graphql
   }
   query FeaturedCollection($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
-    collections(first: 4, sortKey: UPDATED_AT, reverse: true, query:"NOT title:'New Arrivals'") {
+    collections(first: 10, sortKey: UPDATED_AT, reverse: true, query:"NOT title:'New Arrivals'") {
       nodes {
         ...FeaturedCollection
       }
